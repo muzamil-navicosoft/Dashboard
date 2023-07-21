@@ -1,4 +1,4 @@
-﻿@model Dashboard.Models.Clients
+﻿@model Dashboard.DTO.ClientsDto
 
 @{
     ViewData["Title"] = "AddClient";
@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="AddClient">
+        <form asp-action="AddClient" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
            @* <div class="form-group">
                 <label asp-for="Id" class="control-label"></label>
@@ -47,11 +47,21 @@
                 <input asp-for="DateOfDiscontinue" class="form-control" />
                 <span asp-validation-for="DateOfDiscontinue" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            @*<div class="form-group">
                 <label asp-for="Logo" class="control-label"></label>
                 <input asp-for="Logo" class="form-control" />
                 <span asp-validation-for="Logo" class="text-danger"></span>
+            </div> *@
+            <div class="form-group">
+                <label asp-for="LogoImage" class="control-label"></label>
+                <div class="mb-3">
+@*                    <label for="formFile" class="form-label">Default file input example</label>
+*@                    <input asp-for="LogoImage" class="form-control" type="file" id="formFile">
+                </div>
+                <span asp-validation-for="LogoImage" class="text-danger"></span>
             </div>
+
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

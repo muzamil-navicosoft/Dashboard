@@ -1,5 +1,6 @@
 ﻿using Dashboard.Data;
 using Dashboard.DTO;
+using Dashboard.Helper;
 using Dashboard.Models;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,14 @@ namespace Dashboard.Controllers
     public class MainController : Controller
     {
         private readonly ProjectContext db;
+        private readonly IWebHostEnvironment webHost;
+        private readonly ICreateImage imageHelper;
 
-        public MainController(ProjectContext db)
+        public MainController(ProjectContext db, IWebHostEnvironment webHost, ICreateImage imageHelper)
         {
             this.db = db;
+            this.webHost = webHost;
+            this.imageHelper = imageHelper;
         }
 
 
@@ -50,13 +55,34 @@ namespace Dashboard.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> AddClient(Clients obj)
+        public async Task<IActionResult> AddClient(ClientsDto obj)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    await db.Clients.AddAsync(obj);
+
+                    if (obj.LogoImage != null)
+                    {
+                        string serverPath = webHost.WebRootPath.ToString();
+                        var img = imageHelper.ImagesCRa("Logo", obj.LogoImage, serverPath);
+
+                        //string ImagesName =  Guid.NewGuid().ToString()+"_"+obj.LogoImage.FileName;
+                        //string Folder = "Images/Logo/";
+                        //Folder += ImagesName;
+                        //string ServerPath = Path.Combine(webHost.WebRootPath, Folder);
+
+                        //await obj.LogoImage.CopyToAsync(new FileStream(ServerPath, FileMode.Create));
+
+                        obj.Logo = img;
+
+                    }
+                    else
+                    {
+                        obj.Logo = "Nologo.jfif";
+                    }
+                    var client = obj.Adapt<Clients>();
+                    await db.Clients.AddAsync(client);
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }

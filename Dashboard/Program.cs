@@ -1,4 +1,5 @@
 using Dashboard.Data;
+using Dashboard.Helper;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ProjectContext>( options =>{
     options.UseSqlServer(builder.Configuration.GetConnectionString("connection"));
 });
+
+
+builder.Services.AddScoped<ICreateImage, CreateImage>();
 
 var app = builder.Build();
 
