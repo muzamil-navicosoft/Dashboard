@@ -1,0 +1,95 @@
+﻿@model Dashboard.DTO.ClientFormDto
+
+@{
+    ViewData["Title"] = "UserInitForm";
+}
+
+<h1>UserInitForm</h1>
+
+@if (ViewBag.success != null)
+{
+    <h1>@ViewBag.success</h1>
+}
+<h4>ClientFormDto</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="UserInitForm" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @*<div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>*@
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                <label asp-for="Logo" class="control-label"></label>
+                <input asp-for="Logo" class="form-control" />
+                <span asp-validation-for="Logo" class="text-danger"></span>
+            </div>*@
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BlackBaudApiId" class="control-label"></label>
+                <input asp-for="BlackBaudApiId" class="form-control" value="DemoApiUser" />
+                <span asp-validation-for="BlackBaudApiId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" value="DemoPassword"/>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <div class="mb-3">
+                    <label asp-for="LogoImage" class="form-label"></label>
+                    <input asp-for="LogoImage" class="form-control" type="file" id="formFile">
+                </div>
+                <span asp-validation-for="LogoImage" class="text-danger"></span>
+            </div>
+   @*         <div class="form-group">
+                <label asp-for="RequestDate" class="control-label"></label>
+                <input asp-for="RequestDate" class="form-control" />
+                <span asp-validation-for="RequestDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AproveDate" class="control-label"></label>
+                <input asp-for="AproveDate" class="form-control" />
+                <span asp-validation-for="AproveDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DiscountneDate" class="control-label"></label>
+                <input asp-for="DiscountneDate" class="form-control" />
+                <span asp-validation-for="DiscountneDate" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="isAproved" /> @Html.DisplayNameFor(model => model.isAproved)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="isActive" /> @Html.DisplayNameFor(model => model.isActive)
+                </label>
+            </div>*@
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

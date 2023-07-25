@@ -1,0 +1,98 @@
+﻿@model IEnumerable<Dashboard.DTO.ClientFormDto>
+
+@{
+    ViewData["Title"] = "Requests";
+}
+
+<h1>Requests</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+           @* <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Logo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BlackBaudApiId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Password)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RequestDate)
+            </th>
+          @*  <th>
+                @Html.DisplayNameFor(model => model.AproveDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DiscountneDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.isAproved)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.isActive)
+            </th>*@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @*@Html.DisplayFor(modelItem => item.Logo)*@
+                <img src="~/images/formlogo/@item.Logo" width="50" height="50">
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BlackBaudApiId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Password)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RequestDate)
+            </td>
+           @* <td>
+                @Html.DisplayFor(modelItem => item.AproveDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DiscountneDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.isAproved)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.isActive)
+            </td>*@
+            <td>
+                @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+
+                    @Html.ActionLink("Approve", "Approve", new {  id=item.Id }) 
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

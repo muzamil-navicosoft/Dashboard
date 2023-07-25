@@ -1,13 +1,13 @@
-﻿@model Dashboard.DTO.ClientsDto
+﻿@model Dashboard.DTO.ClientFormDto
 
 @{
-    ViewData["Title"] = "GetById";
+    ViewData["Title"] = "Details";
 }
 
-<h1>GetById</h1>
+<h1>Details</h1>
 
 <div>
-    <h4>ClientsDto</h4>
+    <h4>ClientFormDto</h4>
     <hr />
     <dl class="row">
         @*<dt class = "col-sm-2">
@@ -23,10 +23,11 @@
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SubDomain)
+            @Html.DisplayNameFor(model => model.Logo)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SubDomain)
+@*            @Html.DisplayFor(model => model.Logo)
+*@            <img src="~/images/formlogo/@Model.Logo" width="50" height="50">
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Email)
@@ -35,10 +36,10 @@
             @Html.DisplayFor(model => model.Email)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SftpId)
+            @Html.DisplayNameFor(model => model.BlackBaudApiId)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SftpId)
+            @Html.DisplayFor(model => model.BlackBaudApiId)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Password)
@@ -47,35 +48,35 @@
             @Html.DisplayFor(model => model.Password)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsActive)
+            @Html.DisplayNameFor(model => model.RequestDate)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsActive)
+            @Html.DisplayFor(model => model.RequestDate)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateOfRequest)
+            @Html.DisplayNameFor(model => model.AproveDate)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateOfRequest)
+            @Html.DisplayFor(model => model.AproveDate)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateOfAproval)
+            @Html.DisplayNameFor(model => model.DiscountneDate)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateOfAproval)
+            @Html.DisplayFor(model => model.DiscountneDate)
+        </dd>
+@*        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.isAproved)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.isAproved)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateOfDiscontinue)
+            @Html.DisplayNameFor(model => model.isActive)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateOfDiscontinue)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Logo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Logo)
-        </dd>
+            @Html.DisplayFor(model => model.isActive)
+        </dd>*@
     </dl>
 </div>
 <div>

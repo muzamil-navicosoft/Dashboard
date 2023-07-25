@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dashboard.Migrations
 {
     [DbContext(typeof(ProjectContext))]
-    [Migration("20230720134229_First")]
-    partial class First
+    [Migration("20230725175458_FirstDbInit")]
+    partial class FirstDbInit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace Dashboard.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Dashboard.Models.Clients", b =>
+            modelBuilder.Entity("Dashboard.Models.ClientForm", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -33,32 +33,45 @@ namespace Dashboard.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("DateOfAproval")
+                    b.Property<DateTime?>("AproveDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateOfDiscontinue")
+                    b.Property<string>("BlackBaudApiId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DiscountneDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateOfRequest")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Logo")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SubDomain")
-                        .IsRequired()
+                    b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RequestDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SubDomain")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("isActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isAproved")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clients");
+                    b.ToTable("ClientForm");
                 });
 #pragma warning restore 612, 618
         }

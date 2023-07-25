@@ -9,7 +9,8 @@ namespace Dashboard.Data
         {
         }
 
-        public DbSet<Clients> Clients { get; set; }
+        //public DbSet<Clients> Clients { get; set; }
+        public DbSet<ClientForm> ClientForm { get; set; }
 
     }
 }

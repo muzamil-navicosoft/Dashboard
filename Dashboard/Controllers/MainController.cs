@@ -23,82 +23,82 @@ namespace Dashboard.Controllers
 
 
 
-        [HttpGet]
-        public async Task<IActionResult> Index()
-        {
-            var result = await db.Clients.Where(x => x.IsActive).ToListAsync();
-            var list = result.Adapt<IEnumerable<ClientsDto>>();
+        //[HttpGet]
+        //public async Task<IActionResult> Index()
+        //{
+        //    var result = await db.Clients.Where(x => x.IsActive).ToListAsync();
+        //    var list = result.Adapt<IEnumerable<ClientsDto>>();
           
-            return View(list);
-        }
+        //    return View(list);
+        //}
 
-        [HttpGet]
-        public async Task<IActionResult> Inactive()
-        {
-            var result = await db.Clients.Where(x => !x.IsActive).ToListAsync();
-            var list = result.Adapt<IEnumerable<ClientsDto>>();
-            return View(list);
-        }
+        //[HttpGet]
+        //public async Task<IActionResult> Inactive()
+        //{
+        //    var result = await db.Clients.Where(x => !x.IsActive).ToListAsync();
+        //    var list = result.Adapt<IEnumerable<ClientsDto>>();
+        //    return View(list);
+        //}
 
-        [HttpGet]
-        public async Task<IActionResult> GetById(int id)
-        {
-            var result = await db.Clients.FindAsync(id);
-            var test = result?.Adapt<ClientsDto>();
-            return View(test);
-        }
-        [HttpGet]
-        public IActionResult AddClient()
-        {
-            return View();
-        }
-
-
-        [HttpPost]
-        public async Task<IActionResult> AddClient(ClientsDto obj)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-
-                    if (obj.LogoImage != null)
-                    {
-                        string serverPath = webHost.WebRootPath.ToString();
-                        var img = imageHelper.ImagesCRa("Logo", obj.LogoImage, serverPath);
-
-                        //string ImagesName =  Guid.NewGuid().ToString()+"_"+obj.LogoImage.FileName;
-                        //string Folder = "Images/Logo/";
-                        //Folder += ImagesName;
-                        //string ServerPath = Path.Combine(webHost.WebRootPath, Folder);
-
-                        //await obj.LogoImage.CopyToAsync(new FileStream(ServerPath, FileMode.Create));
-
-                        obj.Logo = img;
-
-                    }
-                    else
-                    {
-                        obj.Logo = "Nologo.jfif";
-                    }
-                    var client = obj.Adapt<Clients>();
-                    await db.Clients.AddAsync(client);
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "asdfa");
-                    return View(ModelState);
-                }
+        //[HttpGet]
+        //public async Task<IActionResult> GetById(int id)
+        //{
+        //    var result = await db.Clients.FindAsync(id);
+        //    var test = result?.Adapt<ClientsDto>();
+        //    return View(test);
+        //}
+        //[HttpGet]
+        //public IActionResult AddClient()
+        //{
+        //    return View();
+        //}
 
 
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        //[HttpPost]
+        //public async Task<IActionResult> AddClient(ClientsDto obj)
+        //{
+        //    try
+        //    {
+        //        if (ModelState.IsValid)
+        //        {
+
+        //            if (obj.LogoImage != null)
+        //            {
+        //                string serverPath = webHost.WebRootPath.ToString();
+        //                var img = imageHelper.ImagesCRa("Logo", obj.LogoImage, serverPath);
+
+        //                //string ImagesName =  Guid.NewGuid().ToString()+"_"+obj.LogoImage.FileName;
+        //                //string Folder = "Images/Logo/";
+        //                //Folder += ImagesName;
+        //                //string ServerPath = Path.Combine(webHost.WebRootPath, Folder);
+
+        //                //await obj.LogoImage.CopyToAsync(new FileStream(ServerPath, FileMode.Create));
+
+        //                obj.Logo = img;
+
+        //            }
+        //            else
+        //            {
+        //                obj.Logo = "Nologo.jfif";
+        //            }
+        //            var client = obj.Adapt<Clients>();
+        //            await db.Clients.AddAsync(client);
+        //            db.SaveChanges();
+        //            return RedirectToAction("Index");
+        //        }
+        //        else
+        //        {
+        //            ModelState.AddModelError("", "asdfa");
+        //            return View(ModelState);
+        //        }
+
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
 
     }
 }
