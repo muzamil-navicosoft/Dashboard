@@ -5,6 +5,7 @@ using Dashboard.Models;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.InteropServices;
 
 namespace Dashboard.Controllers
 {
@@ -31,7 +32,13 @@ namespace Dashboard.Controllers
 
         public async Task<IActionResult> Clients()
         {
-            var result = await db.ClientForm.Where(x => x.isActive && x.isAproved).ToListAsync();
+            var result = await db.ClientForm.Where(x => x.isActive && x.isAproved && !x.isDeleted).ToListAsync();
+            var test = result.Adapt<IEnumerable<ClientFormDto>>();
+            return View(test);
+        }
+        public async Task<IActionResult> DeactiveClients()
+        {
+            var result = await db.ClientForm.Where(x => !x.isActive && x.isAproved && !x.isDeleted).ToListAsync();
             var test = result.Adapt<IEnumerable<ClientFormDto>>();
             return View(test);
         }
@@ -92,6 +99,21 @@ namespace Dashboard.Controllers
             }
             return RedirectToAction("UserInitForm");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Discontinue(int id)
+        {
+            var result = await db.ClientForm.FindAsync(id);
+            if (result != null)
+            {
+                result.isActive = false;
+                result.DiscontinueDate = DateTime.Now;
+                db.Update(result);
+                db.SaveChanges();
+                return RedirectToAction("UserInitForm");
+            }
+            return RedirectToAction("UserInitForm");
+        }
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
@@ -105,8 +127,61 @@ namespace Dashboard.Controllers
                 }
                 else
                 {
+                    ViewBag.NotFound= "Record you are looking for doesnot Exist or Removed from System";
+                    return View();
+                }
+            }
+            catch (Exception)
+            {
 
-                    return View("Record you are looking for doesnot Exist or Removed from System");
+                throw;
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit (int id)
+        {
+            try
+            {
+                var result = await db.ClientForm.FindAsync(id);
+                await db.DisposeAsync();
+                if (result != null)
+                {
+                    var test = result.Adapt<ClientFormDto>();
+                    return View(test);
+                }
+                else
+                {
+                    ViewBag.NotFound = "Record you are looking for doesnot Exist or Removed from System";
+                    return View();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(ClientFormDto obj)
+        {
+            try
+            {
+                var result =  await db.ClientForm.AsNoTracking().FirstOrDefaultAsync(x => x.Id == obj.Id);
+                if (result != null)
+                {
+                    result = obj.Adapt<ClientForm>();
+                   // db.ClientForm.Attach(result);
+                    db.Update(result);
+                    db.SaveChanges();
+                    await db.DisposeAsync();
+                    return RedirectToAction("Clients");
+                }
+                else
+                {
+                    ViewBag.NotFound = "Record you are looking for doesnot Exist or Removed from System";
+                    return View();
                 }
             }
             catch (Exception)

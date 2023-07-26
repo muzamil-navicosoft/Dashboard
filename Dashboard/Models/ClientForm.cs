@@ -13,9 +13,10 @@ namespace Dashboard.Models
         public string? SubDomain { get; set; } 
         public DateTime RequestDate { get; set; }
         public DateTime? AproveDate { get; set; }
-        public DateTime? DiscountneDate { get; set; }
-        public bool isAproved { get; set; } = false;
-        public bool isActive { get; set; } = true;
+        public DateTime? DiscontinueDate { get; set; }
+        public bool isAproved { get; set; } 
+        public bool isActive { get; set; } 
+        public bool isDeleted { get; set; } 
 
     }
 }

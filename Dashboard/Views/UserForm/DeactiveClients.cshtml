@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<Dashboard.DTO.ClientFormDto>
 
 @{
-    ViewData["Title"] = "Clients";
+    ViewData["Title"] = "DeactiveClients";
 }
 
-<h1>Clients</h1>
+<h1>DeactiveClients</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -31,19 +31,25 @@
                 @Html.DisplayNameFor(model => model.Password)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.SubDomain)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.RequestDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.AproveDate)
             </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.DiscountneDate)
+            <th>
+                @Html.DisplayNameFor(model => model.DiscontinueDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.isAproved)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.isActive)
+            </th>
+         @*   <th>
+                @Html.DisplayNameFor(model => model.isDeleted)
             </th>*@
             <th></th>
         </tr>
@@ -60,8 +66,7 @@
             <td>
 @*                @Html.DisplayFor(modelItem => item.Logo)
 *@                <img src="~/images/formlogo/@item.Logo" width="50" height="50">
-
-            </td>
+           </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
@@ -72,26 +77,31 @@
                 @Html.DisplayFor(modelItem => item.Password)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.SubDomain)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.RequestDate)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.AproveDate)
             </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.DiscountneDate)
+            <td>
+                @Html.DisplayFor(modelItem => item.DiscontinueDate)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.isAproved)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.isActive)
+            </td>
+           @* <td>
+                @Html.DisplayFor(modelItem => item.isDeleted)
             </td>*@
             <td>
-                @Html.ActionLink("Edit", "Edit", new {  id=item.Id }) |
-                @Html.ActionLink("Details", "Details", new {  id=item.Id  }) |
-                @Html.ActionLink("Discontinue", "Discontinue", new {  id=item.Id  })
-                @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
-            </td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) 
+@*                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+*@            </td>
         </tr>
 }
     </tbody>
