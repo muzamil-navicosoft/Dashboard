@@ -94,7 +94,7 @@ else
                         @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
                         @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
 
-                        @Html.ActionLink("Approve", "Approve", new {  id=item.Id })
+                        <button type="button" class="btn btn-outline-info waves-effect">@Html.ActionLink("Approve", "Approve", new {  id=item.Id })</button>
                     </td>
                 </tr>
             }

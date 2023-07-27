@@ -95,9 +95,9 @@ namespace Dashboard.Controllers
                 result.AproveDate = DateTime.Now;
                 db.Update(result);
                 db.SaveChanges();
-                return RedirectToAction("UserInitForm");
+                return RedirectToAction("Clients");
             }
-            return RedirectToAction("UserInitForm");
+            return RedirectToAction("Clients");
         }
 
         [HttpGet]
