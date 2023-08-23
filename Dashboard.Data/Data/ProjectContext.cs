@@ -1,4 +1,4 @@
-﻿using Dashboard.Models;
+﻿using Dashboard.Models.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dashboard.Data

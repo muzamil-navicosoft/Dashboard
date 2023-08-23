@@ -1,4 +1,4 @@
-﻿namespace Dashboard.DTO
+﻿namespace Dashboard.Models.DTO
 {
     public class ClientsDto
     {
@@ -14,6 +14,6 @@
         public DateTime? DateOfAproval { get; set; }
         public DateTime? DateOfDiscontinue { get; set; }
         public string? Logo { get; set; }
-        public IFormFile? LogoImage { get; set; }
+        //public IFormFile? LogoImage { get; set; }
     }
 }

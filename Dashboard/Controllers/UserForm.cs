@@ -1,11 +1,10 @@
 ﻿using Dashboard.Data;
-using Dashboard.DTO;
-using Dashboard.Helper;
-using Dashboard.Models;
+using Dashboard.Models.DTO;
+using Dashboard.Utillities.Helper;
+using Dashboard.Models.Models;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Runtime.InteropServices;
 
 namespace Dashboard.Controllers
 {

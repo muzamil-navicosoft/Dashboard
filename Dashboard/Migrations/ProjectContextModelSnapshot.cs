@@ -22,7 +22,7 @@ namespace Dashboard.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Dashboard.Models.ClientForm", b =>
+            modelBuilder.Entity("Dashboard.Models.Models.ClientForm", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

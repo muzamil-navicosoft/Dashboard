@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Http;
 
-namespace Dashboard.Helper
+namespace Dashboard.Utillities.Helper
 {
     public class CreateImage : ICreateImage
     {

@@ -1,4 +1,4 @@
-﻿using Dashboard.Models;
+﻿using Dashboard.Models.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Dashboard.Models
+namespace Dashboard.Models.Models
 {
     public class ClientForm
     {
