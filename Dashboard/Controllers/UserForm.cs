@@ -5,18 +5,19 @@ using Dashboard.Models.Models;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Dashboard.DataAccess.UnitOfWork;
 
 namespace Dashboard.Controllers
 {
     public class UserForm : Controller
     {
-        private readonly ProjectContext db;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment webHost;
         private readonly ICreateImage image;
 
-        public UserForm(ProjectContext db, IWebHostEnvironment webHost, ICreateImage image)
+        public UserForm(IUnitOfWork unitOfWork, IWebHostEnvironment webHost, ICreateImage image)
         {
-            this.db = db;
+            this._unitOfWork = unitOfWork;
             this.webHost = webHost;
             this.image = image;
         }
@@ -24,20 +25,21 @@ namespace Dashboard.Controllers
 
         public async Task<IActionResult> Requests()
         {
-            var result = await db.ClientForm.Where(x => x.isActive && !x.isAproved).ToListAsync();
+            //var result = await db.ClientForm.Where(x => x.isActive && !x.isAproved).ToListAsync();
+            var result = await _unitOfWork.User.CustomeGetAll().Where(x => x.isActive && !x.isAproved).ToListAsync();
             var test = result.Adapt<IEnumerable<ClientFormDto>>();
             return View(test);
         }
 
         public async Task<IActionResult> Clients()
         {
-            var result = await db.ClientForm.Where(x => x.isActive && x.isAproved && !x.isDeleted).ToListAsync();
+            var result = await _unitOfWork.User.CustomeGetAll().Where(x => x.isActive && x.isAproved && !x.isDeleted).ToListAsync();
             var test = result.Adapt<IEnumerable<ClientFormDto>>();
             return View(test);
         }
         public async Task<IActionResult> DeactiveClients()
         {
-            var result = await db.ClientForm.Where(x => !x.isActive && x.isAproved && !x.isDeleted).ToListAsync();
+            var result = await _unitOfWork.User.CustomeGetAll().Where(x => !x.isActive && x.isAproved && !x.isDeleted).ToListAsync();
             var test = result.Adapt<IEnumerable<ClientFormDto>>();
             return View(test);
         }
@@ -64,8 +66,8 @@ namespace Dashboard.Controllers
                     }
 
                     var form = obj.Adapt<ClientForm>();
-                    await db.ClientForm.AddAsync(form);
-                    db.SaveChanges();
+                    _unitOfWork.User.Add(form);
+                    _unitOfWork.Save();
                     ViewBag.success = "Form Submitied Successfully";
                     ModelState.Clear();
                     return View();
@@ -87,13 +89,13 @@ namespace Dashboard.Controllers
         [HttpGet]
         public async Task<IActionResult> Approve(int id)
         {
-            var result = await db.ClientForm.FindAsync(id);
+            var result =  _unitOfWork.User.Get(id);
             if (result != null)
             {
                 result.isAproved = true;
                 result.AproveDate = DateTime.Now;
-                db.Update(result);
-                db.SaveChanges();
+                _unitOfWork.User.update(result);
+                _unitOfWork.Save();
                 return RedirectToAction("Clients");
             }
             return RedirectToAction("Clients");
@@ -102,13 +104,13 @@ namespace Dashboard.Controllers
         [HttpGet]
         public async Task<IActionResult> Discontinue(int id)
         {
-            var result = await db.ClientForm.FindAsync(id);
+            var result =  _unitOfWork.User.Get(id);
             if (result != null)
             {
                 result.isActive = false;
                 result.DiscontinueDate = DateTime.Now;
-                db.Update(result);
-                db.SaveChanges();
+                _unitOfWork.User.update(result);
+                _unitOfWork.Save();
                 return RedirectToAction("UserInitForm");
             }
             return RedirectToAction("UserInitForm");
@@ -118,7 +120,7 @@ namespace Dashboard.Controllers
         {
             try
             {
-                var result = await db.ClientForm.FindAsync(id);
+                var result =  _unitOfWork.User.Get(id);
                 if (result != null)
                 {
                     var test = result.Adapt<ClientFormDto>();
@@ -142,8 +144,8 @@ namespace Dashboard.Controllers
         {
             try
             {
-                var result = await db.ClientForm.FindAsync(id);
-                await db.DisposeAsync();
+                var result =  _unitOfWork.User.Get(id);
+                
                 if (result != null)
                 {
                     var test = result.Adapt<ClientFormDto>();
@@ -167,14 +169,14 @@ namespace Dashboard.Controllers
         {
             try
             {
-                var result =  await db.ClientForm.AsNoTracking().FirstOrDefaultAsync(x => x.Id == obj.Id);
+                var result =  await _unitOfWork.User.CustomeGetAll().AsNoTracking().FirstOrDefaultAsync(x => x.Id == obj.Id);
                 if (result != null)
                 {
                     result = obj.Adapt<ClientForm>();
                    // db.ClientForm.Attach(result);
-                    db.Update(result);
-                    db.SaveChanges();
-                    await db.DisposeAsync();
+                    _unitOfWork.User.update(result);
+                    _unitOfWork.Save();
+                    
                     return RedirectToAction("Clients");
                 }
                 else
