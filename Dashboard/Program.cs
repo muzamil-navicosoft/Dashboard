@@ -1,5 +1,6 @@
 using Dashboard.Data;
 using Dashboard.DataAccess.UnitOfWork;
+using Dashboard.Mapping;
 using Dashboard.Utillities.Helper;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +17,8 @@ builder.Services.AddDbContext<ProjectContext>( options =>
 
 builder.Services.AddScoped<ICreateImage, CreateImage>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IHelper, Helper>();
+
 
 var app = builder.Build();
 

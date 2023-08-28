@@ -25,7 +25,6 @@ namespace Dashboard.Controllers
 
         public async Task<IActionResult> Requests()
         {
-            //var result = await db.ClientForm.Where(x => x.isActive && !x.isAproved).ToListAsync();
             var result = await _unitOfWork.User.CustomeGetAll().Where(x => x.isActive && !x.isAproved).ToListAsync();
             var test = result.Adapt<IEnumerable<ClientFormDto>>();
             return View(test);

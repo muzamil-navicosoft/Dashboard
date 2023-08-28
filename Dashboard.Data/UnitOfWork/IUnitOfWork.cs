@@ -10,6 +10,7 @@ namespace Dashboard.DataAccess.UnitOfWork
     public interface IUnitOfWork 
     {
         IUserRepository User { get; }
+        ITicketRepository ticket { get; }
         void Save();
     }
 }

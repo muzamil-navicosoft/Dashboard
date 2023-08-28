@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Dashboard.DataAccess.Repo.IRepository
 {
-    public interface IUserRepository : IRepository<ClientForm>
+    public interface ITicketRepository : IRepository<Ticket>
     {
-        void update(ClientForm obj);
-
+        void update (Ticket obj);
     }
 }

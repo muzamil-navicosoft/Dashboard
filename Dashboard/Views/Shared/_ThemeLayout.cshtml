@@ -414,11 +414,33 @@
         <div class="shadow-bottom"></div>
         <div class="main-menu-content">
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+
+
+
                 <li class=" nav-item">
                     <a class="d-flex align-items-center" href="index.html"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboards">Dashboards</span></a>
                 </li>
                 <li class=" navigation-header">
                     <span data-i18n="Apps &amp; Pages">Apps &amp; Pages</span><i data-feather="more-horizontal"></i>
+                </li>
+
+                <li class=" nav-item">
+                    <a class="d-flex align-items-center" href="#"><i data-feather="shield"></i><span class="menu-title text-truncate" data-i18n="Roles &amp; Permission">Ticket</span></a>
+                    <ul class="menu-content">
+                        <li>
+                            <a class="d-flex align-items-center" asp-controller="Ticket" asp-action="Index"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Roles">Open Tickets</span></a>
+                        </li>
+                        <li>
+                            <a class="d-flex align-items-center" asp-controller="Ticket" asp-action="Closed"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Permission">Closed Tickets</span></a>
+                        </li>
+                        <li>
+                            <a class="d-flex align-items-center" asp-controller="Ticket" asp-action="add"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Permission">Add Ticket</span></a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class=" nav-item">
+                    <a class="d-flex align-items-center" asp-controller="UserForm" asp-action="UserInitForm"><i data-feather="users"></i><span class="menu-title text-truncate" data-i18n="Email"> Add Clients </span></a>
                 </li>
                 <li class=" nav-item">
                     <a class="d-flex align-items-center" asp-controller="UserForm" asp-action="Clients"><i data-feather="users"></i><span class="menu-title text-truncate" data-i18n="Email"> Active Clients </span></a>
@@ -464,6 +486,8 @@
                         </li>
                     </ul>
                 </li>
+
+                
 
             </ul>
         </div>

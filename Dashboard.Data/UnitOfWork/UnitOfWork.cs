@@ -13,11 +13,13 @@ namespace Dashboard.DataAccess.UnitOfWork
     public class UnitOfWork : IUnitOfWork
     {
         public IUserRepository User { get; private set; }
+        public ITicketRepository ticket { get; private set; }
         private readonly ProjectContext _projectContext;
         public UnitOfWork(ProjectContext projectContext)
         {
             _projectContext = projectContext;
             User = new UserRepository(projectContext);
+            ticket = new TicketRepository(projectContext);
         }
         public void Save()
         {
