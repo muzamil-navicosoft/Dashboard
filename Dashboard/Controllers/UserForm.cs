@@ -32,9 +32,18 @@ namespace Dashboard.Controllers
 
         public async Task<IActionResult> Clients()
         {
-            var result = await _unitOfWork.User.CustomeGetAll().Where(x => x.isActive && x.isAproved && !x.isDeleted).ToListAsync();
-            var test = result.Adapt<IEnumerable<ClientFormDto>>();
-            return View(test);
+            try
+            {
+                var result = await _unitOfWork.User.CustomeGetAll().Include(x => x.Tickets).AsNoTracking().Where(x => x.isActive && x.isAproved && !x.isDeleted).ToListAsync();
+                var test = result.Adapt<IEnumerable<ClientFormDto>>();
+                return View(test);
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+           
         }
         public async Task<IActionResult> DeactiveClients()
         {
@@ -119,7 +128,8 @@ namespace Dashboard.Controllers
         {
             try
             {
-                var result =  _unitOfWork.User.Get(id);
+                var result = _unitOfWork.User.CustomeGetAll().Include(x => x.Tickets).AsNoTracking().Where(x => x.Id == id).FirstOrDefault();
+                //var result =  _unitOfWork.User.Get(id);
                 if (result != null)
                 {
                     var test = result.Adapt<ClientFormDto>();

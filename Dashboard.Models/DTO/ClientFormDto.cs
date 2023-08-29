@@ -33,5 +33,6 @@ namespace Dashboard.Models.DTO
         public bool isAproved { get; set; } = false;
         public bool isActive { get; set; } = true;
         public bool isDeleted { get; set; } = false;
+        public List<TicketDto> Tickets { get; set; }
     }
 }

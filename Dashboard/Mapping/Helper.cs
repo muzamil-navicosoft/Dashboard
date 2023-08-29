@@ -11,6 +11,9 @@ namespace Dashboard.Mapping
         {
             TypeAdapterConfig<Ticket, TicketDto>.NewConfig()
                 .Map(dest => dest.Email, src => src.ClientForm.Email);
+
+            TypeAdapterConfig<ClientForm, ClientFormDto>.NewConfig()
+                .Map(dest => dest.Tickets, src => src.Tickets.Adapt<List<Ticket>>());
         }
     }
 }

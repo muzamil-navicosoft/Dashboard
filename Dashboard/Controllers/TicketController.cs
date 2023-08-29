@@ -71,18 +71,58 @@ namespace Dashboard.Controllers
             var test = result.Adapt<IEnumerable<TicketDto>>();
             return View(test);
         }
-        public IActionResult Resolve(int id)
+
+        [HttpGet]
+        public async Task<IActionResult> Resolve(int id)
         {
-            var result = _unitOfWork.ticket.Get(id);
+            try
+            {
+                var result = _unitOfWork.ticket.CustomeGetAll().Include(x => x.ClientForm).AsNoTracking().Where(x => x.Id == id).FirstOrDefault();
+
+                if (result != null)
+                {
+                    
+                    var test = result.Adapt<TicketDto>();
+                    return View(test);
+                }
+                else
+                {
+                    ViewBag.NotFound = "Record you are looking for doesnot Exist or Removed from System";
+                    return View();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> Resolve(TicketDto obj)
+        {
+            //var result = _unitOfWork.ticket.Get(id);
+            var result = await _unitOfWork.ticket.CustomeGetAll().Include(x => x.ClientForm).AsNoTracking().FirstOrDefaultAsync(x => x.Id == obj.Id);
             if (result != null)
             {
                 result.IsActive = false;
                 result.DateReolved = DateTime.Now;
+                result.Resolution = obj.Resolution;
+                //obj.IsActive = false;
+                //obj.DateReolved = DateTime.Now;
+                //result = obj.Adapt<Ticket>();
                 _unitOfWork.ticket.update(result);
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
             }
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ClientTicket(int id)
+        {
+            var result = _unitOfWork.ticket.CustomeGetAll().Include(x => x.ClientForm).Where( x => x.ClientFormId == 5).ToList();
+            var test = result.Adapt<IEnumerable<TicketDto>>();
+            return View(test);
         }
 
 

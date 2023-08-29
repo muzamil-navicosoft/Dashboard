@@ -16,7 +16,7 @@ namespace Dashboard.Models.Models
         public DateTime? DiscontinueDate { get; set; }
         public bool isAproved { get; set; } 
         public bool isActive { get; set; } 
-        public bool isDeleted { get; set; } 
-
+        public bool isDeleted { get; set; }
+        public ICollection<Ticket> Tickets { get; set; }
     }
 }
