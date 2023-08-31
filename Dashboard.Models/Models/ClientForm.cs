@@ -18,5 +18,6 @@ namespace Dashboard.Models.Models
         public bool isActive { get; set; } 
         public bool isDeleted { get; set; }
         public ICollection<Ticket> Tickets { get; set; }
+        public ICollection<BillingInfo> BillingInfos { get; set; }
     }
 }

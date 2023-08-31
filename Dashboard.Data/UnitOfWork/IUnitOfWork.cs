@@ -11,6 +11,7 @@ namespace Dashboard.DataAccess.UnitOfWork
     {
         IUserRepository User { get; }
         ITicketRepository ticket { get; }
+        IBillingRepository billing { get; }
         void Save();
     }
 }
