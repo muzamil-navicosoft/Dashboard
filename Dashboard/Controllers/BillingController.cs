@@ -28,40 +28,44 @@ namespace Dashboard.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Add(TicketDto obj)
+        public IActionResult Add(BillingInfoDto obj)
         {
            
             try
             {
                 if (ModelState.IsValid)
                 {
-
-
-                    var result = obj.Adapt<Ticket>();
-                    
-                    _unitOfWork.ticket.Add(result);
+                    var result = obj.Adapt<BillingInfo>();       
+                    if( result.IsPaid)
+                    {
+                        result.PaidDate = DateTime.Now;
+                    }
+                    _unitOfWork.billing.Add(result);
                     _unitOfWork.Save();
                     ViewBag.success = "Form Submitied Successfully";
                     ModelState.Clear();
+                    var user = _unitOfWork.User.GetAll();
+                    ViewBag.Subdomain = new SelectList(user, "Id", "Email");
                     return View();
                 }
                 else
                 {
                     ModelState.AddModelError("", "Something Went Rong");
+                    var user = _unitOfWork.User.GetAll();
+                    ViewBag.Subdomain = new SelectList(user, "Id", "Email");
                     return View();
                 }
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
         public IActionResult Index()
         {
-            //var result =  _unitOfWork.ticket.GetAll();
-            var result = _unitOfWork.ticket.CustomeGetAll().Include(x => x.ClientForm).Where(x => x.IsActive);
-            var test = result.Adapt<IEnumerable<TicketDto>>();
+            var result =  _unitOfWork.billing.GetAll();
+            //var result = _unitOfWork.ticket.CustomeGetAll().Include(x => x.ClientForm).Where(x => x.IsActive);
+            var test = result.Adapt<IEnumerable<BillingInfoDto>>();
             return View(test);
         }
         public IActionResult Closed()

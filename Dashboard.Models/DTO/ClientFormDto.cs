@@ -34,6 +34,8 @@ namespace Dashboard.Models.DTO
         public bool isActive { get; set; } = true;
         public bool isDeleted { get; set; } = false;
         public List<TicketDto>? Tickets { get; set; }
-        public List<BillingInfoDto>? BillingInfoDtos { get; set; }
+        public List<BillingInfoDto>? BillingInfos { get; set; }
+        public double? OneTimeBill { get; set; }
+
     }
 }

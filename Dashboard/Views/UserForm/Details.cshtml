@@ -92,6 +92,63 @@ else
         </dl>
     </div>
 
+    if (Model.BillingInfos != null && Model.BillingInfos.Count > 0)
+    {
+        <hr />
+        <h2> Related Billis </h2>
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Id
+                        </th>
+                        <th>
+                            Amount
+                        </th>
+                        <th>
+                            Payment Date
+                        </th>
+                        <th>
+                            Payment Status
+                        </th>
+                        <th>
+                            Email
+                        </th>
+                        <th>
+                            Billing Month
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.BillingInfos)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Amount) $ 
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PaidDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IsPaid)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Month)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
     <hr />
     <h2> Related Tickets </h2>
     <div>

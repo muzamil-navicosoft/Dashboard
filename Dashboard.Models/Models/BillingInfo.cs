@@ -11,7 +11,9 @@ namespace Dashboard.Models.Models
         public int Id { get; set; }
         public double Amount { get; set; }
         public bool IsPaid { get; set; }
-
+        public string Month { get; set; } = string.Empty;
+        //public short Year { get; set; }
+        public DateTime? PaidDate { get; set; }
         public int? ClientFormId { get; set; }
         public ClientForm? ClientForm { get; set; }
     }

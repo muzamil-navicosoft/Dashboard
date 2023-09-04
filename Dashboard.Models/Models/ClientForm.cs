@@ -19,5 +19,7 @@ namespace Dashboard.Models.Models
         public bool isDeleted { get; set; }
         public ICollection<Ticket> Tickets { get; set; }
         public ICollection<BillingInfo> BillingInfos { get; set; }
+
+        public double? OneTimeBill { get; set; }
     }
 }
