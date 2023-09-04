@@ -150,6 +150,7 @@ namespace Dashboard.Controllers
                 var result = _unitOfWork.User.CustomeGetAll()
                              .Include(t => t.Tickets)
                              .Include(b => b.BillingInfos)
+                             .AsSplitQuery()
                              .AsNoTracking()
                              .Where(x => x.Id == id).FirstOrDefault();
                 //var result =  _unitOfWork.User.Get(id);

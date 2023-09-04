@@ -134,7 +134,16 @@ else
                                 @Html.DisplayFor(modelItem => item.PaidDate)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.IsPaid)
+@*                                 @Html.DisplayFor(modelItem => item.IsPaid)
+ *@         
+                            
+                                @if (item.IsPaid)
+                                {
+                                    @Html.DisplayName("Paid")
+                                }else
+                                {
+                                    @Html.DisplayName("UnPaid")
+                                }
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Email)
