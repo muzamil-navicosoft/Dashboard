@@ -7,6 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Dashboard.DataAccess.UnitOfWork;
 using Dashboard.Mapping;
+using Microsoft.Data.SqlClient;
+
+using System.IO;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Text;
 
 namespace Dashboard.Controllers
 {
@@ -15,15 +20,21 @@ namespace Dashboard.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment webHost;
         private readonly ICreateImage image;
+        private readonly IConfiguration configuration;
 
         public IHelper Helper { get; }
 
-        public UserForm(IUnitOfWork unitOfWork, IWebHostEnvironment webHost, ICreateImage image, IHelper helper)
+        public UserForm(IUnitOfWork unitOfWork, 
+                        IWebHostEnvironment webHost, 
+                        ICreateImage image, 
+                        IHelper helper,
+                        IConfiguration configuration)
         {
             this._unitOfWork = unitOfWork;
             this.webHost = webHost;
             this.image = image;
             Helper = helper;
+            this.configuration = configuration;
             Helper.ConfigureMapster();
         }
 
@@ -121,6 +132,60 @@ namespace Dashboard.Controllers
             {
                 result.isAproved = true;
                 result.AproveDate = DateTime.Now;
+                //var server = configuration.GetSection("Database:server").Value;
+                var dbName = result.Name.Split(' ')[0];
+                var NewDb = configuration.GetSection("Database:Newconnection").Value;
+                SqlConnection Newconnection = new SqlConnection(NewDb);
+                Newconnection.Open();
+
+                SqlCommand command = new SqlCommand("CREATE DATABASE " + dbName, Newconnection);
+                command.ExecuteNonQuery();
+
+                string scriptFilePath = Path.Combine(webHost.WebRootPath.ToString(),"Tables.sql");
+              
+
+                string script = System.IO.File.ReadAllText(scriptFilePath);
+
+                var dbServer = configuration.GetSection("Database:DbServer").Value;
+                var dbUser = configuration.GetSection("Database:DbUser").Value;
+                var dbPassword = configuration.GetSection("Database:DbPassword").Value;
+                var dbCertificate = configuration.GetSection("Database:Dbcertificate").Value;
+
+                StringBuilder conStr = new StringBuilder();
+                
+                conStr.Append("Server =");
+                conStr.Append(dbServer);
+                conStr.Append(";Database =");
+                conStr.Append(dbName);
+                conStr.Append(";User Id =");
+                conStr.Append(dbUser);
+                conStr.Append(";Password =");
+                conStr.Append(dbPassword);
+                conStr.Append(";TrustServerCertificate =");
+                conStr.Append(dbCertificate);
+
+                var newConStr =  conStr.ToString();
+
+                
+                // Create a command and execute each SQL statement
+                string[] sqlStatements = script.Split(new[] { "GO\r\n", "GO ", "GO\t" }, StringSplitOptions.RemoveEmptyEntries);
+                using (var cmd = new SqlCommand())
+                {
+                    SqlConnection NewDBconnection = new SqlConnection(newConStr);
+                    NewDBconnection.Open();
+                    cmd.Connection = NewDBconnection;
+
+                    foreach (var sqlStatement in sqlStatements)
+                    {
+                        cmd.CommandText = sqlStatement;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                Newconnection.Close();
+
+
+
                 _unitOfWork.User.update(result);
                 _unitOfWork.Save();
                 return RedirectToAction("Clients");
