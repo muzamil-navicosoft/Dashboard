@@ -2,6 +2,7 @@ using Dashboard.Data;
 using Dashboard.DataAccess.UnitOfWork;
 using Dashboard.Mapping;
 using Dashboard.Utillities.Helper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,10 @@ builder.Services.AddDbContext<ProjectContext>( options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("connection"));
 });
 
+// for Configring Identity 
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+   .AddEntityFrameworkStores<ProjectContext>();
 
 builder.Services.AddScoped<ICreateImage, CreateImage>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -34,6 +39,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+// for Configring Identity 
+app.UseAuthentication();
 
 app.UseAuthorization();
 

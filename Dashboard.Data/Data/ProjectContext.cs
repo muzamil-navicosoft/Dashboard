@@ -1,9 +1,11 @@
 ﻿using Dashboard.Models.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dashboard.Data
 {
-    public class ProjectContext : DbContext
+    public class ProjectContext : IdentityDbContext
     {
         public ProjectContext(DbContextOptions<ProjectContext> options) : base(options)
         {

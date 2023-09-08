@@ -87,7 +87,7 @@ namespace Dashboard.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> UserInitForm(ClientFormDto obj)
+        public IActionResult UserInitForm(ClientFormDto obj)
         {
             try
             {
@@ -125,7 +125,7 @@ namespace Dashboard.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Approve(int id)
+        public IActionResult Approve(int id)
         {
             var result =  _unitOfWork.User.Get(id);
             if (result != null)
@@ -194,7 +194,7 @@ namespace Dashboard.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Discontinue(int id)
+        public IActionResult Discontinue(int id)
         {
             var result =  _unitOfWork.User.Get(id);
             if (result != null)
@@ -208,7 +208,7 @@ namespace Dashboard.Controllers
             return RedirectToAction("UserInitForm");
         }
         [HttpGet]
-        public async Task<IActionResult> Details(int id)
+        public IActionResult Details(int id)
         {
             try
             {
@@ -238,7 +238,7 @@ namespace Dashboard.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit (int id)
+        public IActionResult Edit (int id)
         {
             try
             {
