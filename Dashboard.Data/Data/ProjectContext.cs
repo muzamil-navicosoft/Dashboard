@@ -1,4 +1,5 @@
-﻿using Dashboard.Models.Models;
+﻿using Dashboard.Models.DTO;
+using Dashboard.Models.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

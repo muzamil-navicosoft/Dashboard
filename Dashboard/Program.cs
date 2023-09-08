@@ -1,4 +1,6 @@
 using Dashboard.Data;
+using Dashboard.DataAccess.Repo;
+using Dashboard.DataAccess.Repo.IRepository;
 using Dashboard.DataAccess.UnitOfWork;
 using Dashboard.Mapping;
 using Dashboard.Utillities.Helper;
@@ -23,6 +25,8 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
 builder.Services.AddScoped<ICreateImage, CreateImage>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IHelper, Helper>();
+builder.Services.AddScoped<IOathRepo, OathRepo>();
+
 
 
 var app = builder.Build();
