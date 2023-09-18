@@ -1,5 +1,4 @@
-﻿using Dashboard.Data;
-using Dashboard.Models.DTO;
+﻿using Dashboard.Models.DTO;
 using Dashboard.Utillities.Helper;
 using Dashboard.Models.Models;
 using Mapster;
@@ -8,9 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using Dashboard.DataAccess.UnitOfWork;
 using Dashboard.Mapping;
 using Microsoft.Data.SqlClient;
-
-using System.IO;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text;
 
 namespace Dashboard.Controllers
@@ -125,7 +121,7 @@ namespace Dashboard.Controllers
         }
 
         [HttpGet]
-        public IActionResult Approve(int id)
+        public async Task<IActionResult> Approve(int id)
         {
             var result =  _unitOfWork.User.Get(id);
             if (result != null)
@@ -184,8 +180,11 @@ namespace Dashboard.Controllers
 
                 Newconnection.Close();
 
+                // Adding API call here 
+                var test = await GenralPurpose.SendPostRequestAsync();
 
-
+                var test2 = await GenralPurpose.SendPostSubDomainCreateRequestAsync(test, dbName);
+                Console.WriteLine(test2);
                 _unitOfWork.User.update(result);
                 _unitOfWork.Save();
                 return RedirectToAction("Clients");
