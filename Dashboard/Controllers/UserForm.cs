@@ -8,6 +8,7 @@ using Dashboard.DataAccess.UnitOfWork;
 using Dashboard.Mapping;
 using Microsoft.Data.SqlClient;
 using System.Text;
+using Dashboard.Utillities.Helper.Email;
 
 namespace Dashboard.Controllers
 {
@@ -17,6 +18,7 @@ namespace Dashboard.Controllers
         private readonly IWebHostEnvironment webHost;
         private readonly ICreateImage image;
         private readonly IConfiguration configuration;
+        private readonly IEmailService emailService;
 
         public IHelper Helper { get; }
 
@@ -24,13 +26,14 @@ namespace Dashboard.Controllers
                         IWebHostEnvironment webHost, 
                         ICreateImage image, 
                         IHelper helper,
-                        IConfiguration configuration)
+                        IConfiguration configuration,IEmailService emailService)
         {
             this._unitOfWork = unitOfWork;
             this.webHost = webHost;
             this.image = image;
             Helper = helper;
             this.configuration = configuration;
+            this.emailService = emailService;
             Helper.ConfigureMapster();
         }
 
@@ -184,6 +187,7 @@ namespace Dashboard.Controllers
                 var test = await GenralPurpose.SendPostRequestAsync();
 
                 var test2 = await GenralPurpose.SendPostSubDomainCreateRequestAsync(test, dbName);
+                emailService.SendEmail(result.Email, "Welcome to NavicoSoft", "WelCome Email");
                 Console.WriteLine(test2);
                 _unitOfWork.User.update(result);
                 _unitOfWork.Save();
