@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Dashboard.Models.Models
 {
@@ -19,6 +20,7 @@ namespace Dashboard.Models.Models
         public bool isDeleted { get; set; }
         public bool? isBilledMonthly { get; set; } 
         public ICollection<Ticket>? Tickets { get; set; }
+
         public ICollection<BillingInfo>? BillingInfos { get; set; }
         public double? OneTimeBill { get; set; }
     }

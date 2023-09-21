@@ -213,7 +213,10 @@ namespace Dashboard.Controllers
                 if (result.isBilledMonthly.Value == true)
                 {
                     var resultbill = billingTask(id);
-                    RecurringJob.AddOrUpdate(() => AddBill(resultbill), Cron.Monthly(resultbill.DueDate.Day));
+                    
+                    //RecurringJob.AddOrUpdate(() => AddBill(resultbill), Cron.MinuteInterval(5));
+                    RecurringJob.AddOrUpdate("add-bill-job", () => AddBill(resultbill), Cron.MinuteInterval(5));
+
                 }
 
 

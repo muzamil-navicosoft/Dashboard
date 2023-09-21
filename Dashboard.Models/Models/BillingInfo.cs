@@ -13,7 +13,7 @@ namespace Dashboard.Models.Models
         public bool IsPaid { get; set; }
         public string Month { get; set; } = string.Empty;
         public DateTime DueDate { get; set; }
-        //public short Year { get; set; }
+        
         public DateTime? PaidDate { get; set; }
         public int? ClientFormId { get; set; }
         public ClientForm? ClientForm { get; set; }

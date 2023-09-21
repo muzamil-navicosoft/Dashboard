@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Dashboard.Models.DTO
 {
@@ -35,6 +36,7 @@ namespace Dashboard.Models.DTO
         public bool isDeleted { get; set; } = false;
         public bool isBilledMonthly { get; set; } = false;
         public List<TicketDto>? Tickets { get; set; }
+
         public List<BillingInfoDto>? BillingInfos { get; set; }
         public double? OneTimeBill { get; set; }
 
