@@ -17,9 +17,9 @@ namespace Dashboard.Models.Models
         public bool isAproved { get; set; } 
         public bool isActive { get; set; } 
         public bool isDeleted { get; set; }
-        public ICollection<Ticket> Tickets { get; set; }
-        public ICollection<BillingInfo> BillingInfos { get; set; }
-
+        public bool? isBilledMonthly { get; set; } 
+        public ICollection<Ticket>? Tickets { get; set; }
+        public ICollection<BillingInfo>? BillingInfos { get; set; }
         public double? OneTimeBill { get; set; }
     }
 }

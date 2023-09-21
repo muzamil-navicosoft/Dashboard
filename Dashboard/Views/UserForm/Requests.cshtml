@@ -94,7 +94,8 @@ else
                         @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
                         @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
 
-                        <button type="button" class="btn btn-outline-info waves-effect">@Html.ActionLink("Approve", "Approve", new {  id=item.Id })</button>
+                        <button type="button" class="btn btn-outline-info waves-effect">@Html.ActionLink("Add Billing Details", "AddBill", "UserForm" , new {  id=item.Id })</button>
+                        <button type="button" class="btn btn-outline-info waves-effect">@Html.ActionLink("Approve", "Approve", "UserForm" , new {  id=item.Id })</button>
                     </td>
                 </tr>
             }

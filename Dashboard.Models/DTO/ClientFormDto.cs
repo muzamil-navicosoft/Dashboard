@@ -33,6 +33,7 @@ namespace Dashboard.Models.DTO
         public bool isAproved { get; set; } = false;
         public bool isActive { get; set; } = true;
         public bool isDeleted { get; set; } = false;
+        public bool isBilledMonthly { get; set; } = false;
         public List<TicketDto>? Tickets { get; set; }
         public List<BillingInfoDto>? BillingInfos { get; set; }
         public double? OneTimeBill { get; set; }

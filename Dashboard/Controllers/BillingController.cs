@@ -2,10 +2,12 @@
 using Dashboard.Mapping;
 using Dashboard.Models.DTO;
 using Dashboard.Models.Models;
+using Humanizer;
 using Mapster;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dashboard.Controllers
@@ -53,6 +55,37 @@ namespace Dashboard.Controllers
                     ModelState.AddModelError("", "Something Went Rong");
                     var user = _unitOfWork.User.GetAll();
                     ViewBag.Subdomain = new SelectList(user, "Id", "Email");
+                    return View();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        [HttpGet]
+        public IActionResult AddBill(int ClientFormId)
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult AddBill(BillingInfoDto obj)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var result = obj.Adapt<BillingInfo>();
+                    result.Month = result.DueDate.ToString("MMMM");
+                    _unitOfWork.billing.Add(result);
+                    _unitOfWork.Save();
+
+                    return View();
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Something Went Rong");
+                    
                     return View();
                 }
             }

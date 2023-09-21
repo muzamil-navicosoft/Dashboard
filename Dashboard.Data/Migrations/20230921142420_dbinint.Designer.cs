@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dashboard.DataAccess.Migrations
 {
     [DbContext(typeof(ProjectContext))]
-    [Migration("20230908164404_added_identityInApplication")]
-    partial class added_identityInApplication
+    [Migration("20230921142420_dbinint")]
+    partial class dbinint
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,6 +38,9 @@ namespace Dashboard.DataAccess.Migrations
 
                     b.Property<int?>("ClientFormId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("IsPaid")
                         .HasColumnType("bit");
@@ -101,6 +104,9 @@ namespace Dashboard.DataAccess.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool>("isAproved")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("isBilledMonthly")
                         .HasColumnType("bit");
 
                     b.Property<bool>("isDeleted")

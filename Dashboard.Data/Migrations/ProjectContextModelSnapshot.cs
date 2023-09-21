@@ -36,6 +36,9 @@ namespace Dashboard.DataAccess.Migrations
                     b.Property<int?>("ClientFormId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("IsPaid")
                         .HasColumnType("bit");
 
@@ -98,6 +101,9 @@ namespace Dashboard.DataAccess.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool>("isAproved")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("isBilledMonthly")
                         .HasColumnType("bit");
 
                     b.Property<bool>("isDeleted")

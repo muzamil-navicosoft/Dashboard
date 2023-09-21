@@ -9,6 +9,7 @@ using Dashboard.Mapping;
 using Microsoft.Data.SqlClient;
 using System.Text;
 using Dashboard.Utillities.Helper.Email;
+using Hangfire;
 
 namespace Dashboard.Controllers
 {
@@ -37,7 +38,7 @@ namespace Dashboard.Controllers
             Helper.ConfigureMapster();
         }
 
-
+        [HttpGet]
         public async Task<IActionResult> Requests()
         {
             var result = await _unitOfWork.User
@@ -49,6 +50,7 @@ namespace Dashboard.Controllers
             return View(test);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Clients()
         {
             try
@@ -70,6 +72,8 @@ namespace Dashboard.Controllers
             }
            
         }
+
+        [HttpGet]
         public async Task<IActionResult> DeactiveClients()
         {
             var result = await _unitOfWork.User
@@ -80,11 +84,13 @@ namespace Dashboard.Controllers
             var test = result.Adapt<IEnumerable<ClientFormDto>>();
             return View(test);
         }
+
         [HttpGet]
         public IActionResult UserInitForm()
         {
             return View();
         }
+
         [HttpPost]
         public IActionResult UserInitForm(ClientFormDto obj)
         {
@@ -124,9 +130,29 @@ namespace Dashboard.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> AddBill(int id)
+        {
+            var result = _unitOfWork.User.Get(id);
+            if (result != null)
+            {
+                var test = result.Adapt<ClientFormDto>();
+                return View(test);
+            }
+            else
+            {
+                ViewBag.NotFound = "Not Found "; 
+                return View();
+            }
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Approve(int id)
         {
             var result =  _unitOfWork.User.Get(id);
+           
+           // var testing = billingresult.DueDate.Day;
+
+
             if (result != null)
             {
                 result.isAproved = true;
@@ -182,6 +208,14 @@ namespace Dashboard.Controllers
                 }
 
                 Newconnection.Close();
+                // Adding Bill Scedulling 
+
+                if (result.isBilledMonthly.Value == true)
+                {
+                    var resultbill = billingTask(id);
+                    RecurringJob.AddOrUpdate(() => AddBill(resultbill), Cron.Monthly(resultbill.DueDate.Day));
+                }
+
 
                 // Adding API call here 
                 var test = await GenralPurpose.SendPostRequestAsync();
@@ -291,6 +325,22 @@ namespace Dashboard.Controllers
 
                 throw;
             }
+        }
+
+
+        private BillingInfo billingTask(int id)
+        {
+            var billingresult = _unitOfWork.billing.CustomeGetAll().Where(x => x.ClientFormId == id).FirstOrDefault();
+            
+            return billingresult;
+        }
+        public void AddBill(BillingInfo obj)
+        {
+            obj.DueDate = obj.DueDate.AddMonths(1);
+            obj.Month = obj.DueDate.ToString("MMMM");
+
+            _unitOfWork.billing.Add(obj);
+            _unitOfWork.Save();
         }
     }
 }

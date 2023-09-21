@@ -15,6 +15,8 @@ namespace Dashboard.Mapping
 
             TypeAdapterConfig<BillingInfo, BillingInfoDto>.NewConfig()
                 .Map(dest => dest.Email, src => src.ClientForm.Email);
+            
+
 
             //TypeAdapterConfig<ClientForm, ClientFormDto>.NewConfig()
             //    .Map(dest => dest.BillingInfoDtos, src => src.BillingInfos.Adapt<List<BillingInfo>>());

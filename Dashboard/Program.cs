@@ -71,7 +71,7 @@ app.UseHangfireDashboard();
 
 
 app.MapHangfireDashboard("/hanfire");
-RecurringJob.AddOrUpdate(() => Console.WriteLine("Hello World"), "* * * * *");
+//RecurringJob.AddOrUpdate(() => Console.WriteLine("Hello World"), "* * * * *");
 
 
 app.MapControllerRoute(
