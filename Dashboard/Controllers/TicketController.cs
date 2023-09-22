@@ -73,7 +73,7 @@ namespace Dashboard.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Resolve(int id)
+        public  IActionResult Resolve(int id)
         {
             try
             {

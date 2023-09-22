@@ -2,6 +2,7 @@ using Dashboard.Data;
 using Dashboard.DataAccess.Repo;
 using Dashboard.DataAccess.Repo.IRepository;
 using Dashboard.DataAccess.UnitOfWork;
+using Dashboard.Helpers;
 using Dashboard.Mapping;
 using Dashboard.Utillities.Helper;
 using Dashboard.Utillities.Helper.Email;
@@ -37,6 +38,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IHelper, Helper>();
 builder.Services.AddScoped<IOathRepo, OathRepo>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IGenrateBillMonthly, GenrateBillMonthly>();
 
 
 // Hanfire Client Configration
@@ -76,7 +78,8 @@ app.UseHangfireDashboard();
 
 
 app.MapHangfireDashboard("/hanfire");
-//RecurringJob.AddOrUpdate(() => Console.WriteLine("Hello World"), "* * * * *");
+RecurringJob.AddOrUpdate("Add monthly Billing",() => builder.Services.BuildServiceProvider()
+                                                    .GetRequiredService<IGenrateBillMonthly>().GerateBill() , Cron.MinuteInterval(10));
 
 
 app.MapControllerRoute(
