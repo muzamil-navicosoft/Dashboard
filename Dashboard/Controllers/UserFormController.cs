@@ -13,7 +13,7 @@ using Hangfire;
 
 namespace Dashboard.Controllers
 {
-    public class UserForm : Controller
+    public class UserFormController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment webHost;
@@ -23,7 +23,7 @@ namespace Dashboard.Controllers
 
         public IHelper Helper { get; }
 
-        public UserForm(IUnitOfWork unitOfWork, 
+        public UserFormController(IUnitOfWork unitOfWork, 
                         IWebHostEnvironment webHost, 
                         ICreateImage image, 
                         IHelper helper,
@@ -44,6 +44,7 @@ namespace Dashboard.Controllers
             var result = await _unitOfWork.User
                                 .CustomeGetAll()
                                 .Where(x => x.isActive && !x.isAproved)
+                                .AsNoTracking()
                                 .ToListAsync();
 
             var test = result.Adapt<IEnumerable<ClientFormDto>>();
@@ -132,7 +133,7 @@ namespace Dashboard.Controllers
         [HttpGet]
         public async Task<IActionResult> AddBill(int id)
         {
-            var result = _unitOfWork.User.Get(id);
+            var result = _unitOfWork.User.CustomeGetAll().Where(x => x.Id == id).AsNoTracking().FirstOrDefault();
             if (result != null)
             {
                 var test = result.Adapt<ClientFormDto>();
@@ -210,14 +211,14 @@ namespace Dashboard.Controllers
                 Newconnection.Close();
                 // Adding Bill Scedulling 
 
-                if (result.isBilledMonthly.Value == true)
-                {
-                    var resultbill = billingTask(id);
+                //if (result.isBilledMonthly.Value == true)
+                //{
+                //    var resultbill = billingTask(id);
                     
-                    //RecurringJob.AddOrUpdate(() => AddBill(resultbill), Cron.MinuteInterval(5));
-                    RecurringJob.AddOrUpdate("add-bill-job", () => AddBill(resultbill), Cron.MinuteInterval(5));
+                //    //RecurringJob.AddOrUpdate(() => AddBill(resultbill), Cron.MinuteInterval(5));
+                //    RecurringJob.AddOrUpdate("add-bill-job", () => AddBill(resultbill), Cron.MinuteInterval(5));
 
-                }
+                //}
 
 
                 // Adding API call here 
@@ -344,6 +345,19 @@ namespace Dashboard.Controllers
 
             _unitOfWork.billing.Add(obj);
             _unitOfWork.Save();
+        }
+
+        [HttpPost]
+        public void updateIsBilledMonthly(int id, bool billMonthly)
+        {
+            var result = _unitOfWork.User.CustomeGetAll().Where(x => x.Id == id).AsNoTracking().FirstOrDefault();
+            if(result != null)
+            {
+                var test = result.Adapt<ClientForm>();
+                test.isBilledMonthly = billMonthly;
+                _unitOfWork.User.update(test);
+                _unitOfWork.Save();
+            }
         }
     }
 }
