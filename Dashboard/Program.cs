@@ -79,7 +79,7 @@ app.UseHangfireDashboard();
 
 app.MapHangfireDashboard("/hanfire");
 RecurringJob.AddOrUpdate("Add monthly Billing",() => builder.Services.BuildServiceProvider()
-                                                    .GetRequiredService<IGenrateBillMonthly>().GerateBill() , Cron.MinuteInterval(10));
+                                                    .GetRequiredService<IGenrateBillMonthly>().GerateBill() , Cron.MinuteInterval(5));
 
 
 app.MapControllerRoute(
