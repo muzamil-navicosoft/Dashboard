@@ -25,4 +25,8 @@
     <ProjectReference Include="..\Dashboard.Utillities\Dashboard.Utillities.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
+  </ItemGroup>
+
 </Project>
