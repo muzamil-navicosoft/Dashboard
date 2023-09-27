@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dashboard.Data
 {
-    public class ProjectContext : IdentityDbContext
+    public class ProjectContext : IdentityDbContext<CustomeUser>
     {
         public ProjectContext(DbContextOptions<ProjectContext> options) : base(options)
         {

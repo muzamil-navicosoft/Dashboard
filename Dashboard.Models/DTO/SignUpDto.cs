@@ -19,17 +19,15 @@ namespace Dashboard.Models.DTO
         [Display(Name = "Last Name")]
         public string LastName { get; set; } = string.Empty;
 
-        [Display(Name = "Profile Image")]
-        public string ProfileImage { get; set; } = string.Empty;
-
         [Required(ErrorMessage = "Email Field is Required")]
         [Display(Name = "Email Address")]
         [DataType(DataType.EmailAddress)]
+        [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$", ErrorMessage = "This Email is not valid.")]
         public string Email { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Password is Required")]
         [Display(Name = "Password")]
-        [Compare("ConfirmPassword", ErrorMessage = "Password Doesnot Match")]
+        [Compare("ConfirmPassword", ErrorMessage = "Password Does Not Match")]
         [DataType(DataType.Password)]
         public string Password { get; set; } = string.Empty;
 

@@ -1,5 +1,6 @@
 ﻿using Dashboard.DataAccess.Repo.IRepository;
 using Dashboard.Models.DTO;
+using Dashboard.Models.Models;
 using Microsoft.AspNetCore.Identity;
 
 
@@ -8,20 +9,23 @@ namespace Dashboard.DataAccess.Repo
 
     public class OathRepo : IOathRepo
     {
-        private readonly UserManager<IdentityUser> userManager;
-        //private readonly SignInManager<IdentityUser> signInManager;
+        private readonly UserManager<CustomeUser> userManager;
+        private readonly SignInManager<CustomeUser> signInManager;
+
         //private readonly IGenralPurpose genralPurpose;
 
-        public OathRepo(UserManager<IdentityUser> userManager)
+        public OathRepo(UserManager<CustomeUser> userManager, SignInManager<CustomeUser> signInManager)
         {
             this.userManager = userManager;
-            //this.signInManager = signInManager;
+            this.signInManager = signInManager;
         }
 
         public async Task<IdentityResult> CreateUserAsync(SignUpDto obj)
         {
-            var user = new IdentityUser()
+            var user = new CustomeUser()
             {
+                FirstName = obj.FirstName,
+                LastName = obj.LastName,
                 Email = obj.Email,
                 UserName = obj.Email
             };
@@ -29,18 +33,18 @@ namespace Dashboard.DataAccess.Repo
             return result;
         }
 
-        //public async Task<SignInResult> LoginAsync(SignInDto obj)
-        //{
-        //    var result = await signInManager.PasswordSignInAsync(obj.Email, obj.Password, obj.RemaberMe, false);
-        //    return result;
-        //}
+        public async Task<SignInResult> LoginAsync(SignInDto obj)
+        {
+            var result = await signInManager.PasswordSignInAsync(obj.Email, obj.Password, obj.RemaberMe, false);
+            return result;
+        }
 
-        //public async Task logout()
-        //{
-        //    await signInManager.SignOutAsync();
-        //}
+        public async Task logout()
+        {
+            await signInManager.SignOutAsync();
+        }
 
-        
+
 
     }
 }

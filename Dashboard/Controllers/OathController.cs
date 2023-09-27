@@ -49,60 +49,60 @@ namespace Dashboard.Controllers
         {
             return View();
         }
-        //[Route("login")]
-        //[HttpPost]
-        //public async Task<IActionResult> Login(SignInDto obj, string ReturnUrl = "")
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var result = await oathRepo.LoginAsync(obj);
-        //        if (result.Succeeded)
-        //        {
-        //            if (!string.IsNullOrEmpty(ReturnUrl))
-        //            {
-        //                return LocalRedirect(ReturnUrl);
-        //            }
-        //            return RedirectToAction("Index", "Home");
-        //        }
-        //        else
-        //        {
-        //            ModelState.AddModelError("", "Invalid Crdentials");
-
-        //        }
-
-        //    }
-        //    return View();
-        //}
-
-        //public async Task<IActionResult> logout()
-        //{
-        //    await oathRepo.logout();
-        //    return RedirectToAction("index", "Home");
-        //}
-        public IActionResult changePassword()
+        [Route("login")]
+        [HttpPost]
+        public async Task<IActionResult> Login(SignInDto obj, string ReturnUrl = "")
         {
+            if (ModelState.IsValid)
+            {
+                var result = await oathRepo.LoginAsync(obj);
+                if (result.Succeeded)
+                {
+                    if (!string.IsNullOrEmpty(ReturnUrl))
+                    {
+                        return LocalRedirect(ReturnUrl);
+                    }
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Invalid Crdentials");
+
+                }
+
+            }
             return View();
         }
-        //[HttpPost]
-        //public async Task<IActionResult> changePassword(ChangePasswordDto obj)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var result = await oathRepo.ChnagePasswordAsync(obj);
-        //        if (result.Succeeded)
-        //        {
-        //            return RedirectToAction("Index", "Home");
-        //        }
-        //        else
-        //        {
-        //            foreach (var item in result.Errors)
-        //            {
-        //                ModelState.AddModelError("", item.Description);
-        //            }
-        //        }
-        //    }
 
-        //    return View(obj);
-        //}
+        public async Task<IActionResult> logout()
+        {
+            await oathRepo.logout();
+            return RedirectToAction("index", "Home");
+        }
+        //    public IActionResult changePassword()
+        //    {
+        //        return View();
+        //    }
+        //    //[HttpPost]
+        //    //public async Task<IActionResult> changePassword(ChangePasswordDto obj)
+        //    //{
+        //    //    if (ModelState.IsValid)
+        //    //    {
+        //    //        var result = await oathRepo.ChnagePasswordAsync(obj);
+        //    //        if (result.Succeeded)
+        //    //        {
+        //    //            return RedirectToAction("Index", "Home");
+        //    //        }
+        //    //        else
+        //    //        {
+        //    //            foreach (var item in result.Errors)
+        //    //            {
+        //    //                ModelState.AddModelError("", item.Description);
+        //    //            }
+        //    //        }
+        //    //    }
+
+        //    //    return View(obj);
+        //    //}
     }
 }

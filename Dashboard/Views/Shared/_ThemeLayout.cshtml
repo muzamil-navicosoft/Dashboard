@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject Microsoft.AspNetCore.Identity.SignInManager<CustomeUser> _signIn
+
+<!DOCTYPE html>
 <html class="loading dark-layout" lang="en" data-layout="dark-layout" data-textdirection="ltr">
 <!-- BEGIN: Head-->
 
@@ -423,6 +425,16 @@
                 <li class=" navigation-header">
                     <span data-i18n="Apps &amp; Pages">Apps &amp; Pages</span><i data-feather="more-horizontal"></i>
                 </li>
+                @if (_signIn.IsSignedIn(User))
+                {
+                    <li class=" navigation-header">
+                        @User.Identity.Name
+                    </li>
+                    <li>
+                        <button type="button" class="btn btn-outline-info waves-effect">@Html.ActionLink("Log Out", "logout", "Oath")</button>
+                    </li>                   
+                }
+                
 
                 <li class=" nav-item">
                     <a class="d-flex align-items-center" href="#"><i data-feather="tool"></i><span class="menu-title text-truncate" data-i18n="Roles &amp; Permission">Ticket</span></a>

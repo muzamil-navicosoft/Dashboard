@@ -4,6 +4,7 @@ using Dashboard.DataAccess.Repo.IRepository;
 using Dashboard.DataAccess.UnitOfWork;
 using Dashboard.Helpers;
 using Dashboard.Mapping;
+using Dashboard.Models.Models;
 using Dashboard.Utillities.Helper;
 using Dashboard.Utillities.Helper.Email;
 using Hangfire;
@@ -30,8 +31,10 @@ var hangfireConnection = builder.Configuration.GetConnectionString("hangfireconn
 
 // for Configring Identity 
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddIdentity<CustomeUser, IdentityRole>()
    .AddEntityFrameworkStores<ProjectContext>();
+
+// services
 
 builder.Services.AddScoped<ICreateImage, CreateImage>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

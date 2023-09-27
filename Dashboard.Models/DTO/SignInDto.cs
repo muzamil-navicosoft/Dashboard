@@ -11,6 +11,7 @@ namespace Dashboard.Models.DTO
     {
         [Required(ErrorMessage = "Email Field is required")]
         [DataType(DataType.EmailAddress)]
+        [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$", ErrorMessage = "This Email is not valid.")]
         [Display(Name = "Email")]
         public string Email { get; set; } = string.Empty;
 
