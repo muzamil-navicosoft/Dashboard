@@ -118,7 +118,7 @@ namespace Dashboard.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ClientTicket(int id)
+        public  IActionResult ClientTicket(int id)
         {
             var result = _unitOfWork.ticket.CustomeGetAll().Include(x => x.ClientForm).Where( x => x.ClientFormId == 5).ToList();
             var test = result.Adapt<IEnumerable<TicketDto>>();

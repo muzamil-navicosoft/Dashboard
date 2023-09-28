@@ -428,76 +428,82 @@
                 @if (_signIn.IsSignedIn(User))
                 {
                     <li class=" navigation-header">
-                        @User.Identity.Name
+                        @User.FindFirst("userFirstName")?.Value
                     </li>
                     <li>
                         <button type="button" class="btn btn-outline-info waves-effect">@Html.ActionLink("Log Out", "logout", "Oath")</button>
-                    </li>                   
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        <a class="btn btn-outline-primary" asp-controller="Oath" asp-action="login" asp-route-returnUrl="@Context.Request.Path">LogIn</a>
+
+@*                         <button type="button" class="btn btn-outline-info waves-effect">@Html.ActionLink("Log In", "login", "Oath")</button>
+ *@                    </li>
+                    
                 }
                 
+                @if (User.IsInRole("Admin"))
+                {
+                  
+                    <partial name="_EmployeePartialView" />
 
-                <li class=" nav-item">
-                    <a class="d-flex align-items-center" href="#"><i data-feather="tool"></i><span class="menu-title text-truncate" data-i18n="Roles &amp; Permission">Ticket</span></a>
-                    <ul class="menu-content">
-                        <li>
-                            <a class="d-flex align-items-center" asp-controller="Ticket" asp-action="Index"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Roles">Open Tickets</span></a>
-                        </li>
-                        <li>
-                            <a class="d-flex align-items-center" asp-controller="Ticket" asp-action="Closed"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Permission">Closed Tickets</span></a>
-                        </li>
-                        <li>
-                            <a class="d-flex align-items-center" asp-controller="Ticket" asp-action="add"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Permission">Add Ticket</span></a>
-                        </li>
-                    </ul>
-                </li>
+                    <li class=" nav-item">
+                        <a class="d-flex align-items-center" asp-controller="UserForm" asp-action="UserInitForm"><i data-feather="users"></i><span class="menu-title text-truncate" data-i18n="Email"> Add Clients </span></a>
+                    </li>
+                    <li class=" nav-item">
+                        <a class="d-flex align-items-center" asp-controller="UserForm" asp-action="Clients"><i data-feather="users"></i><span class="menu-title text-truncate" data-i18n="Email"> Active Clients </span></a>
+                    </li>
+                    <li class=" nav-item">
+                        <a class="d-flex align-items-center" asp-controller="UserForm" asp-action="Requests"><i data-feather="users"></i><span class="menu-title text-truncate" data-i18n="Chat"> New Client Request </span></a>
+                    </li>
+                    <li class=" nav-item">
+                        <a class="d-flex align-items-center" asp-controller="UserForm" asp-action="DeactiveClients"><i data-feather="users"></i><span class="menu-title text-truncate" data-i18n="Todo"> Deactive Clients </span></a>
+                    </li>
+                    <li class=" nav-item">
+                        <a class="d-flex align-items-center" href="app-calendar.html"><i data-feather="tool"></i><span class="menu-title text-truncate" data-i18n="Calendar"> Tickets </span></a>
+                    </li>
+                    <li class=" nav-item">
+                        <a class="d-flex align-items-center" href="app-kanban.html"><i data-feather="activity"></i><span class="menu-title text-truncate" data-i18n="Kanban"> SubDomains </span></a>
+                    </li>
+                    <li class=" nav-item">
+                        <a class="d-flex align-items-center" href="#"><i data-feather="file-text"></i><span class="menu-title text-truncate" data-i18n="Invoice"> Billing </span></a>
+                        <ul class="menu-content">
+                            <li>
+                                <a class="d-flex align-items-center" href="app-invoice-list.html"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">List</span></a>
+                            </li>
+                            <li>
+                                <a class="d-flex align-items-center" href="app-invoice-preview.html"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Preview">Preview</span></a>
+                            </li>
+                            <li>
+                                <a class="d-flex align-items-center" href="app-invoice-edit.html"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Edit">Edit</span></a>
+                            </li>
+                            <li>
+                                <a class="d-flex align-items-center" asp-controller="billing" asp-action="add"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Add">Add</span></a>
+                            </li>
+                        </ul>
+                    </li>
 
-                <li class=" nav-item">
-                    <a class="d-flex align-items-center" asp-controller="UserForm" asp-action="UserInitForm"><i data-feather="users"></i><span class="menu-title text-truncate" data-i18n="Email"> Add Clients </span></a>
-                </li>
-                <li class=" nav-item">
-                    <a class="d-flex align-items-center" asp-controller="UserForm" asp-action="Clients"><i data-feather="users"></i><span class="menu-title text-truncate" data-i18n="Email"> Active Clients </span></a>
-                </li>
-                <li class=" nav-item">
-                    <a class="d-flex align-items-center" asp-controller="UserForm" asp-action="Requests"><i data-feather="users"></i><span class="menu-title text-truncate" data-i18n="Chat"> New Client Request </span></a>
-                </li>
-                <li class=" nav-item">
-                    <a class="d-flex align-items-center" asp-controller="UserForm" asp-action="DeactiveClients"><i data-feather="users"></i><span class="menu-title text-truncate" data-i18n="Todo"> Deactive Clients </span></a>
-                </li>
-                <li class=" nav-item">
-                    <a class="d-flex align-items-center" href="app-calendar.html"><i data-feather="tool"></i><span class="menu-title text-truncate" data-i18n="Calendar"> Tickets </span></a>
-                </li>
-                <li class=" nav-item">
-                    <a class="d-flex align-items-center" href="app-kanban.html"><i data-feather="activity"></i><span class="menu-title text-truncate" data-i18n="Kanban"> SubDomains </span></a>
-                </li>
-                <li class=" nav-item">
-                    <a class="d-flex align-items-center" href="#"><i data-feather="file-text"></i><span class="menu-title text-truncate" data-i18n="Invoice"> Billing </span></a>
-                    <ul class="menu-content">
-                        <li>
-                            <a class="d-flex align-items-center" href="app-invoice-list.html"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">List</span></a>
-                        </li>
-                        <li>
-                            <a class="d-flex align-items-center" href="app-invoice-preview.html"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Preview">Preview</span></a>
-                        </li>
-                        <li>
-                            <a class="d-flex align-items-center" href="app-invoice-edit.html"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Edit">Edit</span></a>
-                        </li>
-                        <li>
-                            <a class="d-flex align-items-center" asp-controller="billing" asp-action="add"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Add">Add</span></a>
-                        </li>
-                    </ul>
-                </li>
+                    <li class=" nav-item">
+                        <a class="d-flex align-items-center" href="#"><i data-feather="shield"></i><span class="menu-title text-truncate" data-i18n="Roles &amp; Permission">User Management</span></a>
+                        <ul class="menu-content">
+                            <li>
+                                <a class="d-flex align-items-center" href="app-access-roles.html"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Roles">Roles</span></a>
+                            </li>
+                            <li>
+                                <a class="d-flex align-items-center" href="app-access-permission.html"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Permission">Permission</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                }
+                else if(User.IsInRole("Employee"))
+                {
+                    <partial name = "_EmployeePartialView" />
+                }
 
-                <li class=" nav-item">
-                    <a class="d-flex align-items-center" href="#"><i data-feather="shield"></i><span class="menu-title text-truncate" data-i18n="Roles &amp; Permission">User Management</span></a>
-                    <ul class="menu-content">
-                        <li>
-                            <a class="d-flex align-items-center" href="app-access-roles.html"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Roles">Roles</span></a>
-                        </li>
-                        <li>
-                            <a class="d-flex align-items-center" href="app-access-permission.html"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Permission">Permission</span></a>
-                        </li>
-                    </ul>
-                </li>
+
+            
 
                 
 

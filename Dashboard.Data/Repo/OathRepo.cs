@@ -44,7 +44,7 @@ namespace Dashboard.DataAccess.Repo
             await signInManager.SignOutAsync();
         }
 
-
+        
 
     }
 }

@@ -10,9 +10,11 @@ using Microsoft.Data.SqlClient;
 using System.Text;
 using Dashboard.Utillities.Helper.Email;
 using Hangfire;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Dashboard.Controllers
 {
+    //[Authorize(Roles = "Admin")]
     public class UserFormController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -133,7 +135,7 @@ namespace Dashboard.Controllers
         [HttpGet]
         public async Task<IActionResult> AddBill(int id)
         {
-            var result = _unitOfWork.User.CustomeGetAll().Where(x => x.Id == id).AsNoTracking().FirstOrDefault();
+            var result = await _unitOfWork.User.CustomeGetAll().Where(x => x.Id == id).AsNoTracking().FirstOrDefaultAsync();
             if (result != null)
             {
                 var test = result.Adapt<ClientFormDto>();
@@ -145,6 +147,25 @@ namespace Dashboard.Controllers
                 return View();
             }
         }
+        [HttpPost]
+        public IActionResult AddBill(ClientFormDto obj)
+        {
+            var result = _unitOfWork.User.CustomeGetAll().Where(x => x.Id == obj.Id).AsNoTracking().FirstOrDefault();
+            if (result != null)
+            {
+                result.OneTimeBill = obj.OneTimeBill;
+                _unitOfWork.User.update(result);
+                _unitOfWork.Save();
+                return RedirectToAction("Clients");
+            }
+            else
+            {
+                ViewBag.NotFound = "Not Found ";
+                return View();
+            }
+
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> Approve(int id)

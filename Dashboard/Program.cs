@@ -42,6 +42,8 @@ builder.Services.AddScoped<IHelper, Helper>();
 builder.Services.AddScoped<IOathRepo, OathRepo>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IGenrateBillMonthly, GenrateBillMonthly>();
+builder.Services.AddScoped<IUserClaimsPrincipalFactory<CustomeUser>, CustomeUserClaimsPrincepleFactory>();
+builder.Services.AddScoped<IUserService,UserService>();
 
 
 // Hanfire Client Configration
@@ -52,6 +54,13 @@ builder.Services.AddHangfire(config => config
     .UseRecommendedSerializerSettings()
     .UseSqlServerStorage(hangfireConnection)
     );
+
+// Login Path Defined
+
+builder.Services.ConfigureApplicationCookie(config =>
+{
+    config.LoginPath = "/login";
+});
 
 // Hangfire Server 
 
@@ -87,7 +96,8 @@ RecurringJob.AddOrUpdate("Add monthly Billing",() => builder.Services.BuildServi
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=UserForm}/{action=Clients}/{id?}");
+    //pattern: "{controller=UserForm}/{action=Clients}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 
 

@@ -1,9 +1,11 @@
 ﻿using Dashboard.DataAccess.Repo.IRepository;
 using Dashboard.Models.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dashboard.Controllers
 {
+    
     public class OathController : Controller
     {
         private readonly IOathRepo oathRepo;
@@ -79,30 +81,32 @@ namespace Dashboard.Controllers
             await oathRepo.logout();
             return RedirectToAction("index", "Home");
         }
-        //    public IActionResult changePassword()
+        [Route("Change-Password")]
+        [HttpGet]
+        public IActionResult changePassword()
+        {
+            return View();
+        }
+        //[HttpPost]
+        //public async Task<IActionResult> changePassword(ChangePasswordDto obj)
+        //{
+        //    if (ModelState.IsValid)
         //    {
-        //        return View();
+        //        //var result = await oathRepo.ChnagePasswordAsync(obj);
+        //        //if (result.Succeeded)
+        //        //{
+        //        //    return RedirectToAction("Index", "Home");
+        //        //}
+        //        //else
+        //        //{
+        //        //    foreach (var item in result.Errors)
+        //        //    {
+        //        //        ModelState.AddModelError("", item.Description);
+        //        //    }
+        //        //}
         //    }
-        //    //[HttpPost]
-        //    //public async Task<IActionResult> changePassword(ChangePasswordDto obj)
-        //    //{
-        //    //    if (ModelState.IsValid)
-        //    //    {
-        //    //        var result = await oathRepo.ChnagePasswordAsync(obj);
-        //    //        if (result.Succeeded)
-        //    //        {
-        //    //            return RedirectToAction("Index", "Home");
-        //    //        }
-        //    //        else
-        //    //        {
-        //    //            foreach (var item in result.Errors)
-        //    //            {
-        //    //                ModelState.AddModelError("", item.Description);
-        //    //            }
-        //    //        }
-        //    //    }
 
-        //    //    return View(obj);
-        //    //}
+        //    return View(obj);
+        //}
     }
 }

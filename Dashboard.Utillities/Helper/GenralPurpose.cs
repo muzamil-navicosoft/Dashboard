@@ -179,9 +179,9 @@ namespace Dashboard.Utillities.Helper
             string responseContent = await response.Content.ReadAsStringAsync();
             //var obj2 = new responseObj();
             var obj2 = JsonSerializer.Deserialize<ResponseObj>(responseContent);
-            if (obj2.code != 0)
+            if (obj2?.code != 0)
             {
-                Console.WriteLine("Error: " + obj2.stdout);
+                Console.WriteLine("Error: " + obj2?.stdout);
                 return string.Empty;
             }
             else
