@@ -2,7 +2,8 @@
 using Dashboard.Models.DTO;
 using Dashboard.Models.Models;
 using Microsoft.AspNetCore.Identity;
-
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dashboard.DataAccess.Repo
 {
@@ -11,15 +12,19 @@ namespace Dashboard.DataAccess.Repo
     {
         private readonly UserManager<CustomeUser> userManager;
         private readonly SignInManager<CustomeUser> signInManager;
+        private readonly RoleManager<IdentityRole> roleManager;
 
         //private readonly IGenralPurpose genralPurpose;
 
-        public OathRepo(UserManager<CustomeUser> userManager, SignInManager<CustomeUser> signInManager)
+        public OathRepo(UserManager<CustomeUser> userManager, SignInManager<CustomeUser> signInManager,
+                RoleManager<IdentityRole> roleManager)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.roleManager = roleManager;
         }
 
+        #region user
         public async Task<IdentityResult> CreateUserAsync(SignUpDto obj)
         {
             var user = new CustomeUser()
@@ -38,13 +43,81 @@ namespace Dashboard.DataAccess.Repo
             var result = await signInManager.PasswordSignInAsync(obj.Email, obj.Password, obj.RemaberMe, false);
             return result;
         }
+        public async Task<CustomeUser?> GetUser(string Id)
+        {
+            return await userManager.FindByIdAsync(Id);
+            
+        }
 
         public async Task logout()
         {
             await signInManager.SignOutAsync();
         }
 
-        
+        #endregion
+
+        #region Role
+        public async Task<IdentityResult> CreateRoleAsync(RoleDto obj)
+        {
+            //var result = new IdentityRole
+            //{
+              
+            //    Name = obj.Name,
+               
+            //};
+             return await roleManager.CreateAsync(new IdentityRole(obj.Name));
+            
+            
+     
+        }
+        public IList<IdentityRole> GetRoles()
+        {
+            return roleManager.Roles.ToList();
+        }
+
+        public async Task<IdentityResult> DeleteRole(string roleId)
+        {
+            var role = await roleManager.FindByIdAsync(roleId);
+            var result = await roleManager.DeleteAsync(role);
+            return result;        
+        }
+
+        #endregion
+
+        #region User Roles
+        public IList<CustomeUser> GetUsers()
+        {
+            var result =  userManager.Users.ToList();
+            
+            return result;
+        }
+        public async Task<IList<string>> GetUserRoles(string Id)
+        {
+            var result = await GetUser(Id);
+            if( result == null)
+            {
+                return new List<string>();
+            }
+            else
+            {
+                var result2 = await userManager.GetRolesAsync(result);
+                return result2;
+            }
+        }
+
+        public async Task<IdentityResult> AddUserInRole(string id, IList<string> role)
+        {
+            var result = await GetUser(id);
+            if( result != null )
+            {
+                return await userManager.AddToRolesAsync(result, role);
+
+            }else
+            {
+                return new IdentityResult();
+            }
+        }
+        #endregion
 
     }
 }

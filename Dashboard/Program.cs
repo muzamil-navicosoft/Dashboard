@@ -32,7 +32,7 @@ var hangfireConnection = builder.Configuration.GetConnectionString("hangfireconn
 // for Configring Identity 
 
 builder.Services.AddIdentity<CustomeUser, IdentityRole>()
-   .AddEntityFrameworkStores<ProjectContext>();
+   .AddEntityFrameworkStores<ProjectContext>().AddDefaultTokenProviders();
 
 // services
 

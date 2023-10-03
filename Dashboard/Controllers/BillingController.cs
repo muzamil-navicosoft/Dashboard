@@ -80,7 +80,7 @@ namespace Dashboard.Controllers
                     _unitOfWork.billing.Add(result);
                     _unitOfWork.Save();
 
-                    return View();
+                    return RedirectToAction("Requests", "UserForm");
                 }
                 else
                 {

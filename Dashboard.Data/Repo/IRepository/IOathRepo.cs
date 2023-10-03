@@ -13,7 +13,12 @@ namespace Dashboard.DataAccess.Repo.IRepository
     {
         Task<IdentityResult> CreateUserAsync(SignUpDto obj);
         Task<SignInResult> LoginAsync(SignInDto obj);
+        Task<CustomeUser?> GetUser(string Id);
         Task logout();
-        
+        Task<IdentityResult> CreateRoleAsync(RoleDto obj);
+        IList<IdentityRole> GetRoles();
+        Task<IdentityResult> DeleteRole(string roleId);
+        IList<CustomeUser> GetUsers();
+        Task<IList<string>> GetUserRoles(string Id);
     }
 }

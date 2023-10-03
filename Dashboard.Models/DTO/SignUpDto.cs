@@ -9,6 +9,7 @@ namespace Dashboard.Models.DTO
 {
     public class SignUpDto
     {
+        public string Id { get; set; } = string.Empty;
         [Required(ErrorMessage = "Kinldy Enter Your FirstName")]
         [MaxLength(50)]
         [Display(Name = "First Name")]

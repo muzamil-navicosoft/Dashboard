@@ -1,0 +1,22 @@
+﻿@model Dashboard.Models.DTO.AddToRoleDto
+
+<h4>AddToRoleDto</h4>
+<hr />
+
+
+@foreach (var role in Model.Roles)
+{
+    bool isChecked = Model.SelectedRoles.Contains(role);
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input" name="SelectedRoles" value="@role" id="@role" @(isChecked ? "checked" : "")>
+        <label class="form-check-label" for="@role">@role</label>
+    </div>
+}
+
+
+
+<button type="submit">Submit</button>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

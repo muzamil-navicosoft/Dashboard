@@ -1,6 +1,7 @@
 ﻿using Dashboard.Models.DTO;
 using Dashboard.Models.Models;
 using Mapster;
+using Microsoft.AspNetCore.Identity;
 
 namespace Dashboard.Mapping
 {
@@ -15,6 +16,7 @@ namespace Dashboard.Mapping
 
             TypeAdapterConfig<BillingInfo, BillingInfoDto>.NewConfig()
                 .Map(dest => dest.Email, src => src.ClientForm.Email);
+
             
 
 

@@ -79,7 +79,7 @@
   
             <div class="form-group" id="bill">
                 <label asp-for="OneTimeBill" class="control-label"></label>
-                <input asp-for="OneTimeBill" class="form-control" />
+                <input asp-for="OneTimeBill" id="OneTimeBill" class="form-control" />
                 <span asp-validation-for="OneTimeBill" class="text-danger"></span>
             </div>
             <div class="form-group" id="updateOneTimeBill">
@@ -105,10 +105,24 @@
         let id = @Model.Id;
         $(document).ready(function () 
         {
-            $("#bill").show();
-            $("#addMonthlyBill").hide();
-            $("#updateOneTimeBill").show();
-            $("#bill").val("");
+            if ($("#monthlyBill").prop('checked')) 
+            {
+                $("#bill").hide();
+                $("#bill").val("");
+                $("#addMonthlyBill").show();
+                $("#updateOneTimeBill").hide();
+
+            }
+            else 
+            {
+                $("#bill").show();
+                $("#bill").val("");
+                $("#addMonthlyBill").hide();
+                $("#updateOneTimeBill").show();
+                
+
+            }
+           
         })
 
         function showHide() {
@@ -140,6 +154,7 @@
                 $("#bill").show();
                 $("#addMonthlyBill").hide();
                 $("#updateOneTimeBill").show();
+         
                 $.ajax({
                     type: "POST",
                     // url: "~/UserForm/updateIsBilledMonthly",

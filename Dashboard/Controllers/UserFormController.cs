@@ -156,7 +156,7 @@ namespace Dashboard.Controllers
                 result.OneTimeBill = obj.OneTimeBill;
                 _unitOfWork.User.update(result);
                 _unitOfWork.Save();
-                return RedirectToAction("Clients");
+                return RedirectToAction("Requests");
             }
             else
             {
@@ -368,6 +368,7 @@ namespace Dashboard.Controllers
             _unitOfWork.Save();
         }
 
+        // Ajax Function for Check box
         [HttpPost]
         public void updateIsBilledMonthly(int id, bool billMonthly)
         {
@@ -375,6 +376,10 @@ namespace Dashboard.Controllers
             if(result != null)
             {
                 var test = result.Adapt<ClientForm>();
+                if( !billMonthly )
+                {
+                    test.OneTimeBill = null;
+                }
                 test.isBilledMonthly = billMonthly;
                 _unitOfWork.User.update(test);
                 _unitOfWork.Save();
