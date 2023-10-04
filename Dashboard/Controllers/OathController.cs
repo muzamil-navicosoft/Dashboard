@@ -207,15 +207,46 @@ namespace Dashboard.Controllers
 
             var allRoles =  oathRepo.GetRoles();
             var userRoles = await oathRepo.GetUserRoles(Id);
+
+
             var addToRoleDto = new AddToRoleDto
             {
                 Id = Id,
                 Roles = allRoles.Select(role => role.Name).ToList(),
-                SelectedRoles = userRoles.ToList()
+                SelectedRoles = userRoles.ToList(),
+                PrviouslySelectedRoles = userRoles.ToList()
             };
-
+            //TempData["PrviouslySelectedRoles"] = addToRoleDto.PrviouslySelectedRoles;
 
             return View(addToRoleDto);
+        }
+
+
+        [HttpPost]
+        [Route("AddtoRole")]
+        public async Task<IActionResult> AddtoRole(AddToRoleDto obj)
+        {
+            
+            //obj.PrviouslySelectedRoles = TempData["PrviouslySelectedRoles"] as List<string>;
+            if (ModelState.IsValid)
+            {
+                var remove = await oathRepo.RemoveUserRole(obj.Id, obj.PrviouslySelectedRoles);
+                var result = await oathRepo.AddUserInRole(obj.Id, obj.SelectedRoles);
+                if (!result.Succeeded)
+                {
+                    foreach (var item in result.Errors)
+                    {
+                        ModelState.AddModelError("", item.Description);
+                    }
+                    return View();
+                }
+                ModelState.Clear();
+                return RedirectToAction("UsersList");
+
+            }
+
+
+            return View();
         }
     }
 }

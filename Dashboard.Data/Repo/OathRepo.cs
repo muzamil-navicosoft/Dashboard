@@ -117,6 +117,20 @@ namespace Dashboard.DataAccess.Repo
                 return new IdentityResult();
             }
         }
+
+        public async Task<IdentityResult> RemoveUserRole(string id, IList<string> role)
+        {
+            var result = await GetUser(id);
+            if (result != null)
+            {
+                return await userManager.RemoveFromRolesAsync(result, role);
+
+            }
+            else
+            {
+                return new IdentityResult();
+            }
+        }
         #endregion
 
     }

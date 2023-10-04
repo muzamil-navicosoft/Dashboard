@@ -11,6 +11,7 @@ namespace Dashboard.Models.DTO
         public string Id { get; set; } = string.Empty;
         public List<string> Roles { get; set;} = new List<string>();
         public List<string> SelectedRoles { get; set; } = new List<string>();
+        public List<string> PrviouslySelectedRoles { get; set; } = new List<string>();
 
     }
 }
