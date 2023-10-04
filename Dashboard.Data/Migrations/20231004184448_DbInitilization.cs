@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Dashboard.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class dbinint : Migration
+    public partial class DbInitilization : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,6 +32,8 @@ namespace Dashboard.DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -228,6 +232,27 @@ namespace Dashboard.DataAccess.Migrations
                         principalTable: "ClientForm",
                         principalColumn: "Id");
                 });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "6415d800-fa65-4fa0-b547-d53aeba70950", null, "Client", "CLIENT" },
+                    { "800e2e71-cae7-4c8c-ab5d-80e9be55ad6d", null, "Admin", "ADMIN" },
+                    { "8eaad183-6838-46d0-b008-cc914ddedbda", null, "Tickitting", "TICKITTING" },
+                    { "901dc4e1-3a0f-43bc-a7ed-f4885512281a", null, "Billing", "BILLING" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "f06625f3-5cf0-487e-be5c-c76242561bf8", 0, "aa7e8803-247d-4ef3-bcb3-ad4a7b9341b8", "admin@gmail.com", false, "Navicosoft", "Admin", true, null, "ADMIN@GMAIL.COM", "ADMIN@GMAIL.COM", "AQAAAAIAAYagAAAAEP0hc9cqWZH9Au73/gZBhhYAuOARatMLZikVcpZ+bJ3LGaGXf3I+ARPARQc5RGpeWw==", null, false, "63e64f70-5bbc-4d90-a223-92add7cbf3ec", false, "admin@gmail.com" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { "800e2e71-cae7-4c8c-ab5d-80e9be55ad6d", "f06625f3-5cf0-487e-be5c-c76242561bf8" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

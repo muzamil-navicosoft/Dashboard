@@ -12,15 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dashboard.DataAccess.Migrations
 {
     [DbContext(typeof(ProjectContext))]
-    [Migration("20230927141628_ExtendedThePrpopertiesofIdentityUseraddedinContext")]
-    partial class ExtendedThePrpopertiesofIdentityUseraddedinContext
+    [Migration("20231004184448_DbInitilization")]
+    partial class DbInitilization
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.10")
+                .HasAnnotation("ProductVersion", "7.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -188,6 +188,26 @@ namespace Dashboard.DataAccess.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "f06625f3-5cf0-487e-be5c-c76242561bf8",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "aa7e8803-247d-4ef3-bcb3-ad4a7b9341b8",
+                            Email = "admin@gmail.com",
+                            EmailConfirmed = false,
+                            FirstName = "Navicosoft",
+                            LastName = "Admin",
+                            LockoutEnabled = true,
+                            NormalizedEmail = "ADMIN@GMAIL.COM",
+                            NormalizedUserName = "ADMIN@GMAIL.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEP0hc9cqWZH9Au73/gZBhhYAuOARatMLZikVcpZ+bJ3LGaGXf3I+ARPARQc5RGpeWw==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "63e64f70-5bbc-4d90-a223-92add7cbf3ec",
+                            TwoFactorEnabled = false,
+                            UserName = "admin@gmail.com"
+                        });
                 });
 
             modelBuilder.Entity("Dashboard.Models.Models.Ticket", b =>
@@ -254,6 +274,32 @@ namespace Dashboard.DataAccess.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "800e2e71-cae7-4c8c-ab5d-80e9be55ad6d",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "901dc4e1-3a0f-43bc-a7ed-f4885512281a",
+                            Name = "Billing",
+                            NormalizedName = "BILLING"
+                        },
+                        new
+                        {
+                            Id = "6415d800-fa65-4fa0-b547-d53aeba70950",
+                            Name = "Client",
+                            NormalizedName = "CLIENT"
+                        },
+                        new
+                        {
+                            Id = "8eaad183-6838-46d0-b008-cc914ddedbda",
+                            Name = "Tickitting",
+                            NormalizedName = "TICKITTING"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -341,6 +387,13 @@ namespace Dashboard.DataAccess.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "f06625f3-5cf0-487e-be5c-c76242561bf8",
+                            RoleId = "800e2e71-cae7-4c8c-ab5d-80e9be55ad6d"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
