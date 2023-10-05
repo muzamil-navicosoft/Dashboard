@@ -1,6 +1,7 @@
 ﻿using Dashboard.DataAccess.Repo.IRepository;
 using Dashboard.Models.DTO;
 using Dashboard.Models.Models;
+using Dashboard.Utillities.Helper;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,10 +15,12 @@ namespace Dashboard.Controllers
     public class OathController : Controller
     {
         private readonly IOathRepo oathRepo;
+        private readonly IUserService userService;
 
-        public OathController(IOathRepo oathRepo)
+        public OathController(IOathRepo oathRepo, IUserService userService)
         {
             this.oathRepo = oathRepo;
+            this.userService = userService;
         }
 
         [Route("signup")]
@@ -65,6 +68,7 @@ namespace Dashboard.Controllers
                 var result = await oathRepo.LoginAsync(obj);
                 if (result.Succeeded)
                 {
+                    var test = userService.GetUserId();
                     if (!string.IsNullOrEmpty(ReturnUrl))
                     {
                         return LocalRedirect(ReturnUrl);

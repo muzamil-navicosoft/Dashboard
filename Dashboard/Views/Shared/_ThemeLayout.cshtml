@@ -462,22 +462,20 @@
                     <li class=" nav-item">
                         <a class="d-flex align-items-center" asp-controller="UserForm" asp-action="DeactiveClients"><i data-feather="users"></i><span class="menu-title text-truncate" data-i18n="Todo"> Deactive Clients </span></a>
                     </li>
-                    <li class=" nav-item">
-                        <a class="d-flex align-items-center" href="app-calendar.html"><i data-feather="tool"></i><span class="menu-title text-truncate" data-i18n="Calendar"> Tickets </span></a>
-                    </li>
-                    <li class=" nav-item">
-                        <a class="d-flex align-items-center" href="app-kanban.html"><i data-feather="activity"></i><span class="menu-title text-truncate" data-i18n="Kanban"> SubDomains </span></a>
-                    </li>
+                   
                 
 
                     <li class=" nav-item">
                         <a class="d-flex align-items-center" href="#"><i data-feather="shield"></i><span class="menu-title text-truncate" data-i18n="Roles &amp; Permission">User Management</span></a>
                         <ul class="menu-content">
                             <li>
-                                <a class="d-flex align-items-center" href="app-access-roles.html"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Roles">Roles</span></a>
+                                <a class="d-flex align-items-center" asp-controller="Oath" asp-action="Signup"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Roles">Create User</span></a>
                             </li>
                             <li>
-                                <a class="d-flex align-items-center" href="app-access-permission.html"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Permission">Permission</span></a>
+                                <a class="d-flex align-items-center" asp-controller="Oath" asp-action="UsersList"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Roles">User List</span></a>
+                            </li>
+                            <li>
+                                <a class="d-flex align-items-center" asp-controller="Oath" asp-action="RolesList"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Roles">Roles</span></a>
                             </li>
                         </ul>
                     </li>
@@ -490,11 +488,6 @@
                 {
                     <partial name = "_BillingPartialView" />
                 }
-
-
-            
-
-                
 
             </ul>
         </div>

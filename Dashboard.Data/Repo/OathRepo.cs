@@ -91,6 +91,8 @@ namespace Dashboard.DataAccess.Repo
             
             return result;
         }
+
+        //Get User Roles By ID
         public async Task<IList<string>> GetUserRoles(string Id)
         {
             var result = await GetUser(Id);
@@ -103,6 +105,13 @@ namespace Dashboard.DataAccess.Repo
                 var result2 = await userManager.GetRolesAsync(result);
                 return result2;
             }
+        }
+
+        //Get User Roles By  User
+        public async Task<IList<String>> GetUserRolesByUser(CustomeUser user)
+        {
+            var result2 = await userManager.GetRolesAsync(user);
+            return result2;
         }
 
         public async Task<IdentityResult> AddUserInRole(string id, IList<string> role)

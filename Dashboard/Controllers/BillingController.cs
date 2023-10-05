@@ -96,10 +96,49 @@ namespace Dashboard.Controllers
         }
         public IActionResult Index()
         {
-            var result =  _unitOfWork.billing.GetAll();
+            //var result =  _unitOfWork.billing.GetAll();
+            var result =  _unitOfWork.billing.CustomeGetAll().Include(x=>x.ClientForm).Where(x=> !x.IsPaid && x.ClientForm.isActive);
             //var result = _unitOfWork.ticket.CustomeGetAll().Include(x => x.ClientForm).Where(x => x.IsActive);
             var test = result.Adapt<IEnumerable<BillingInfoDto>>();
             return View(test);
+        }
+        // For Month Specific Filter
+        public IActionResult BillAcordingToMonth(string month)
+        {
+            
+            var result = _unitOfWork.billing.CustomeGetAll().Include(x => x.ClientForm)
+                                    .Where(x => !x.IsPaid && x.Month == month && x.ClientForm.isActive);
+           
+            var test = result.Adapt<IEnumerable<BillingInfoDto>>();
+            return View(test);
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var result = _unitOfWork.billing.Get(id);
+            if(result != null)
+            {
+                var result2 = result.Adapt<BillingInfoDto>();
+                return View(result2);
+            }
+            return View();
+        }
+        public IActionResult Edit(BillingInfoDto obj)
+        {
+            if (ModelState.IsValid)
+            {
+                var test = obj.Adapt<BillingInfo>();
+                if(test.IsPaid)
+                {
+                    test.PaidDate = DateTime.Now;
+                }
+                _unitOfWork.billing.update(test);
+                _unitOfWork.Save();
+            }
+
+            //var test = result.Adapt<IEnumerable<BillingInfoDto>>();
+            return RedirectToAction("Index");
         }
         public IActionResult Closed()
         {

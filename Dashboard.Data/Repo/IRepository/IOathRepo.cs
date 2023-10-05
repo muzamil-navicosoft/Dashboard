@@ -22,5 +22,6 @@ namespace Dashboard.DataAccess.Repo.IRepository
         Task<IList<string>> GetUserRoles(string Id);
         Task<IdentityResult> AddUserInRole(string id, IList<string> role);
         Task<IdentityResult> RemoveUserRole(string id, IList<string> role);
+        Task<IList<String>> GetUserRolesByUser(CustomeUser user);
     }
 }

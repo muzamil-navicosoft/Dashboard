@@ -215,7 +215,8 @@ namespace Dashboard.Controllers
 
                 
                 // Create a command and execute each SQL statement
-                string[] sqlStatements = script.Split(new[] { "GO\r\n", "GO ", "GO\t" }, StringSplitOptions.RemoveEmptyEntries);
+                string[] sqlStatements = script.Split(new[] { "GO\r\n", "GO ", "GO\t" }, 
+                                                    StringSplitOptions.RemoveEmptyEntries);
                 using (var cmd = new SqlCommand())
                 {
                     SqlConnection NewDBconnection = new SqlConnection(newConStr);
@@ -248,6 +249,7 @@ namespace Dashboard.Controllers
                 var test2 = await GenralPurpose.SendPostSubDomainCreateRequestAsync(test, dbName);
                 emailService.SendEmail(result.Email, "Welcome to NavicoSoft", "WelCome Email");
                 Console.WriteLine(test2);
+                result.SubDomain = dbName+ ".navedge.co";
                 _unitOfWork.User.update(result);
                 _unitOfWork.Save();
                 return RedirectToAction("Clients");
