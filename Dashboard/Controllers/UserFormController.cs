@@ -302,6 +302,38 @@ namespace Dashboard.Controllers
         }
 
         [HttpGet]
+        public IActionResult UserDetail()
+        {
+            try
+            {
+                var userEmail = User.FindFirst("userEmail")?.Value;
+                var result = _unitOfWork.User.CustomeGetAll()
+                             .Include(t => t.Tickets)
+                             .Include(b => b.BillingInfos)
+                             .AsSplitQuery()
+                             .AsNoTracking()
+                             .Where(x => x.Email == userEmail).FirstOrDefault();
+                //var result =  _unitOfWork.User.Get(id);
+                if (result != null)
+                {
+                    var test = result.Adapt<ClientFormDto>();
+                    return View(test);
+                }
+                else
+                {
+                    ViewBag.NotFound = "Record you are looking for doesnot Exist or Removed from System";
+                    return View();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+        [HttpGet]
         public IActionResult Edit (int id)
         {
             try

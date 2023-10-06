@@ -488,6 +488,10 @@
                 {
                     <partial name = "_BillingPartialView" />
                 }
+                else if (User.IsInRole("Client"))
+                {
+                    <partial name="_ClientPartialView" />
+                }
 
             </ul>
         </div>

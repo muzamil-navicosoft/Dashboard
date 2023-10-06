@@ -23,8 +23,7 @@ namespace Dashboard.Utillities.Helper
             identity.AddClaim(new Claim ("userFirstName" , user.FirstName ?? string.Empty));
             identity.AddClaim(new Claim ("userLastName" , user.LastName ?? string.Empty));
             identity.AddClaim(new Claim ("userId" , user.Id ?? string.Empty));
-            identity.AddClaim(new Claim ("userEmail" , user.Email ?? string.Empty));
-            
+            identity.AddClaim(new Claim ("userEmail" , user.Email ?? string.Empty));        
 
             return identity;
         }
