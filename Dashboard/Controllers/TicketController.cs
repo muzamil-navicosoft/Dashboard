@@ -1,4 +1,5 @@
-﻿using Dashboard.DataAccess.UnitOfWork;
+﻿using Dashboard.DataAccess.Migrations;
+using Dashboard.DataAccess.UnitOfWork;
 using Dashboard.Mapping;
 using Dashboard.Models.DTO;
 using Dashboard.Models.Models;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace Dashboard.Controllers
 {
@@ -23,14 +25,27 @@ namespace Dashboard.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            var user = _unitOfWork.User.GetAll();
-            ViewBag.Subdomain = new SelectList(user, "Id", "Email");
+            var test = User.IsInRole("Client");
+            if (User.IsInRole("Admin"))
+            {
+                var user = _unitOfWork.User.GetAll();
+                ViewBag.Subdomain = new SelectList(user, "Id", "Email");
+            } 
+            else if (User.IsInRole("Client"))
+            {
+                var userEmail = User.FindFirst("userEmail")?.Value;
+                List<ClientForm> user = new List<ClientForm>();
+                var result = _unitOfWork.User.CustomeGetAll().Where(x => x.Email == userEmail).FirstOrDefault();
+                user.Add(result);
+                ViewBag.Subdomain = new SelectList(user, "Id", "Email");
+            }
+
             return View();
         }
         [HttpPost]
         public IActionResult Add(TicketDto obj)
         {
-           
+
             try
             {
                 if (ModelState.IsValid)
@@ -38,7 +53,7 @@ namespace Dashboard.Controllers
 
 
                     var result = obj.Adapt<Ticket>();
-                    
+
                     _unitOfWork.ticket.Add(result);
                     _unitOfWork.Save();
                     ViewBag.success = "Form Submitied Successfully";
@@ -60,9 +75,47 @@ namespace Dashboard.Controllers
         public IActionResult Index()
         {
             //var result =  _unitOfWork.ticket.GetAll();
-            var result = _unitOfWork.ticket.CustomeGetAll().Include(x => x.ClientForm).Where(x => x.IsActive);
-            var test = result.Adapt<IEnumerable<TicketDto>>();
-            return View(test);
+            if (User.IsInRole("Admin")|| User.IsInRole("Tickitting"))
+            {
+                var result = _unitOfWork.ticket.CustomeGetAll().Include(x => x.ClientForm).Where(x => x.IsActive);
+                var test = result.Adapt<IEnumerable<TicketDto>>();
+                return View(test);
+            }
+            else if(User.IsInRole("Billing"))
+            {
+                var result = _unitOfWork.ticket.CustomeGetAll().Include(x => x.ClientForm).Where(x => x.IsActive && x.Department== "Billing");
+                var test = result.Adapt<IEnumerable<TicketDto>>();
+                return View(test);
+            }
+            return View(new List<TicketDto>());
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var result = _unitOfWork.ticket.Get(id);
+            if (result != null)
+            {
+                var deparments = new List<string> { "Admin", "Tickitting", "Billing" };
+                ViewBag.Departments = new SelectList(deparments);
+                var result2 = result.Adapt<TicketDto>();
+                return View(result2);
+            }
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Edit(TicketDto obj)
+        {
+            if (ModelState.IsValid)
+            {
+                var test = obj.Adapt<Ticket>();
+               
+                _unitOfWork.ticket.update(test);
+                _unitOfWork.Save();
+            }
+
+            //var test = result.Adapt<IEnumerable<BillingInfoDto>>();
+            return RedirectToAction("Index");
         }
         public IActionResult Closed()
         {

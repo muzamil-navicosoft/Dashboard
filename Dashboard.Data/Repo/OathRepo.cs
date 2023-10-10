@@ -53,7 +53,7 @@ namespace Dashboard.DataAccess.Repo
         {
             await signInManager.SignOutAsync();
         }
-
+     
         #endregion
 
         #region Role
@@ -139,6 +139,16 @@ namespace Dashboard.DataAccess.Repo
             {
                 return new IdentityResult();
             }
+        }
+
+        public async Task<IList<CustomeUser>> GetUsersInSpecificRole(string role)
+        {
+            var result = await userManager.GetUsersInRoleAsync(role);
+            if (result != null)
+            {
+                return result;
+            }
+            return new List<CustomeUser>();
         }
         #endregion
 
