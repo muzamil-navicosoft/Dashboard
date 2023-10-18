@@ -186,7 +186,7 @@ namespace Dashboard.Controllers
         }
         [HttpGet]
         [Route("UserList")]
-        public async Task<IActionResult> UsersList()
+        public  IActionResult UsersList()
         {
             var reuslt = oathRepo.GetUsers();
             var result2 = reuslt.Adapt<IEnumerable<SignUpDto>>();

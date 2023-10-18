@@ -231,18 +231,7 @@ namespace Dashboard.Controllers
                 }
 
                 Newconnection.Close();
-                // Adding Bill Scedulling 
-
-                //if (result.isBilledMonthly.Value == true)
-                //{
-                //    var resultbill = billingTask(id);
-                    
-                //    //RecurringJob.AddOrUpdate(() => AddBill(resultbill), Cron.MinuteInterval(5));
-                //    RecurringJob.AddOrUpdate("add-bill-job", () => AddBill(resultbill), Cron.MinuteInterval(5));
-
-                //}
-
-
+      
                 // Adding API call here 
                 var test = await GenralPurpose.SendPostRequestAsync();
 

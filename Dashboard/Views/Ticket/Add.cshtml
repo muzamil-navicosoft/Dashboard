@@ -30,7 +30,7 @@
                 <label asp-for="ClientFormId" class="control-label"></label>
                 <@* input asp-for="ClientFormId" class="form-control" /> *@
                 <select name="ClientFormId" class="form-control" asp-items="@ViewBag.Subdomain" required>
-                    <option> --Subdomain-- </option>
+                   
                 </select>
                 <span asp-validation-for="ClientFormId" class="text-danger"></span>
             </div>

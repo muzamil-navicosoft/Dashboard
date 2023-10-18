@@ -10,7 +10,7 @@ using Dashboard.Utillities.Helper.Email;
 using Hangfire;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,6 +30,7 @@ builder.Services.AddDbContext<ProjectContext>( options =>
 var hangfireConnection = builder.Configuration.GetConnectionString("hangfireconnection");
 
 // for Configring Identity 
+
 
 builder.Services.AddIdentity<CustomeUser, IdentityRole>()
    .AddEntityFrameworkStores<ProjectContext>().AddDefaultTokenProviders();
