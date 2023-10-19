@@ -11,7 +11,7 @@ using System.Data;
 
 namespace Dashboard.Controllers
 {
-    
+
     public class OathController : Controller
     {
         private readonly IOathRepo oathRepo;
@@ -96,27 +96,33 @@ namespace Dashboard.Controllers
         {
             return View();
         }
-        //[HttpPost]
-        //public async Task<IActionResult> changePassword(ChangePasswordDto obj)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        //var result = await oathRepo.ChnagePasswordAsync(obj);
-        //        //if (result.Succeeded)
-        //        //{
-        //        //    return RedirectToAction("Index", "Home");
-        //        //}
-        //        //else
-        //        //{
-        //        //    foreach (var item in result.Errors)
-        //        //    {
-        //        //        ModelState.AddModelError("", item.Description);
-        //        //    }
-        //        //}
-        //    }
+        [Route("Change-Password")]
+        [HttpPost]
+        public async Task<IActionResult> changePassword(ChangePasswordDto obj)
+        {
+            if (ModelState.IsValid)
+            {
+                var userId = userService.GetUserId();
+                var user = await oathRepo.GetUser(userId);
+                var result = await oathRepo.ChangePassword(user, obj.CurrentPassword, obj.NewPassword);
 
-        //    return View(obj);
-        //}
+                if (!result.Succeeded)
+                {
+                    foreach (var item in result.Errors)
+                    {
+                        ModelState.AddModelError("", item.Description);
+                    }
+                    return View();
+                }
+                return View();
+            }
+            else
+            {
+                ModelState.Clear();
+                return RedirectToAction("Index", "Home");
+            }
+
+        }
         [HttpGet]
         [Route("CreatRole")]
         public IActionResult CreateRole()
@@ -132,9 +138,9 @@ namespace Dashboard.Controllers
                 if (ModelState.IsValid)
                 {
                     //obj.NormalizedName = obj.Name.ToUpper();
-                    
+
                     var result2 = await oathRepo.CreateRoleAsync(obj);
-                    if(result2.Succeeded)
+                    if (result2.Succeeded)
                     {
                         return RedirectToAction("Index", "Home");
                     }
@@ -146,7 +152,7 @@ namespace Dashboard.Controllers
                         }
                         return View();
                     }
-                  
+
                 }
             }
             catch (Exception)
@@ -179,14 +185,14 @@ namespace Dashboard.Controllers
                     ModelState.AddModelError("", item.Description);
                 }
                 return View();
-                
+
             }
-           
+
 
         }
         [HttpGet]
         [Route("UserList")]
-        public  IActionResult UsersList()
+        public IActionResult UsersList()
         {
             var reuslt = oathRepo.GetUsers();
             var result2 = reuslt.Adapt<IEnumerable<SignUpDto>>();
@@ -195,7 +201,7 @@ namespace Dashboard.Controllers
         public async Task<IActionResult> UserRoles(string id)
         {
             var result = await oathRepo.GetUserRoles(id);
-           // var result2 = result.Adapt<IEnumerable<RoleDto>>();
+            // var result2 = result.Adapt<IEnumerable<RoleDto>>();
             return View(result);
         }
         [HttpGet]
@@ -209,7 +215,7 @@ namespace Dashboard.Controllers
             //    addToRoleDto.Roles.Add(item.Name);
             //}
 
-            var allRoles =  oathRepo.GetRoles();
+            var allRoles = oathRepo.GetRoles();
             var userRoles = await oathRepo.GetUserRoles(Id);
 
 
@@ -230,7 +236,7 @@ namespace Dashboard.Controllers
         [Route("AddtoRole")]
         public async Task<IActionResult> AddtoRole(AddToRoleDto obj)
         {
-            
+
             //obj.PrviouslySelectedRoles = TempData["PrviouslySelectedRoles"] as List<string>;
             if (ModelState.IsValid)
             {

@@ -14,6 +14,7 @@ namespace Dashboard.DataAccess.Repo.IRepository
         Task<IdentityResult> CreateUserAsync(SignUpDto obj);
         Task<SignInResult> LoginAsync(SignInDto obj);
         Task<CustomeUser?> GetUser(string Id);
+        Task<IdentityResult> ChangePassword(CustomeUser user, string oldPass, string newpass);
         Task logout();
         Task<IdentityResult> CreateRoleAsync(RoleDto obj);
         IList<IdentityRole> GetRoles();

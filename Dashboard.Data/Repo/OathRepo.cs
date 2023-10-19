@@ -53,6 +53,11 @@ namespace Dashboard.DataAccess.Repo
         {
             await signInManager.SignOutAsync();
         }
+
+        public async Task<IdentityResult> ChangePassword(CustomeUser user, string oldPass, string  newpass)
+        {
+          return  await  userManager.ChangePasswordAsync(user, oldPass, newpass);
+        }
      
         #endregion
 
