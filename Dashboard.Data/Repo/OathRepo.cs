@@ -2,6 +2,8 @@
 using Dashboard.Models.DTO;
 using Dashboard.Models.Models;
 using Microsoft.AspNetCore.Identity;
+using Dashboard.Utillities.Helper.Email;
+
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
@@ -13,15 +15,17 @@ namespace Dashboard.DataAccess.Repo
         private readonly UserManager<CustomeUser> userManager;
         private readonly SignInManager<CustomeUser> signInManager;
         private readonly RoleManager<IdentityRole> roleManager;
+        private readonly IEmailService emailService;
 
         //private readonly IGenralPurpose genralPurpose;
 
         public OathRepo(UserManager<CustomeUser> userManager, SignInManager<CustomeUser> signInManager,
-                RoleManager<IdentityRole> roleManager)
+                RoleManager<IdentityRole> roleManager, IEmailService emailService)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.roleManager = roleManager;
+            this.emailService = emailService;
         }
 
         #region user
@@ -35,6 +39,15 @@ namespace Dashboard.DataAccess.Repo
                 UserName = obj.Email
             };
             var result = await userManager.CreateAsync(user, obj.Password);
+            if(result.Succeeded) 
+            {
+                 var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+                var id = user.Id;
+                 emailService.SendEmail(obj.Email, "Welcocme to Dashboard  Click on " +
+                     "<a href=\"https://localhost:7124/confirm-email?uid="+id+"&token="+token+"\""+">link </a> to Verify", "Conformation");
+
+
+            }
             return result;
         }
 

@@ -63,6 +63,16 @@ builder.Services.ConfigureApplicationCookie(config =>
     config.LoginPath = "/login";
 });
 
+// Identity Configration 
+
+builder.Services.Configure<IdentityOptions>(config =>
+    { 
+        // Configration for Confirmed Emails Only
+        config.SignIn.RequireConfirmedEmail = true;
+    }
+); 
+
+
 // Hangfire Server 
 
 builder.Services.AddHangfireServer();

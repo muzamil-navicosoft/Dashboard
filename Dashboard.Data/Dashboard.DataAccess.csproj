@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Dashboard.Models\Dashboard.Models.csproj" />
+    <ProjectReference Include="..\Dashboard.Utillities\Dashboard.Utillities.csproj" />
   </ItemGroup>
 
 </Project>
