@@ -51,7 +51,6 @@ namespace Dashboard.Controllers
                 if (ModelState.IsValid)
                 {
 
-
                     var result = obj.Adapt<Ticket>();
 
                     _unitOfWork.ticket.Add(result);

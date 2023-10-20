@@ -2,6 +2,7 @@
 using Dashboard.Models.DTO;
 using Dashboard.Models.Models;
 using Dashboard.Utillities.Helper;
+using Hangfire.Annotations;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -257,6 +258,36 @@ namespace Dashboard.Controllers
 
 
             return View();
+        }
+
+        [HttpGet]
+        [Route("confirm-email")]
+        public async Task<IActionResult> ConfirmEmail(string uid, string token)
+        {
+            if(!string.IsNullOrEmpty(uid) && !string.IsNullOrEmpty(token))
+            {
+                token = token.Replace(" ", "+");
+                var result = await oathRepo.ConfirmEmail(uid, token);
+                if (result.Succeeded)
+                {
+                    ViewBag.isSuccess = true;
+                    return View();
+                }
+                else
+                {
+                    foreach (var item in result.Errors)
+                    {
+                        ModelState.AddModelError("", item.Description);
+                    }
+                    ViewBag.isSuccess = false;
+                    return View();
+
+                }
+            }
+            else
+            {       
+                return View();
+            }
         }
     }
 }

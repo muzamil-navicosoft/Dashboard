@@ -12,6 +12,7 @@ namespace Dashboard.DataAccess.Repo.IRepository
     public interface IOathRepo
     {
         Task<IdentityResult> CreateUserAsync(SignUpDto obj);
+        Task<IdentityResult> ConfirmEmail(string Id, string token);
         Task<SignInResult> LoginAsync(SignInDto obj);
         Task<CustomeUser?> GetUser(string Id);
         Task<IdentityResult> ChangePassword(CustomeUser user, string oldPass, string newpass);

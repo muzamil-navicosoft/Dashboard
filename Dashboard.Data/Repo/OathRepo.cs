@@ -42,15 +42,22 @@ namespace Dashboard.DataAccess.Repo
             if(result.Succeeded) 
             {
                  var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
-                var id = user.Id;
+                 var id = user.Id;
                  emailService.SendEmail(obj.Email, "Welcocme to Dashboard  Click on " +
-                     "<a href=\"https://localhost:7124/confirm-email?uid="+id+"&token="+token+"\""+">link </a> to Verify", "Conformation");
+                                        "<a href=\"https://localhost:7124/confirm-email?uid="+id+"&token="+token+"\""+">" +
+                                        "link </a> to Verify", "Verify Your Email");
 
 
             }
             return result;
         }
 
+        public async Task<IdentityResult> ConfirmEmail(string Id, string token)
+        {
+            var user = await userManager.FindByIdAsync(Id);
+            var result = await userManager.ConfirmEmailAsync(user, token);
+            return result; 
+        }
         public async Task<SignInResult> LoginAsync(SignInDto obj)
         {
             var result = await signInManager.PasswordSignInAsync(obj.Email, obj.Password, obj.RemaberMe, false);
