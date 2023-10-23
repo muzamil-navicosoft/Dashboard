@@ -76,6 +76,10 @@ namespace Dashboard.Controllers
                     }
                     return RedirectToAction("Index", "Home");
                 }
+                else if(result.IsNotAllowed)
+                {
+                    ModelState.AddModelError("", "Please Confirem your Email Before Login");
+                }
                 else
                 {
                     ModelState.AddModelError("", "Invalid Crdentials");
@@ -237,7 +241,7 @@ namespace Dashboard.Controllers
         [Route("AddtoRole")]
         public async Task<IActionResult> AddtoRole(AddToRoleDto obj)
         {
-
+           
             //obj.PrviouslySelectedRoles = TempData["PrviouslySelectedRoles"] as List<string>;
             if (ModelState.IsValid)
             {
@@ -264,7 +268,8 @@ namespace Dashboard.Controllers
         [Route("confirm-email")]
         public async Task<IActionResult> ConfirmEmail(string uid, string token)
         {
-            if(!string.IsNullOrEmpty(uid) && !string.IsNullOrEmpty(token))
+            
+            if (!string.IsNullOrEmpty(uid) && !string.IsNullOrEmpty(token))
             {
                 token = token.Replace(" ", "+");
                 var result = await oathRepo.ConfirmEmail(uid, token);
@@ -288,6 +293,45 @@ namespace Dashboard.Controllers
             {       
                 return View();
             }
+        } 
+        [HttpPost]
+        [Route("confirm-email")]
+        public async Task<IActionResult> ConfirmEmail(string emeil,ResendEmailDto? obj)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var user = await oathRepo.GetUserByEmailAsync(emeil);
+                    if( user != null)
+                    {
+                        if (user.EmailConfirmed)
+                        {
+                            obj.IsEmailConfirmed = true;
+                            // message for  Accont already verfied
+                            return View();
+                        }
+                        // for Genrating Email
+                        await oathRepo.GenrateTokenAndSendEmailAsync(user);
+                        obj.IsEmailSent = true;
+                        ModelState.Clear();
+                        return View();
+                    }
+                    // For Error when user Doesnot existe with specific Email
+                    return View();
+                }
+                else
+                {
+                    ModelState.AddModelError("", "kindly Renter the Email Address");
+                    return View();
+                }
+            }
+            catch (Exception)
+            {
+               
+                throw;
+            }
+
         }
     }
 }

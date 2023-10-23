@@ -12,8 +12,8 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+                <input asp-for="Email" id="email" class="form-control" />
+                <span asp-validation-for="Email" id="emailAlret" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
@@ -28,6 +28,9 @@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
+            <div class="form-group">
+                <input id="reSendEmail" onclick="Resend()" type="button" value="ReSend Email" class="btn btn-primary" />
+            </div>
         </form>
     </div>
 </div>
@@ -36,9 +39,89 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-@section Scripts {
+@section Scripts 
+{
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-}
 
+    <script type="text/javascript">
+
+      
+        function Resend() 
+        {
+            let email = $("#email").val();
+            
+            if (email != null || email != "" || email !="undefined") 
+            {
+                $.ajax({
+                    type: "POST",
+
+                    url: '@Url.Action("ConfirmEmail", "Oath")',
+                    dataType: "json",
+                    data: {
+                        emeil: email,
+                        
+                    },
+                    sucess: function (result) {
+                        console.log(result)
+                    },
+                    error: function (result) {
+                        console.log(result)
+                    }
+                });
+            }
+            else 
+            {
+                $("email").val("Email Should not be empty");
+            }
+
+            // if ($("#monthlyBill").prop('checked')) 
+            // {
+            //     $("#bill").hide();
+            //     $("#bill").val("");
+            //     $("#addMonthlyBill").show();
+            //     $("#updateOneTimeBill").hide();
+            //     $.ajax({
+            //         type: "POST",
+            //         // url: "~/UserForm/updateIsBilledMonthly",
+            //         url: '@Url.Action("updateIsBilledMonthly", "UserForm")',
+            //         dataType: "json",
+            //         data: { id : id,
+            //             billMonthly : true
+            //         },
+            //         sucess: function (result) {
+            //             console.log(result)
+            //         },
+            //         error: function (result) {
+            //             console.log(result)
+            //         }
+            //     });
+              
+
+            // } else 
+            // {
+            //     $("#bill").show();
+            //     $("#addMonthlyBill").hide();
+            //     $("#updateOneTimeBill").show();
+         
+            //     $.ajax({
+            //         type: "POST",
+            //         // url: "~/UserForm/updateIsBilledMonthly",
+            //         url: '@Url.Action("updateIsBilledMonthly", "UserForm")',
+            //         dataType: "json",
+            //         data: {
+            //             id: id,
+            //             billMonthly: false
+            //         },
+            //         sucess: function (result) {
+            //             console.log(result)
+            //         },
+            //         error: function (result) {
+            //             console.log(result)
+            //         }
+            //     });
+            // }
+        }
+    </script>
+}

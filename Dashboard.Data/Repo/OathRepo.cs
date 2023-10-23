@@ -41,15 +41,24 @@ namespace Dashboard.DataAccess.Repo
             var result = await userManager.CreateAsync(user, obj.Password);
             if(result.Succeeded) 
             {
-                 var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
-                 var id = user.Id;
-                 emailService.SendEmail(obj.Email, "Welcocme to Dashboard  Click on " +
-                                        "<a href=\"https://localhost:7124/confirm-email?uid="+id+"&token="+token+"\""+">" +
-                                        "link </a> to Verify", "Verify Your Email");
-
-
+                await GenrateTokenAndSendEmailAsync(user);
+                 //var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+                 //var id = user.Id;
+                 //emailService.SendEmail(user.Email, "Welcocme to Dashboard  Click on " +
+                 //        "<a href=\"https://localhost:7124/confirm-email?uid="+id+"&token="+token+"\""+">" +
+                 //        "link </a> to Verify", "Verify Your Email");
             }
             return result;
+        }
+
+        public async Task GenrateTokenAndSendEmailAsync(CustomeUser user)
+        {
+            var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+            var id = user.Id;
+            emailService.SendEmail(user.Email, "Welcocme to Dashboard  Click on " +
+                    "<a href=\"https://localhost:7124/confirm-email?uid=" + id + "&token=" + token + "\"" + ">" +
+                    "link </a> to Verify", "Verify Your Email");
+
         }
 
         public async Task<IdentityResult> ConfirmEmail(string Id, string token)
@@ -57,6 +66,12 @@ namespace Dashboard.DataAccess.Repo
             var user = await userManager.FindByIdAsync(Id);
             var result = await userManager.ConfirmEmailAsync(user, token);
             return result; 
+        }
+        // Get user by Email
+        public async Task<CustomeUser?> GetUserByEmailAsync(string email)
+        {
+            return await userManager.FindByEmailAsync(email);
+
         }
         public async Task<SignInResult> LoginAsync(SignInDto obj)
         {

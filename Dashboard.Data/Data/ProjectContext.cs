@@ -50,6 +50,7 @@ namespace Dashboard.Data
             //a hasher to hash the password before seeding the user to the db
             var hasher = new PasswordHasher<CustomeUser>();
 
+            // Seeding a "Admin User"
             model.Entity<CustomeUser>().HasData(
                 new CustomeUser
             {
@@ -72,7 +73,9 @@ namespace Dashboard.Data
                 SecurityStamp = Guid.NewGuid().ToString("D"),
                 PasswordHash = hasher.HashPassword(null,"Admin@1234"),
                 LockoutEnabled = true,
+                EmailConfirmed = true
             });
+
 
 
             model.Entity<IdentityUserRole<string>>().HasData(
