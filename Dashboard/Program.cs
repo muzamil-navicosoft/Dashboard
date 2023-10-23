@@ -66,11 +66,11 @@ builder.Services.ConfigureApplicationCookie(config =>
 // Identity Configration 
 
 builder.Services.Configure<IdentityOptions>(config =>
-    { 
+    {
         // Configration for Confirmed Emails Only
         config.SignIn.RequireConfirmedEmail = true;
     }
-); 
+);
 
 
 // Hangfire Server 

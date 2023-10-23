@@ -54,15 +54,7 @@ namespace Dashboard.Data
             model.Entity<CustomeUser>().HasData(
                 new CustomeUser
             {
-                //Id = new Guid().ToString(),
-                //UserName = "admin@gmail.com",
-                //NormalizedUserName = "ADMIN@GMAIL.COM",
-                //Email = "admin@gmail.com",
-                //NormalizedEmail = "ADMIN@GMAIL.COM",
-                //EmailConfirmed = true,
-                //LockoutEnabled = false,
-                //SecurityStamp = Guid.NewGuid().ToString()
-
+             
                 Id = "f06625f3-5cf0-487e-be5c-c76242561bf8",
                 FirstName = "Navicosoft",
                 LastName = "Admin",

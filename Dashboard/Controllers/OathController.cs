@@ -333,5 +333,87 @@ namespace Dashboard.Controllers
             }
 
         }
+
+        [HttpGet]
+        [Route("Forgot-password")]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        [Route("Forgot-password")]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordDto obj)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var user = await oathRepo.GetUserByEmailAsync(obj.Email);
+                    if (user != null)
+                    {
+                       
+                        // for Genrating Email
+                        await oathRepo.GenrateForgotPasswordTokenAndSendEmailAsync(user);
+                        obj.IsEmailSent = true;
+                        ModelState.Clear();
+                        return View(obj);
+                    }
+                    // For Error when user Doesnot existe with specific Email
+                    ModelState.AddModelError("", "Please Entery Your Correct Registerd Email Address");
+                    return View();
+                }
+                ModelState.AddModelError("", "Please Entery Your Registerd Email Address its required");
+                return View();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+        [HttpGet]
+        [Route("reset-password")]
+        public IActionResult resetpassword(string uid, string token)
+        {
+            ResetPasswordDto obj = new ResetPasswordDto
+            {
+                UserId = uid,
+                Token = token
+            };
+            return View(obj);
+        }
+        [HttpPost]
+        [Route("reset-password")]
+        public async Task<IActionResult> resetpassword(ResetPasswordDto obj)
+        {
+
+            if (!string.IsNullOrEmpty(obj.UserId) && !string.IsNullOrEmpty(obj.Token))
+            {
+                obj.Token = obj.Token.Replace(" ", "+");
+                var result = await oathRepo.ConfirmPasswordasync(obj.UserId, obj.Token,obj.NewPassword);
+                if (result.Succeeded)
+                {
+                    ViewBag.isSuccess = true;
+                    obj.IsPasswordReset = true;
+                    return View();
+                }
+                else
+                {
+                    foreach (var item in result.Errors)
+                    {
+                        ModelState.AddModelError("", item.Description);
+                    }
+                    ViewBag.isSuccess = false;
+                    return View();
+
+                }
+            }
+            else
+            {
+                return View();
+            }
+        }
     }
 }

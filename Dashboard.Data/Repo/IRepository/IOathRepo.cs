@@ -17,7 +17,9 @@ namespace Dashboard.DataAccess.Repo.IRepository
         Task<CustomeUser?> GetUser(string Id);
         Task<IdentityResult> ChangePassword(CustomeUser user, string oldPass, string newpass);
         Task GenrateTokenAndSendEmailAsync(CustomeUser user);
+        Task GenrateForgotPasswordTokenAndSendEmailAsync(CustomeUser user);
         Task<CustomeUser?> GetUserByEmailAsync(string email);
+        Task<IdentityResult> ConfirmPasswordasync(string Id, string token, string newPassw);
         Task logout();
         Task<IdentityResult> CreateRoleAsync(RoleDto obj);
         IList<IdentityRole> GetRoles();

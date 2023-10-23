@@ -61,11 +61,28 @@ namespace Dashboard.DataAccess.Repo
 
         }
 
+        public async Task GenrateForgotPasswordTokenAndSendEmailAsync(CustomeUser user)
+        {
+            var token = await userManager.GeneratePasswordResetTokenAsync(user);
+            var id = user.Id;
+            emailService.SendEmail(user.Email, "Welcocme to Dashboard  Click on " +
+                    "<a href=\"https://localhost:7124/reset-password?uid=" + id + "&token=" + token + "\"" + ">" +
+                    "link </a> to Verify", "Verify Your Email");
+
+        }
+
         public async Task<IdentityResult> ConfirmEmail(string Id, string token)
         {
             var user = await userManager.FindByIdAsync(Id);
             var result = await userManager.ConfirmEmailAsync(user, token);
             return result; 
+        }
+
+        public async Task<IdentityResult> ConfirmPasswordasync(string Id, string token, string newPassw)
+        {
+            var user = await userManager.FindByIdAsync(Id);
+            var result = await userManager.ResetPasswordAsync(user, token, newPassw);
+            return result;
         }
         // Get user by Email
         public async Task<CustomeUser?> GetUserByEmailAsync(string email)
@@ -73,6 +90,7 @@ namespace Dashboard.DataAccess.Repo
             return await userManager.FindByEmailAsync(email);
 
         }
+
         public async Task<SignInResult> LoginAsync(SignInDto obj)
         {
             var result = await signInManager.PasswordSignInAsync(obj.Email, obj.Password, obj.RemaberMe, false);

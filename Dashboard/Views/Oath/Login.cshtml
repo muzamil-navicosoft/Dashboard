@@ -29,6 +29,11 @@
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
             <div class="form-group">
+
+                <button type="button" class="btn btn-outline-info waves-effect">@Html.ActionLink("Forget Password", "ForgotPassword", "Oath")</button>
+         
+            </div>
+            <div class="form-group">
                 <input id="reSendEmail" onclick="Resend()" type="button" value="ReSend Email" class="btn btn-primary" />
             </div>
         </form>
@@ -123,5 +128,6 @@
             //     });
             // }
         }
+        
     </script>
 }
