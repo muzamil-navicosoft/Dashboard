@@ -6,6 +6,7 @@ using Dashboard.Utillities.Helper.Email;
 
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.Extensions.Configuration;
 
 namespace Dashboard.DataAccess.Repo
 {
@@ -16,16 +17,19 @@ namespace Dashboard.DataAccess.Repo
         private readonly SignInManager<CustomeUser> signInManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly IEmailService emailService;
+        private readonly IConfiguration configuration;
 
         //private readonly IGenralPurpose genralPurpose;
 
         public OathRepo(UserManager<CustomeUser> userManager, SignInManager<CustomeUser> signInManager,
-                RoleManager<IdentityRole> roleManager, IEmailService emailService)
+                RoleManager<IdentityRole> roleManager, IEmailService emailService, 
+                IConfiguration configuration)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.roleManager = roleManager;
             this.emailService = emailService;
+            this.configuration = configuration;
         }
 
         #region user
@@ -42,11 +46,6 @@ namespace Dashboard.DataAccess.Repo
             if(result.Succeeded) 
             {
                 await GenrateTokenAndSendEmailAsync(user);
-                 //var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
-                 //var id = user.Id;
-                 //emailService.SendEmail(user.Email, "Welcocme to Dashboard  Click on " +
-                 //        "<a href=\"https://localhost:7124/confirm-email?uid="+id+"&token="+token+"\""+">" +
-                 //        "link </a> to Verify", "Verify Your Email");
             }
             return result;
         }
@@ -55,19 +54,21 @@ namespace Dashboard.DataAccess.Repo
         {
             var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
             var id = user.Id;
+            var serverpath = configuration.GetSection("Server:serverPath").Value;
             emailService.SendEmail(user.Email, "Welcocme to Dashboard  Click on " +
-                    "<a href=\"https://localhost:7124/confirm-email?uid=" + id + "&token=" + token + "\"" + ">" +
-                    "link </a> to Verify", "Verify Your Email");
-
+                    "<a href=\""+serverpath+"/confirm-email?uid=" + id + "&token=" + token + "\"" + ">" +
+                    "link </a> to Verify", "Verify Your Email");   
+            
         }
 
         public async Task GenrateForgotPasswordTokenAndSendEmailAsync(CustomeUser user)
         {
             var token = await userManager.GeneratePasswordResetTokenAsync(user);
             var id = user.Id;
-            emailService.SendEmail(user.Email, "Welcocme to Dashboard  Click on " +
-                    "<a href=\"https://localhost:7124/reset-password?uid=" + id + "&token=" + token + "\"" + ">" +
-                    "link </a> to Verify", "Verify Your Email");
+            var serverpath = configuration.GetSection("Server:serverPath").Value;
+            emailService.SendEmail(user.Email, "For Reset your Password Click a link below <br> " +
+                    "<a href=\""+serverpath+"/reset-password?uid=" + id + "&token=" + token + "\"" + ">" +
+                    "Reset Password </a> ", "Reset Password");
 
         }
 
