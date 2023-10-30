@@ -191,17 +191,17 @@ namespace Dashboard.DataAccess.Migrations
                         {
                             Id = "f06625f3-5cf0-487e-be5c-c76242561bf8",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "26cf5a47-8d6b-42e4-85d6-f6be0b89b9d2",
+                            ConcurrencyStamp = "087a2c8b-fd6b-4640-bf75-8bbef2ec8c24",
                             Email = "admin@gmail.com",
-                            EmailConfirmed = false,
+                            EmailConfirmed = true,
                             FirstName = "Navicosoft",
                             LastName = "Admin",
                             LockoutEnabled = true,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFpchHTHsQV43tHABUnKK/KqXuGxbznzvIJm6gw5Cira1BR1DzbWUhUrZKdnnpQ7CA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEmOoAXmlU4e55CHG8OiVK5VzPUDtBrJIdly6R4/qaWTPYlIngeJC/n1xuZmFXmPTA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "5216dc77-a054-4e34-9349-56bdb55d429b",
+                            SecurityStamp = "83b9aec5-d299-40fe-91cc-b40ab7562a57",
                             TwoFactorEnabled = false,
                             UserName = "admin@gmail.com"
                         });

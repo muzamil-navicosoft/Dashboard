@@ -11,6 +11,7 @@ using System.Text;
 using Dashboard.Utillities.Helper.Email;
 using Hangfire;
 using Microsoft.AspNetCore.Authorization;
+using System.Diagnostics;
 
 namespace Dashboard.Controllers
 {
@@ -237,6 +238,66 @@ namespace Dashboard.Controllers
                     var test = await GenralPurpose.SendPostRequestAsync();
 
                     var test2 = await GenralPurpose.SendPostSubDomainCreateRequestAsync(test, dbName);
+
+                    // Setting up the Paths
+
+                   
+                    var rootfolder = webHost.WebRootPath.ToString();
+                    var subdomain = dbName + ".navedge.co";
+
+                    string file = dbName+".sh";
+                    var bashfilepath = Path.Combine(rootfolder + "/bashfile" + file);
+                    var sourceFolder = rootfolder + "/fifth";
+                    var destinationFolder = "C:\\inetpub\\vhosts\\navedge.co\\"+subdomain;
+                    //var destination = $"../../../{subdomain}";
+
+                    // creating bash file with subdomain Firstalphabets
+                   // string fileName = dbName+".sh";
+                    var bashFilePath = Path.Combine(rootfolder + "/bashfile/" + file);
+
+                    var bashFileContents = $@"
+                    #!/bin/bash
+
+                    # Create the destination folder if it doesn't exist
+                    if [ ! -d {destinationFolder} ]; then
+                        mkdir - p {destinationFolder}
+                    fi
+
+                    # Copy all files from the source folder to the destination folder
+                    cp - r {sourceFolder} {destinationFolder}";
+
+                    System.IO.File.WriteAllText(bashfilepath, bashFileContents);
+
+                    Process process = new Process();
+                    process.StartInfo.FileName = bashfilepath;
+                    process.StartInfo.Arguments = "";
+
+                    process.StartInfo.UseShellExecute = true;
+                    process.Start();
+
+                    process.WaitForExit();
+
+                    //StreamWriter sw = new StreamWriter(bashFilePath);
+
+                    //// Write the contents of the file.
+                    //sw.WriteLine("#!/bin/bash");
+                    //sw.WriteLine("echo \"This is a test script.\"");
+
+                    //// Close the file.
+                    //sw.Close();
+                    // for runing Bash file 
+
+                    //var destination = $"../../../muzamiltest.navedge.co";
+                    //var sudocmd = $"sudo cp - R ${publisedFolder} {destination}";
+                    //string filePath = Path.Combine(rootfolder+"/bashfile");
+                    //if (!Directory.Exists(filePath))
+                    //{
+                    //    Directory.CreateDirectory(filePath);    
+                    //}
+
+                    //System.IO.File.WriteAllText(filePath, sudocmd);
+                    //Process process = new Process();
+
                     emailService.SendEmail(result.Email, "Welcome to NavicoSoft", "WelCome Email");
                     Console.WriteLine(test2);
                     result.SubDomain = dbName + ".navedge.co";

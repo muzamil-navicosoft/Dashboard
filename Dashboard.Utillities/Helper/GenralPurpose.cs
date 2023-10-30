@@ -7,13 +7,7 @@ namespace Dashboard.Utillities.Helper
 {
     public static class GenralPurpose
     {
-        //static async Task Main(string[] args)
-        //{
-        //    var result = await SendPostRequestAsync();
-        //    await SendGetRequestAsync(result);
-        //}
-
-
+        
         //For Getting key for Authentication
         public static async Task<string> SendPostRequestAsync()
         {
