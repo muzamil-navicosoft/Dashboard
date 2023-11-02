@@ -12,6 +12,8 @@ using Dashboard.Utillities.Helper.Email;
 using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using System.Diagnostics;
+using Microsoft.Extensions.FileProviders.Composite;
+using Serilog;
 
 namespace Dashboard.Controllers
 {
@@ -241,62 +243,54 @@ namespace Dashboard.Controllers
 
                     // Setting up the Paths
 
-                   
+
                     var rootfolder = webHost.WebRootPath.ToString();
                     var subdomain = dbName + ".navedge.co";
 
-                    string file = dbName+".sh";
-                    var bashfilepath = Path.Combine(rootfolder + "/bashfile" + file);
+                    //string file = dbName + ".sh";
+                    //var bashfolderpath = Path.Combine(rootfolder + "/bashfile");
+                    //if (!Directory.Exists(bashfolderpath))
+                    //{
+                    //    Directory.CreateDirectory(bashfolderpath);
+                    //}
+                   // var bashfilepath = Path.Combine(bashfolderpath + "/" + file);
                     var sourceFolder = rootfolder + "/fifth";
-                    var destinationFolder = "C:\\inetpub\\vhosts\\navedge.co\\"+subdomain;
-                    //var destination = $"../../../{subdomain}";
+                    var destinationFolder = "C:\\inetpub\\vhosts\\navedge.co\\" + subdomain;
 
-                    // creating bash file with subdomain Firstalphabets
-                   // string fileName = dbName+".sh";
-                    var bashFilePath = Path.Combine(rootfolder + "/bashfile/" + file);
+                    // New code for Proecess
 
-                    var bashFileContents = $@"
-                    #!/bin/bash
-
-                    # Create the destination folder if it doesn't exist
-                    if [ ! -d {destinationFolder} ]; then
-                        mkdir - p {destinationFolder}
-                    fi
-
-                    # Copy all files from the source folder to the destination folder
-                    cp - r {sourceFolder} {destinationFolder}";
-
-                    System.IO.File.WriteAllText(bashfilepath, bashFileContents);
+                    //string sourcePath = @"C:\Users\Guest User\Desktop\DotNetCORE\WebApplication1\WebApplication1\wwwroot\test";
+                    //string destinationPath = @"C:\Users\Guest User\Desktop\DotNetCORE\destination";
 
                     Process process = new Process();
-                    process.StartInfo.FileName = bashfilepath;
-                    process.StartInfo.Arguments = "";
+                    process.StartInfo.FileName = "robocopy";
+                    process.StartInfo.Arguments = $"\"{sourceFolder}\" \"{destinationFolder}\" /e";
+                    process.StartInfo.UseShellExecute = false;
+                    process.StartInfo.RedirectStandardOutput = true;
+                    process.StartInfo.RedirectStandardError = true;
+                    process.StartInfo.CreateNoWindow = true;
 
-                    process.StartInfo.UseShellExecute = true;
                     process.Start();
+
+                    string output = process.StandardOutput.ReadToEnd();
+                    string error = process.StandardError.ReadToEnd();
 
                     process.WaitForExit();
 
-                    //StreamWriter sw = new StreamWriter(bashFilePath);
+                    if (process.ExitCode == 0)
+                    {
+                        Console.WriteLine("robocopy completed successfully.");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"robocopy failed with error code {process.ExitCode}");
+                        Console.WriteLine("Standard Output:");
+                        Console.WriteLine(output);
+                        Console.WriteLine("Standard Error:");
+                        Console.WriteLine(error);
+                    }
 
-                    //// Write the contents of the file.
-                    //sw.WriteLine("#!/bin/bash");
-                    //sw.WriteLine("echo \"This is a test script.\"");
-
-                    //// Close the file.
-                    //sw.Close();
-                    // for runing Bash file 
-
-                    //var destination = $"../../../muzamiltest.navedge.co";
-                    //var sudocmd = $"sudo cp - R ${publisedFolder} {destination}";
-                    //string filePath = Path.Combine(rootfolder+"/bashfile");
-                    //if (!Directory.Exists(filePath))
-                    //{
-                    //    Directory.CreateDirectory(filePath);    
-                    //}
-
-                    //System.IO.File.WriteAllText(filePath, sudocmd);
-                    //Process process = new Process();
+                    // New Code for Process Above
 
                     emailService.SendEmail(result.Email, "Welcome to NavicoSoft", "WelCome Email");
                     Console.WriteLine(test2);
@@ -309,7 +303,7 @@ namespace Dashboard.Controllers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message + e.StackTrace);
+                Log.Information($" this is reponse to the reading File {e.Message} , {e.StackTrace}");
                 return RedirectToAction("Clients");
                 
             }

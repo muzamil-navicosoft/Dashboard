@@ -30,6 +30,7 @@ public class GenrateBillMonthly : IGenrateBillMonthly
                 newbill.DueDate = bill.DueDate.AddMonths(1);
                 newbill.Amount = bill.Amount;
                 newbill.Month = newbill.DueDate.ToString("MMMM");
+                newbill.IsPaid = false;
                 unitOfWork.billing.Add(newbill);
                 unitOfWork.Save();
             }
