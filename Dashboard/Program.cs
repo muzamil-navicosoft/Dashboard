@@ -65,16 +65,19 @@ builder.Services.AddHangfire(config => config
 builder.Services.ConfigureApplicationCookie(config =>
 {
     config.LoginPath = "/login";
+    config.ExpireTimeSpan = TimeSpan.FromHours(1);
 });
 
 // Identity Configration 
 
-builder.Services.Configure<IdentityOptions>(config =>
-    {
-        // Configration for Confirmed Emails Only
-        config.SignIn.RequireConfirmedEmail = true;
-    }
-);
+// This was to check for confirmed emails only but asif sb told to not require this 
+
+//builder.Services.Configure<IdentityOptions>(config =>
+//    {
+//        // Configration for Confirmed Emails Only
+//        config.SignIn.RequireConfirmedEmail = true;
+//    }
+//);
 
 
 // Hangfire Server 
@@ -104,7 +107,11 @@ app.UseAuthorization();
 app.UseHangfireDashboard();
 
 
-app.MapHangfireDashboard("/hanfire");
+app.MapHangfireDashboard("/hanfire", new DashboardOptions
+{
+    // This is for Production to able to access Hangfire Dashboard by Admin only  which is specified in the AuthorzationFilter
+    Authorization = new[] { new MyAuthorizationFilter() }
+});
 RecurringJob.AddOrUpdate("Add monthly Billing",() => builder.Services.BuildServiceProvider()
                                                     .GetRequiredService<IGenrateBillMonthly>().GerateBill() , Cron.Monthly(1));
 

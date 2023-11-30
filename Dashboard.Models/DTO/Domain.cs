@@ -11,7 +11,7 @@ namespace Dashboard.Models.DTO
         public string name { get; set; } = string.Empty;
         public string hosting_type { get; set; } = "virtual";
         public HostingSettings hosting_settings { get; set; } = new HostingSettings { ftp_login = "ftplogin", ftp_password = "testApi@1234" };
-        public List<string> ipv4 { get; set; } = new List<string> { "104.219.233.15" };
+        public List<string> ipv4 { get; set; } = new List<string> { "104.219.233.144" };
         public Plan plan { get; set; } = new Plan { name = "Unlimited" };
     }
     public class HostingSettings

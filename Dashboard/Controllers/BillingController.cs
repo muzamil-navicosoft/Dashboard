@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace Dashboard.Controllers
 {
@@ -58,8 +59,11 @@ namespace Dashboard.Controllers
                     return View();
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Log.Information($" location : {e.StackTrace} \n");
+                Log.Information($" Error Message : {e.Message} \n");
+                Log.Information($" Ineer Exeption : {e.Message}  \n");
                 throw;
             }
         }
@@ -89,8 +93,11 @@ namespace Dashboard.Controllers
                     return View();
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Log.Information($" location : {e.StackTrace} \n");
+                Log.Information($" Error Message : {e.Message} \n");
+                Log.Information($" Ineer Exeption : {e.Message}  \n");
                 throw;
             }
         }

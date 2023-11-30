@@ -17,10 +17,11 @@ namespace Dashboard.Utillities.Helper
             using HttpClient client = new HttpClient(clientHandler);
 
             // Set the base address
-            client.BaseAddress = new Uri("https://104.219.233.15:8443/");
+            client.BaseAddress = new Uri("https://104.219.233.144:8443/");
 
             // Set the authentication credentials
-            var byteArray = Encoding.ASCII.GetBytes("admin:7a24De3j#ajs,aaa9i8j");
+            //var byteArray = Encoding.ASCII.GetBytes("admin:7a24De3j#ajs,aaa9i8j");
+            var byteArray = Encoding.ASCII.GetBytes("Administrator:PCSFa#1lJZVk");
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
 
             // Prepare the content (empty JSON object in this case)
@@ -49,7 +50,7 @@ namespace Dashboard.Utillities.Helper
                 value = value.Trim('\n');
 
 
-                Console.WriteLine(value);
+                //Console.WriteLine(value);
                 return value;
 
                 // var key = responseContent.Split(':');
@@ -58,7 +59,7 @@ namespace Dashboard.Utillities.Helper
             }
             else
             {
-                Console.WriteLine("Error: " + response.ReasonPhrase);
+               // Console.WriteLine("Error: " + response.ReasonPhrase);
                 return string.Empty;
             }
 
@@ -73,7 +74,7 @@ namespace Dashboard.Utillities.Helper
             using HttpClient client = new HttpClient(clientHandler);
 
             // Set the base address and include the API key in the header
-            client.BaseAddress = new Uri("https://104.219.233.15:8443/");
+            client.BaseAddress = new Uri("https://104.219.233.144:8443/");
             //client.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
 
             //client.DefaultRequestHeaders.Add ("X - API - Key: ",apiKey);
@@ -107,7 +108,7 @@ namespace Dashboard.Utillities.Helper
             using HttpClient client = new HttpClient(clientHandler);
 
             // Set the base address
-            client.BaseAddress = new Uri("https://104.219.233.15:8443/");
+            client.BaseAddress = new Uri("https://104.219.233.144:8443/");
             client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
 
             var obj = new Domain();
@@ -132,7 +133,7 @@ namespace Dashboard.Utillities.Helper
             }
             else
             {
-                Console.WriteLine("Error: " + response.ReasonPhrase);
+                //Console.WriteLine("Error: " + response.ReasonPhrase);
                 return string.Empty;
             }
 
@@ -147,7 +148,7 @@ namespace Dashboard.Utillities.Helper
             using HttpClient client = new HttpClient(clientHandler);
 
             // Set the base address
-            client.BaseAddress = new Uri("https://104.219.233.15:8443/");
+            client.BaseAddress = new Uri("https://104.219.233.144:8443/");
 
             //client.DefaultRequestHeaders.Add("accept", "application/json");
             client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
@@ -160,7 +161,7 @@ namespace Dashboard.Utillities.Helper
 
 
             var test = JsonSerializer.Serialize(obj);
-            Console.WriteLine(test);
+            //Console.WriteLine(test);
             
 
             var content = new StringContent(test, Encoding.UTF8, "application/json");
@@ -175,12 +176,12 @@ namespace Dashboard.Utillities.Helper
             var obj2 = JsonSerializer.Deserialize<ResponseObj>(responseContent);
             if (obj2?.code != 0)
             {
-                Console.WriteLine("Error: " + obj2?.stdout);
+                //Console.WriteLine("Error: " + obj2?.stdout);
                 return string.Empty;
             }
             else
             {
-                Console.WriteLine("Created");
+                //Console.WriteLine("Created");
                 return "Created";
             }
 

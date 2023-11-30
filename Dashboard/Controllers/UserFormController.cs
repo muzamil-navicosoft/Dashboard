@@ -46,14 +46,25 @@ namespace Dashboard.Controllers
         [HttpGet]
         public async Task<IActionResult> Requests()
         {
-            var result = await _unitOfWork.User
-                                .CustomeGetAll()
-                                .Where(x => x.isActive && !x.isAproved)
-                                .AsNoTracking()
-                                .ToListAsync();
+            try
+            {
+                var result = await _unitOfWork.User
+                               .CustomeGetAll()
+                               .Where(x => x.isActive && !x.isAproved)
+                               .AsNoTracking()
+                               .ToListAsync();
 
-            var test = result.Adapt<IEnumerable<ClientFormDto>>();
-            return View(test);
+                var test = result.Adapt<IEnumerable<ClientFormDto>>();
+                return View(test);
+            }
+            catch (Exception e)
+            {
+                Log.Information($" location : {e.StackTrace} \n");
+                Log.Information($" Error Message : {e.Message} \n");
+                Log.Information($" Ineer Exeption : {e.Message}  \n");
+                return RedirectToAction("wentWrong","Home");
+            }
+           
         }
 
         [HttpGet]
@@ -61,6 +72,10 @@ namespace Dashboard.Controllers
         {
             try
             {
+                Log.Information($"  Request come here  ");
+                var username = User?.Identity?.Name;
+                Log.Information($" loged in user is {username}");
+
                 var result = await _unitOfWork.User
                                    .CustomeGetAll()
                                    .Include(x => x.Tickets)
@@ -73,8 +88,10 @@ namespace Dashboard.Controllers
             }
             catch (Exception e)
             {
-
-                throw;
+                Log.Information($" location : {e.StackTrace} \n");
+                Log.Information($" Error Message : {e.Message} \n");
+                Log.Information($" Ineer Exeption : {e.Message}  \n");
+                return RedirectToAction("wentWrong", "Home");
             }
            
         }
@@ -82,13 +99,23 @@ namespace Dashboard.Controllers
         [HttpGet]
         public async Task<IActionResult> DeactiveClients()
         {
-            var result = await _unitOfWork.User
+            try
+            {
+                var result = await _unitOfWork.User
                                 .CustomeGetAll()
                                 .Where(x => !x.isActive && x.isAproved && !x.isDeleted)
                                 .ToListAsync();
 
-            var test = result.Adapt<IEnumerable<ClientFormDto>>();
-            return View(test);
+                var test = result.Adapt<IEnumerable<ClientFormDto>>();
+                return View(test);
+            }
+            catch (Exception e)
+            {
+                Log.Information($" location : {e.StackTrace} \n");
+                Log.Information($" Error Message : {e.Message} \n");
+                Log.Information($" Ineer Exeption : {e.Message}  \n");
+                return RedirectToAction("wentWrong", "Home");
+            }
         }
 
         [HttpGet]
@@ -127,9 +154,13 @@ namespace Dashboard.Controllers
                     return View();
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
 
+                Log.Information($" location : {e.StackTrace} \n");
+                Log.Information($" Error Message : {e.Message} \n");
+                Log.Information($" Ineer Exeption : {e.Message}  \n");
+                return RedirectToAction("wentWrong", "Home");
                 throw;
             }
 
@@ -175,32 +206,40 @@ namespace Dashboard.Controllers
         {
             var result =  _unitOfWork.User.Get(id);
 
-            // var testing = billingresult.DueDate.Day;
-
             try
             {
                 if (result != null)
                 {
+                   
                     result.isAproved = true;
                     result.AproveDate = DateTime.Now;
-                    //var server = configuration.GetSection("Database:server").Value;
                     var dbName = result.Name.Split(' ')[0];
+
+                    #region database creation and Seeding
+
+                    var username = User.Identity.Name;
+                    Log.Information($" loged in user is {username}");
+                    Log.Information($" Database Creation started");
+                    // Getting the connection string for creating new database in server as master 
                     var NewDb = configuration.GetSection("Database:Newconnection").Value;
                     SqlConnection Newconnection = new SqlConnection(NewDb);
                     Newconnection.Open();
 
+                    //Creating the new database with the firstname of enternd company name
                     SqlCommand command = new SqlCommand("CREATE DATABASE " + dbName, Newconnection);
                     command.ExecuteNonQuery();
 
+                    //setting up database script file which is to be executed 
                     string scriptFilePath = Path.Combine(webHost.WebRootPath.ToString(), "Tables.sql");
 
-
+                    // Reading database script file
                     string script = System.IO.File.ReadAllText(scriptFilePath);
 
                     var dbServer = configuration.GetSection("Database:DbServer").Value;
                     var dbUser = configuration.GetSection("Database:DbUser").Value;
                     var dbPassword = configuration.GetSection("Database:DbPassword").Value;
                     var dbCertificate = configuration.GetSection("Database:Dbcertificate").Value;
+                    var domainName = configuration.GetSection("Server:domainName").Value;
 
                     StringBuilder conStr = new StringBuilder();
 
@@ -236,31 +275,37 @@ namespace Dashboard.Controllers
 
                     Newconnection.Close();
 
+                    Log.Information($" Database Creation Ended");
+                    #endregion
+
+
+                    #region Creating Subdomain
+
+                    
+                    Log.Information($" loged in user is {username}");
+                    Log.Information($" Subdomain Creation started");
                     // Adding API call here 
+
+                    // Getting Auth key here 
                     var test = await GenralPurpose.SendPostRequestAsync();
 
+                    // Creating Subdomain 
                     var test2 = await GenralPurpose.SendPostSubDomainCreateRequestAsync(test, dbName);
 
-                    // Setting up the Paths
+                    Log.Information($" Subdomain Creation Ended");
 
+                    #endregion
+
+
+                    #region copying the sample project files to the newly created subdomain
+
+                    Log.Information($"  started Copy the sample project files ");
 
                     var rootfolder = webHost.WebRootPath.ToString();
-                    var subdomain = dbName + ".navedge.co";
+                    var subdomain = dbName + "."+domainName;
 
-                    //string file = dbName + ".sh";
-                    //var bashfolderpath = Path.Combine(rootfolder + "/bashfile");
-                    //if (!Directory.Exists(bashfolderpath))
-                    //{
-                    //    Directory.CreateDirectory(bashfolderpath);
-                    //}
-                   // var bashfilepath = Path.Combine(bashfolderpath + "/" + file);
-                    var sourceFolder = rootfolder + "/fifth";
+                    var sourceFolder = rootfolder + "/sampleproject";
                     var destinationFolder = "C:\\inetpub\\vhosts\\navedge.co\\" + subdomain;
-
-                    // New code for Proecess
-
-                    //string sourcePath = @"C:\Users\Guest User\Desktop\DotNetCORE\WebApplication1\WebApplication1\wwwroot\test";
-                    //string destinationPath = @"C:\Users\Guest User\Desktop\DotNetCORE\destination";
 
                     Process process = new Process();
                     process.StartInfo.FileName = "robocopy";
@@ -272,42 +317,75 @@ namespace Dashboard.Controllers
 
                     process.Start();
 
-                    string output = process.StandardOutput.ReadToEnd();
-                    string error = process.StandardError.ReadToEnd();
+                    Log.Information($" loged in user is {username}");
 
-                    process.WaitForExit();
+                    Log.Information($"  Files Copied to the Destination Folders ");
 
-                    if (process.ExitCode == 0)
-                    {
-                        Console.WriteLine("robocopy completed successfully.");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"robocopy failed with error code {process.ExitCode}");
-                        Console.WriteLine("Standard Output:");
-                        Console.WriteLine(output);
-                        Console.WriteLine("Standard Error:");
-                        Console.WriteLine(error);
-                    }
+                    //string output = process.StandardOutput.ReadToEnd();
+                    //string error = process.StandardError.ReadToEnd();
 
-                    // New Code for Process Above
+                    //process.WaitForExit();
 
+                    //if (process.ExitCode == 0)
+                    //{
+                    //    Log.Information($" Filles copied to the newly create subdomain is successfull ");
+                    //}
+                    //else
+                    //{
+                    //    Log.Information($" robocopy failed with error code , {process.ExitCode}");
+                    //    Log.Information($" Standard Output: , {output}");
+                    //    Log.Information($" Standard Error :, {error}");
+                    //}
+
+                    #endregion
+
+
+                    //Sending Welcome Email to newly creating Company on there company email address mention in the form 
                     emailService.SendEmail(result.Email, "Welcome to NavicoSoft", "WelCome Email");
-                    Console.WriteLine(test2);
-                    result.SubDomain = dbName + ".navedge.co";
+                    Log.Information($" loged in user is {username}");
+
+                    Log.Information($"  Welcome Email Send to Newaly create Project USer ");
+
+
+                    Log.Information($"This is before saving subdomin name in user table loged in user is {username}");
+                    result.SubDomain = dbName + "."+domainName;
                     _unitOfWork.User.update(result);
                     _unitOfWork.Save();
+                    Log.Information($"This is after saving subdomin name in user table loged in user is {username}");
                     return RedirectToAction("Clients");
                 }
                 return RedirectToAction("Clients");
             }
-            catch (Exception e)
+            catch (SqlException sqlEx)
             {
-                Log.Information($" this is reponse to the reading File {e.Message} , {e.StackTrace}");
-                return RedirectToAction("Clients");
-                
+                Log.Error($"SQL Exception occurred: {sqlEx.Message}, Stack Trace: {sqlEx.StackTrace}");
+                // Handle SQL related exceptions, maybe rollback changes or notify administrators
+                // Redirect to an error page or return a specific error message
+                return RedirectToAction("wentWrong", "Home");
             }
-           
+            catch (IOException ioEx)
+            {
+                Log.Error($"IO Exception occurred: {ioEx.Message}, Stack Trace: {ioEx.StackTrace}");
+                // Handle file-related exceptions, log the error, and possibly rollback changes
+                // Redirect to an error page or return a specific error message
+                return RedirectToAction("wentWrong", "Home");
+            }
+            catch (HttpRequestException httpEx)
+            {
+                Log.Error($"HTTP Request Exception occurred: {httpEx.Message}, Stack Trace: {httpEx.StackTrace}");
+                // Handle HTTP request related exceptions, log the error
+                // Redirect to an error page or return a specific error message
+                return RedirectToAction("wentWrong", "Home");
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"An unexpected Exception occurred: {ex.Message}, Stack Trace: {ex.StackTrace}");
+                // Log any other unexpected exceptions and handle them appropriately
+                // Redirect to an error page or return a specific error message
+                return RedirectToAction("wentWrong", "Home");
+            }
+         
+
         }
 
         [HttpGet]
