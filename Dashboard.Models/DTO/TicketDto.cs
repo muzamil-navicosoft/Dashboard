@@ -17,7 +17,7 @@ namespace Dashboard.Models.DTO
         [Required]
         [MinLength(50), MaxLength(500)]
         public string Description { get; set; } = string.Empty;
-        public string Resolution { get; set; } = string.Empty;
+        public string? Resolution { get; set; } = string.Empty;
         public string? Department { get; set; } = string.Empty;
         public bool IsActive { get; set; } = true;
         public int? ClientFormId { get; set; }
