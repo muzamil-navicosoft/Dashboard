@@ -1,8 +1,8 @@
 ﻿@model IEnumerable<Dashboard.Models.DTO.BillingInfoDto>
 
-<p>
+@* <p>
     <a asp-action="Create">Create New</a>
-</p>
+</p> *@
 <table class="table">
     <thead>
         <tr>
@@ -13,7 +13,8 @@
                 @Html.DisplayNameFor(model => model.Amount)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsPaid)
+@*                 @Html.DisplayNameFor(model => model.IsPaid)
+ *@                @Html.DisplayName("Bill Status")
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Month)
@@ -43,7 +44,10 @@
                 @Html.DisplayFor(modelItem => item.Amount)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsPaid)
+@*                 @Html.DisplayFor(modelItem => item.IsPaid)
+                *@
+                <span class="badge rounded-pill badge-light-warning me-1">Un Paid</span>
+
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Month)

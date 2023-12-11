@@ -1,4 +1,5 @@
 ﻿using Dashboard.DataAccess.Repo.IRepository;
+using Dashboard.DataAccess.UnitOfWork;
 using Dashboard.Models.DTO;
 using Dashboard.Models.Models;
 using Dashboard.Utillities.Helper;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System.Data;
 
 namespace Dashboard.Controllers
@@ -17,13 +19,41 @@ namespace Dashboard.Controllers
     {
         private readonly IOathRepo oathRepo;
         private readonly IUserService userService;
+        private readonly IUnitOfWork unitOfWork;
 
-        public OathController(IOathRepo oathRepo, IUserService userService)
+        public OathController(IOathRepo oathRepo, IUserService userService, IUnitOfWork unitOfWork)
         {
             this.oathRepo = oathRepo;
             this.userService = userService;
+            this.unitOfWork = unitOfWork;
         }
 
+        public async Task<IActionResult> Index()
+        {
+            var billCount = unitOfWork.billing.CustomeGetAll().Include(x => x.ClientForm).Where(x => !x.IsPaid && x.ClientForm.isActive).AsNoTracking().Count();
+            var ticketCount = unitOfWork.ticket.CustomeGetAll().Include(x => x.ClientForm).Where(x => x.IsActive).AsNoTracking().Count();
+            var userCount = await unitOfWork.User
+                                   .CustomeGetAll()
+                                   .Where(x => x.isActive && x.isAproved && !x.isDeleted)
+                                   .AsNoTracking()
+                                   .ToListAsync();
+            var deactiveuserCount = await unitOfWork.User
+                                  .CustomeGetAll()
+                                  .Where(x => !x.isActive && x.isAproved && !x.isDeleted)
+                                  .AsNoTracking()
+                                  .ToListAsync();
+            var PaidbillCount = unitOfWork.billing.CustomeGetAll().Include(x => x.ClientForm).Where(x => x.IsPaid && x.ClientForm.isActive).AsNoTracking().Count();
+
+            var count = new Counter()
+            {
+                ActiveBillingCounter = billCount,
+                ActiveTicketCounter = ticketCount,
+                ActiveUserCounter = userCount.Count(),
+                DeActiveUserCounter = deactiveuserCount.Count(),
+                PaidBillingCounter = PaidbillCount,
+            };
+            return View(count);
+        }
         [Route("signup")]
         public IActionResult signUp()
         {

@@ -1,8 +1,8 @@
 ﻿@model IEnumerable<Dashboard.Models.DTO.TicketDto>
 
-<p>
+@* <p>
     <a asp-action="Create">Create New</a>
-</p>
+</p> *@
 <table class="table">
     <thead>
         <tr>
@@ -12,11 +12,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
-            <th>
+            @* <th>
                 @Html.DisplayNameFor(model => model.Description)
-            </th>
+            </th> *@
             <th>
-                @Html.DisplayNameFor(model => model.IsActive)
+@*                 @Html.DisplayNameFor(model => model.IsActive)
+ *@                @Html.DisplayName("Status")
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ClientFormId)
@@ -36,11 +37,12 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
-            <td>
+           @*  <td>
                 @Html.DisplayFor(modelItem => item.Description)
-            </td>
+            </td> *@
             <td>
-                @Html.DisplayFor(modelItem => item.IsActive)
+@*                 @Html.DisplayFor(modelItem => item.IsActive)
+ *@                <span class="badge rounded-pill badge-light-success me-1">Completed</span>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ClientFormId)

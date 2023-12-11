@@ -2,9 +2,9 @@
 
 @if (Model != null)
 {
-    <p>
+@*     <p>
         <a asp-action="Create">Create New</a>
-    </p>
+    </p> *@
     <table class="table">
         <thead>
             <tr>
@@ -14,11 +14,12 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Title)
                 </th>
-                <th>
+                @* <th>
                     @Html.DisplayNameFor(model => model.Description)
-                </th>
+                </th> *@
                 <th>
-                    @Html.DisplayNameFor(model => model.IsActive)
+@*                     @Html.DisplayNameFor(model => model.IsActive)
+ *@                    @Html.DisplayName("Status")
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.ClientFormId)
@@ -39,11 +40,13 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Title)
                     </td>
-                    <td>
+                    @* <td>
                         @Html.DisplayFor(modelItem => item.Description)
-                    </td>
+                    </td> *@
                     <td>
-                        @Html.DisplayFor(modelItem => item.IsActive)
+@*                         @Html.DisplayFor(modelItem => item.IsActive)
+ *@                     <span class="badge rounded-pill badge-light-warning me-1">Pending</span>
+
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.ClientFormId)
@@ -65,9 +68,53 @@
             }
         </tbody>
     </table>
+    @* <section id="multilingual-datatable">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header border-bottom">
+                        <h4 class="card-title">Multilingual</h4>
+                    </div>
+                    <div class="card-datatable">
+                        <table class="dt-multilingual table">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Name</th>
+                                    <th>Position</th>
+                                    <th>Email</th>
+                                    <th>Date</th>
+                                    <th>Salary</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> *@
 
 }
 else
 {
     <h1> Nothing Found </h1>
 }
+
+@* @section Scripts 
+{
+    <script src="~/app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js"></script>
+    <script src="~/app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js"></script>
+    <script src="~/app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js"></script>
+    <script src="~/app-assets/vendors/js/tables/datatable/responsive.bootstrap5.min.js"></script>
+    <script src="~/app-assets/vendors/js/tables/datatable/datatables.checkboxes.min.js"></script>
+    <script src="~/app-assets/vendors/js/tables/datatable/datatables.buttons.min.js"></script>
+    <script src="~/app-assets/vendors/js/tables/datatable/jszip.min.js"></script>
+    <script src="~/app-assets/vendors/js/tables/datatable/pdfmake.min.js"></script>
+    <script src="~/app-assets/vendors/js/tables/datatable/vfs_fonts.js"></script>
+    <script src="~/app-assets/vendors/js/tables/datatable/buttons.html5.min.js"></script>
+    <script src="~/app-assets/vendors/js/tables/datatable/buttons.print.min.js"></script>
+    <script src="~/app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js"></script>
+    <script src="~/app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js"></script>
+} *@

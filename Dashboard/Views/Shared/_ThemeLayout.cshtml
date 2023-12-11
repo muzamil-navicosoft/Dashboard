@@ -47,18 +47,21 @@
 <body class="vertical-layout vertical-menu-modern  navbar-floating footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="">
 
     <!-- BEGIN: Header-->
-    @*<nav class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-dark navbar-shadow container-xxl">
+    <nav class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-dark navbar-shadow container-xxl">
         <div class="navbar-container d-flex content">
             <div class="bookmark-wrapper d-flex align-items-center">
                 <ul class="nav navbar-nav d-xl-none">
                     <li class="nav-item"><a class="nav-link menu-toggle" href="#"><i class="ficon" data-feather="menu"></i></a></li>
                 </ul>
                 <ul class="nav navbar-nav bookmark-icons">
+@*                     <img src="~/Images/logo.webp" width="220" />
+ *@                </ul>
+                @* <ul class="nav navbar-nav bookmark-icons">
                     <li class="nav-item d-none d-lg-block"><a class="nav-link" href="app-email.html" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Email"><i class="ficon" data-feather="mail"></i></a></li>
                     <li class="nav-item d-none d-lg-block"><a class="nav-link" href="app-chat.html" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Chat"><i class="ficon" data-feather="message-square"></i></a></li>
                     <li class="nav-item d-none d-lg-block"><a class="nav-link" href="app-calendar.html" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Calendar"><i class="ficon" data-feather="calendar"></i></a></li>
                     <li class="nav-item d-none d-lg-block"><a class="nav-link" href="app-todo.html" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Todo"><i class="ficon" data-feather="check-square"></i></a></li>
-                </ul>
+                </ul> 
                 <ul class="nav navbar-nav">
                     <li class="nav-item d-none d-lg-block">
                         <a class="nav-link bookmark-star"><i class="ficon text-warning" data-feather="star"></i></a>
@@ -68,15 +71,15 @@
                             <ul class="search-list search-list-bookmark"></ul>
                         </div>
                     </li>
-                </ul>
+                </ul>*@
             </div>
             <ul class="nav navbar-nav align-items-center ms-auto">
-                <li class="nav-item dropdown dropdown-language">
+                @* <li class="nav-item dropdown dropdown-language">
                     <a class="nav-link dropdown-toggle" id="dropdown-flag" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="flag-icon flag-icon-us"></i><span class="selected-language">English</span></a>
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-flag"><a class="dropdown-item" href="#" data-language="en"><i class="flag-icon flag-icon-us"></i> English</a><a class="dropdown-item" href="#" data-language="fr"><i class="flag-icon flag-icon-fr"></i> French</a><a class="dropdown-item" href="#" data-language="de"><i class="flag-icon flag-icon-de"></i> German</a><a class="dropdown-item" href="#" data-language="pt"><i class="flag-icon flag-icon-pt"></i> Portuguese</a></div>
-                </li>
+                </li> *@
                 <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-style"><i class="ficon" data-feather="sun"></i></a></li>
-                <li class="nav-item nav-search">
+             @*    <li class="nav-item nav-search">
                     <a class="nav-link nav-link-search"><i class="ficon" data-feather="search"></i></a>
                     <div class="search-input">
                         <div class="search-input-icon"><i data-feather="search"></i></div>
@@ -262,20 +265,28 @@
                         </li>
                         <li class="dropdown-menu-footer"><a class="btn btn-primary w-100" href="#">Read all notifications</a></li>
                     </ul>
-                </li>
-                <li class="nav-item dropdown dropdown-user">
-                    <a class="nav-link dropdown-toggle dropdown-user-link" id="dropdown-user" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <div class="user-nav d-sm-flex d-none"><span class="user-name fw-bolder">John Doe</span><span class="user-status">Admin</span></div><span class="avatar"><img class="round" src="../../../app-assets/images/portrait/small/avatar-s-11.jpg" alt="avatar" height="40" width="40"><span class="avatar-status-online"></span></span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-user">
-                        <a class="dropdown-item" href="page-profile.html"><i class="me-50" data-feather="user"></i> Profile</a><a class="dropdown-item" href="app-email.html"><i class="me-50" data-feather="mail"></i> Inbox</a><a class="dropdown-item" href="app-todo.html"><i class="me-50" data-feather="check-square"></i> Task</a><a class="dropdown-item" href="app-chat.html"><i class="me-50" data-feather="message-square"></i> Chats</a>
-                        <div class="dropdown-divider"></div><a class="dropdown-item" href="page-account-settings-account.html"><i class="me-50" data-feather="settings"></i> Settings</a><a class="dropdown-item" href="page-pricing.html"><i class="me-50" data-feather="credit-card"></i> Pricing</a><a class="dropdown-item" href="page-faq.html"><i class="me-50" data-feather="help-circle"></i> FAQ</a><a class="dropdown-item" href="auth-login-cover.html"><i class="me-50" data-feather="power"></i> Logout</a>
-                    </div>
-                </li>
+                </li> *@
+                @if (_signIn.IsSignedIn(User))
+                {
+                    <li class="nav-item dropdown dropdown-user">
+                        <a class="nav-link dropdown-toggle dropdown-user-link" id="dropdown-user" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <div class="user-nav d-sm-flex d-none"><span class="user-name fw-bolder">@User.FindFirst("userFirstName")?.Value</span>@* <span class="user-status">Admin</span></div><span class="avatar"><img class="round" src="../../../app-assets/images/portrait/small/avatar-s-11.jpg" alt="avatar" height="40" width="40"><span class="avatar-status-online"></span></span> *@
+                        </a>
+                        <div style="width: 13.5rem" class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-user">
+                            @*                         <a class="dropdown-item" href="page-profile.html"><i class="me-50" data-feather="user"></i> Profile</a><a class="dropdown-item" href="app-email.html"><i class="me-50" data-feather="mail"></i> Inbox</a><a class="dropdown-item" href="app-todo.html"><i class="me-50" data-feather="check-square"></i> Task</a><a class="dropdown-item" href="app-chat.html"><i class="me-50" data-feather="message-square"></i> Chats</a>
+                        *@                        @* <div class="dropdown-divider"></div><a class="dropdown-item" href="page-account-settings-account.html"><i class="me-50" data-feather="settings"></i> Settings</a><a class="dropdown-item" href="page-pricing.html"><i class="me-50" data-feather="credit-card"></i> Pricing</a><a class="dropdown-item" href="page-faq.html"><i class="me-50" data-feather="help-circle"></i> FAQ</a> *@
+
+                            <a asp-controller="Oath" asp-action="changePassword" class="dropdown-item"> <i class="me-50" data-feather="settings"></i> Update Password</a>
+                            <a asp-controller="Oath" asp-action="logout" class="dropdown-item"> <i class="me-50" data-feather="power"></i> Logout</a>
+
+                        </div>
+                    </li>                   
+                }
+           
             </ul>
         </div>
     </nav>
-*@   
+   
     <ul class="main-search-list-defaultlist d-none">
         <li class="d-flex align-items-center">
             <a href="#">
@@ -382,7 +393,7 @@
             <ul class="nav navbar-nav flex-row">
                 <li class="nav-item me-auto">
                     <a class="navbar-brand" href="../../../html/ltr/vertical-menu-template-dark/index.html">
-                        <span class="brand-logo">
+                       @*  <span class="brand-logo">
                             <svg viewbox="0 0 139 95" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="24">
                                 <defs>
                                     <lineargradient id="linearGradient-1" x1="100%" y1="10.5120544%" x2="50%" y2="89.4879456%">
@@ -406,9 +417,10 @@
                                     </g>
                                 </g>
                             </svg>
-                        </span>
-                        <h2 class="brand-text">Vuexy</h2>
-                    </a>
+                        </span> *@
+                        <img src="~/Images/logo.webp" width="180"/>
+@*                         <h2 class="brand-text">Navicosoft</h2>
+ *@                    </a>
                 </li>
                 <li class="nav-item nav-toggle"><a class="nav-link modern-nav-toggle pe-0" data-bs-toggle="collapse"><i class="d-block d-xl-none text-primary toggle-icon font-medium-4" data-feather="x"></i><i class="d-none d-xl-block collapse-toggle-icon font-medium-4  text-primary" data-feather="disc" data-ticon="disc"></i></a></li>
             </ul>
@@ -420,14 +432,15 @@
 
 
                 <li class=" nav-item">
-                    <a class="d-flex align-items-center" href="index.html"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboards">Dashboards</span></a>
+@*                     <a class="d-flex align-items-center" href="index.html"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboards">Dashboards</span></a>
+ *@                    <a class="d-flex align-items-center" asp-controller="Oath" asp-action="index"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboards">Dashboard</span></a>
                 </li>
                 <li class=" navigation-header">
                     <span data-i18n="Apps &amp; Pages">Apps &amp; Pages</span><i data-feather="more-horizontal"></i>
                 </li>
-                @if (_signIn.IsSignedIn(User))
+                @if (!_signIn.IsSignedIn(User))
                 {
-                    <li class=" navigation-header">
+                    @* <li class=" navigation-header">
                         @User.FindFirst("userFirstName")?.Value
                     </li>
                     <li>
@@ -435,17 +448,21 @@
                     </li>
                     <li>
                         <button type="button" class="btn btn-outline-info waves-effect">@Html.ActionLink("Change Password", "changePassword", "Oath")</button>
+                    </li> *@
+                    <li>
+                        <a class="btn btn-outline-primary" asp-controller="Oath" asp-action="login" asp-route-returnUrl="@Context.Request.Path">LogIn</a>
                     </li>
+
                 }
-                else
+                @* else
                 {
                     <li>
                         <a class="btn btn-outline-primary" asp-controller="Oath" asp-action="login" asp-route-returnUrl="@Context.Request.Path">LogIn</a>
 
-@*                         <button type="button" class="btn btn-outline-info waves-effect">@Html.ActionLink("Log In", "login", "Oath")</button>
- *@                    </li>
+@                       <button type="button" class="btn btn-outline-info waves-effect">@Html.ActionLink("Log In", "login", "Oath")</button>
+                     </li>
                     
-                }
+                } *@
                 
                 @if (User.IsInRole("Admin"))
                 {

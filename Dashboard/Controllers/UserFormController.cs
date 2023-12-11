@@ -72,9 +72,9 @@ namespace Dashboard.Controllers
         {
             try
             {
-                Log.Information($"  Request come here  ");
                 var username = User?.Identity?.Name;
                 Log.Information($" loged in user is {username}");
+                Log.Information($"  Request come here after redirection ");
 
                 var result = await _unitOfWork.User
                                    .CustomeGetAll()
@@ -278,7 +278,6 @@ namespace Dashboard.Controllers
                     Log.Information($" Database Creation Ended");
                     #endregion
 
-
                     #region Creating Subdomain
 
                     
@@ -297,12 +296,13 @@ namespace Dashboard.Controllers
                     #endregion
 
 
+
                     #region copying the sample project files to the newly created subdomain
 
                     Log.Information($"  started Copy the sample project files ");
 
                     var rootfolder = webHost.WebRootPath.ToString();
-                    var subdomain = dbName + "."+domainName;
+                    var subdomain = dbName + "." + domainName;
 
                     var sourceFolder = rootfolder + "/sampleproject";
                     var destinationFolder = "C:\\inetpub\\vhosts\\navedge.co\\" + subdomain;

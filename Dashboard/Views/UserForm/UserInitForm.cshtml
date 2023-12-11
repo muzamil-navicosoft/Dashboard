@@ -4,17 +4,20 @@
     ViewData["Title"] = "UserInitForm";
 }
 
-<h1>UserInitForm</h1>
+
 
 @if (ViewBag.success != null)
 {
     <h1>@ViewBag.success</h1>
 }
-<h4>ClientFormDto</h4>
-<hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="UserInitForm" enctype="multipart/form-data">
+    <div class="col-md-8 col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">New Client Registraition</h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="UserInitForm" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @*<div class="form-group">
                 <label asp-for="Id" class="control-label"></label>
@@ -87,6 +90,9 @@
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
+    
+            </div>
+        </div>
     </div>
 </div>
 
