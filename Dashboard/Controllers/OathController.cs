@@ -32,9 +32,14 @@ namespace Dashboard.Controllers
         {
             var billCount = unitOfWork.billing.CustomeGetAll().Include(x => x.ClientForm).Where(x => !x.IsPaid && x.ClientForm.isActive).AsNoTracking().Count();
             var ticketCount = unitOfWork.ticket.CustomeGetAll().Include(x => x.ClientForm).Where(x => x.IsActive).AsNoTracking().Count();
-            var userCount = await unitOfWork.User
+            var ActiveuserCount = await unitOfWork.User
                                    .CustomeGetAll()
                                    .Where(x => x.isActive && x.isAproved && !x.isDeleted)
+                                   .AsNoTracking()
+                                   .ToListAsync();
+            var PendinguserCount = await unitOfWork.User
+                                   .CustomeGetAll()
+                                   .Where(x => x.isActive && !x.isAproved && !x.isDeleted)
                                    .AsNoTracking()
                                    .ToListAsync();
             var deactiveuserCount = await unitOfWork.User
@@ -42,14 +47,21 @@ namespace Dashboard.Controllers
                                   .Where(x => !x.isActive && x.isAproved && !x.isDeleted)
                                   .AsNoTracking()
                                   .ToListAsync();
+            var userCount = await unitOfWork.User
+                                  .CustomeGetAll()
+                                  .AsNoTracking()
+                                  .ToListAsync();
+
             var PaidbillCount = unitOfWork.billing.CustomeGetAll().Include(x => x.ClientForm).Where(x => x.IsPaid && x.ClientForm.isActive).AsNoTracking().Count();
 
             var count = new Counter()
             {
                 ActiveBillingCounter = billCount,
                 ActiveTicketCounter = ticketCount,
-                ActiveUserCounter = userCount.Count(),
+                ActiveUserCounter = ActiveuserCount.Count(),
                 DeActiveUserCounter = deactiveuserCount.Count(),
+                PendingUserCounter = PendinguserCount.Count(),
+                AllUserCounter = userCount.Count(),
                 PaidBillingCounter = PaidbillCount,
             };
             return View(count);

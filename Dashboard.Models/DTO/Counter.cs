@@ -12,6 +12,8 @@ namespace Dashboard.Models.DTO
         public int ActiveBillingCounter { get; set; }
         public int ActiveUserCounter { get; set; }
         public int DeActiveUserCounter { get; set; }
+        public int AllUserCounter { get; set; }
+        public int PendingUserCounter { get; set; }
         public int PaidBillingCounter { get; set; }
     }
 }
