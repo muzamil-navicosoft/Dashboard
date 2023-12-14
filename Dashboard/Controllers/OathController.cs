@@ -28,6 +28,8 @@ namespace Dashboard.Controllers
             this.unitOfWork = unitOfWork;
         }
 
+        [Authorize]
+        [Route("/")]
         public async Task<IActionResult> Index()
         {
             var billCount = unitOfWork.billing.CustomeGetAll().Include(x => x.ClientForm).Where(x => !x.IsPaid && x.ClientForm.isActive).AsNoTracking().Count();
@@ -97,6 +99,40 @@ namespace Dashboard.Controllers
 
         }
 
+        //[Route("signnup")]
+        //[HttpPost]
+        //public async Task<IActionResult> signUp(string fname, string lname, string email, string password , string ConfirmPassword)
+        //{
+        //    SignUpDto obj = new SignUpDto
+        //    {
+        //        FirstName = fname,
+        //        LastName = lname,
+        //        Email = email,
+        //        Password = password,
+        //        ConfirmPassword = ConfirmPassword
+        //    };
+        //    if (ModelState.IsValid)
+        //    {
+        //        var result = await oathRepo.CreateUserAsync(obj);
+        //        if (!result.Succeeded)
+        //        {
+        //            foreach (var item in result.Errors)
+        //            {
+        //                ModelState.AddModelError("", item.Description);
+        //            }
+        //            return View();
+        //        }
+        //        ModelState.Clear();
+        //        return RedirectToAction("Index", "Home");
+        //    }
+        //    else
+        //    {
+        //        ModelState.AddModelError("", "invalid Fields");
+        //        return View();
+        //    }
+
+        //}
+
         [Route("login")]
         public IActionResult Login()
         {
@@ -116,7 +152,10 @@ namespace Dashboard.Controllers
                     {
                         return LocalRedirect(ReturnUrl);
                     }
-                    return RedirectToAction("Index", "Home");
+                    // For Applying the logic of Client Dashboard View
+                    if(User.IsInRole("Client"))
+                        return RedirectToAction("UserDetail", "UserForm");
+                    return RedirectToAction("Index", "oath");
                 }
                 else if(result.IsNotAllowed)
                 {
@@ -135,7 +174,7 @@ namespace Dashboard.Controllers
         public async Task<IActionResult> logout()
         {
             await oathRepo.logout();
-            return RedirectToAction("index", "Home");
+            return RedirectToAction("login");
         }
         [Route("Change-Password")]
         [HttpGet]

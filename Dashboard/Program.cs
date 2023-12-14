@@ -62,28 +62,30 @@ builder.Services.AddHangfire(config => config
 
 // Login Path Defined
 
-//builder.Services.ConfigureApplicationCookie(config =>
-//{
-//    config.LoginPath = "/login";
-//    config.ExpireTimeSpan = TimeSpan.FromHours(1);
-//});
+builder.Services.ConfigureApplicationCookie(config =>
+{
+    config.LoginPath = "/login";
+    config.ExpireTimeSpan = TimeSpan.FromHours(1);
+    config.AccessDeniedPath = "/";
+    
+});
 
-builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme)
-               .AddCookie(options =>
-               {
-                   options.LoginPath = "/login";
-                   options.ExpireTimeSpan = new System.TimeSpan(0, 50, 0);
-                   options.SlidingExpiration = true;
+//builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme)
+//               .AddCookie(options =>
+//               {
+//                   options.LoginPath = "/login";
+//                   options.ExpireTimeSpan = new System.TimeSpan(0, 50, 0);
+//                   options.SlidingExpiration = true;
 
-                   options.Cookie = new CookieBuilder
-                   {
-                       SameSite = SameSiteMode.Strict,
-                       SecurePolicy = CookieSecurePolicy.Always,
-                       IsEssential = true,
-                       HttpOnly = true
-                   };
-                   options.Cookie.Name = "MyCookie";
-               });
+//                   options.Cookie = new CookieBuilder
+//                   {
+//                       SameSite = SameSiteMode.Strict,
+//                       SecurePolicy = CookieSecurePolicy.Always,
+//                       IsEssential = true,
+//                       HttpOnly = true
+//                   };
+//                   options.Cookie.Name = "MyCookie";
+//               });
 // Identity Configration 
 
 // This was to check for confirmed emails only but asif sb told to not require this 
