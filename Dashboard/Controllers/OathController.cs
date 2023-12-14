@@ -28,7 +28,8 @@ namespace Dashboard.Controllers
             this.unitOfWork = unitOfWork;
         }
 
-        [Authorize]
+        [Authorize(Roles ="Admin")]
+       
         [Route("/")]
         public async Task<IActionResult> Index()
         {
@@ -152,7 +153,8 @@ namespace Dashboard.Controllers
                     {
                         return LocalRedirect(ReturnUrl);
                     }
-                    // For Applying the logic of Client Dashboard View test
+                    // For Applying the logic of Client Dashboard View 
+                    //adfasfasdf
                     if(User.IsInRole("Client"))
                         return RedirectToAction("UserDetail", "UserForm");
                     return RedirectToAction("Index", "oath");

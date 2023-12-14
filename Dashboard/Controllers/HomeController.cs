@@ -60,5 +60,10 @@ namespace Dashboard.Controllers
         {
             return View();
         }
+        [Route("unauth")]
+        public IActionResult unauth()
+        {
+            return View();
+        }
     }
 }

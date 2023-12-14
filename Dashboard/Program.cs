@@ -66,7 +66,7 @@ builder.Services.ConfigureApplicationCookie(config =>
 {
     config.LoginPath = "/login";
     config.ExpireTimeSpan = TimeSpan.FromHours(1);
-    config.AccessDeniedPath = "/";
+    config.AccessDeniedPath = "/unauth";
     
 });
 
