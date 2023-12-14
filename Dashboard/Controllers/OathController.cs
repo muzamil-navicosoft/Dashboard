@@ -152,7 +152,7 @@ namespace Dashboard.Controllers
                     {
                         return LocalRedirect(ReturnUrl);
                     }
-                    // For Applying the logic of Client Dashboard View
+                    // For Applying the logic of Client Dashboard View test
                     if(User.IsInRole("Client"))
                         return RedirectToAction("UserDetail", "UserForm");
                     return RedirectToAction("Index", "oath");
