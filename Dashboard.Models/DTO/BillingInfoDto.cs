@@ -12,6 +12,7 @@ namespace Dashboard.Models.DTO
         public double Amount { get; set; }
         public bool IsPaid { get; set; } = false;
         public string? Month { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
         public DateTime DueDate {get; set;}
         //public short Year { get; set; }
         public DateTime? PaidDate { get; set; } 

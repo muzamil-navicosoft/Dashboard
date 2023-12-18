@@ -93,6 +93,7 @@ namespace Dashboard.Controllers
         public IActionResult Edit(int id)
         {
             var result = _unitOfWork.ticket.Get(id);
+            //var result = _unitOfWork.ticket.CustomeGetAll().Where(x => x.Id == id).AsNoTracking().FirstOrDefaultAsync();
             if (result != null)
             {
                 var deparments = new List<string> { "Admin", "Tickitting", "Billing" };
@@ -102,20 +103,50 @@ namespace Dashboard.Controllers
             }
             return View();
         }
+
         [HttpPost]
-        public IActionResult Edit(TicketDto obj)
+        public IActionResult Edit(int id, string message)
         {
-            if (ModelState.IsValid)
+            var result = _unitOfWork.ticket.Get(id);
+            // var test = obj.Adapt<Ticket>();
+            if (result != null)
             {
-                var test = obj.Adapt<Ticket>();
-               
-                _unitOfWork.ticket.update(test);
-                _unitOfWork.Save();
+                string domain = HttpContext.Request.Host.ToString();
+                if(User != null)
+                {
+                    string replyBy = User.FindFirst("userFirstName")?.Value;
+                
+
+                    // Use HttpContext.Request.IsHttps instead of checking port numbers
+                    if (HttpContext.Request.IsHttps)
+                    {
+                        domain += ":443";
+                    }
+
+                    result.Description = replyBy + "\n" + message + "\n"+result.Description ;
+                    _unitOfWork.ticket.update(result);
+                    _unitOfWork.Save();
+                    return RedirectToAction("Edit", new { id });
+                }
             }
 
             //var test = result.Adapt<IEnumerable<BillingInfoDto>>();
             return RedirectToAction("Index");
         }
+        //[HttpPost]
+        //public IActionResult Edit(TicketDto obj)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var test = obj.Adapt<Ticket>();
+
+        //        _unitOfWork.ticket.update(test);
+        //        _unitOfWork.Save();
+        //    }
+
+        //    //var test = result.Adapt<IEnumerable<BillingInfoDto>>();
+        //    return RedirectToAction("Index");
+        //}
         public IActionResult Closed()
         {
             //var result =  _unitOfWork.ticket.GetAll();

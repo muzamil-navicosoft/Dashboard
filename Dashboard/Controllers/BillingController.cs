@@ -30,7 +30,7 @@ namespace Dashboard.Controllers
             _helper = helper;
             this.webHost = webHost;
             _helper.ConfigureMapster();
-            QuestPDF.Settings.License = LicenseType.Community;
+            //QuestPDF.Settings.License = LicenseType.Community;
         }
         [HttpGet]
         public IActionResult Add()
@@ -219,262 +219,123 @@ namespace Dashboard.Controllers
 
         public async Task<IActionResult> GenratePdf(int id)
         {
-            var result = await _unitOfWork.billing.CustomeGetAll().Where(x => x.Id == id).Include( x => x.ClientForm).ToListAsync();
-            if (result != null)
+            try
             {
-                //var user = _unitOfWork.User.Get(result.ClientFormId);
-                // code in your main method
-                Document.Create(container =>
+                var result = await _unitOfWork.billing.CustomeGetAll().Where(x => x.Id == id).Include( x => x.ClientForm).AsNoTracking().ToListAsync();
+                if (result != null)
                 {
-                    var titleStyle = TextStyle.Default.FontSize(12).SemiBold().FontColor(Colors.Blue.Medium);
-                    var Invoice = TextStyle.Default.FontSize(12);
-
-                    
-                    container.Page(page =>
+                    //var user = _unitOfWork.User.Get(result.ClientFormId);
+                    // code in your main method
+                    Document.Create(container =>
                     {
-                        // Defining Page Size
+                        var titleStyle = TextStyle.Default.FontSize(12).SemiBold().FontColor(Colors.Blue.Medium);
+                        var Invoice = TextStyle.Default.FontSize(12);
 
-                        page.Size(PageSizes.A4);
-                        page.Margin(50);
-                        page.PageColor(Colors.White);
-                        page.DefaultTextStyle(x => x.FontSize(16));
-
-
-                        // Getting the root path for Image
-                        string serverPath = webHost.WebRootPath.ToString();
-
-                        page.Header().PaddingVertical(20).Container().Row(row =>
-                        {
-                            row.ConstantItem(200).Image($"{serverPath}/images/logo.png");
-                            
-                        });
                     
-                        page.Content().PaddingVertical(20).Column(col =>
+                        container.Page(page =>
                         {
-                            // For Company Name and Details
-                            col.Item().AlignRight().Text("Navicosoft Pty Ltd").FontSize(18).Bold();
-                            col.Item().AlignRight().Text("ABN: 19648285894").FontSize(12);
-                            col.Item().AlignRight().Text("Tower 5/727 Collins St, Docklands VIC 3008").FontSize(12);
+                            // Defining Page Size
+
+                            page.Size(PageSizes.A4);
+                            page.Margin(50);
+                            page.PageColor(Colors.White);
+                            page.DefaultTextStyle(x => x.FontSize(16));
 
 
-                            // For InvoiceNumber and  Due Date
-                            col.Item().PaddingTop(10).AlignLeft().Text($"Invoice # {result[0].Id}").FontSize(18).Bold();
-                            col.Item().AlignLeft().Text($"Bill For Month : {result[0].Month}").Style(Invoice);
-                            col.Item().AlignLeft().Text($"Due Date : {result[0].DueDate}").Style(Invoice);
+                            // Getting the root path for Image
+                            string serverPath = webHost.WebRootPath.ToString();
 
-
-                            // Invoiced To
-                            col.Item().PaddingTop(10).AlignLeft().Text($"Invoiced To").FontSize(18).Bold();
-                            col.Item().AlignLeft().Text($"{result[0].ClientForm?.Name}").Style(Invoice);
-
-
-                            // Table
-                            col.Item().PaddingVertical(20).Table(table => 
-                            {                           
-                                table.ColumnsDefinition(columns =>
-                                {
-                                    columns.RelativeColumn();
-                                    columns.RelativeColumn();
-                                    //columns.RelativeColumn();
-                                    //columns.RelativeColumn();
-                                    //columns.RelativeColumn();
-                                });
-
-                                // step 2
-                                table.Header(header =>
-                                {
-                                    //header.Cell().Element(CellStyle).Text("#");
-                                    //header.Cell().Element(CellStyle).Text("Product");
-                                    //header.Cell().Element(CellStyle).AlignRight().Text("Unit price");
-                                    header.Cell().Element(CellStyle).AlignCenter().Text("Quantity");
-                                    header.Cell().Element(CellStyle).AlignRight().Text("Total");
-
-                                    static IContainer CellStyle(IContainer container)
-                                    {
-                                        return container.DefaultTextStyle(x => x.SemiBold()).PaddingVertical(5).BorderBottom(1).BorderColor(Colors.Black);
-                                    }
-                                });
-
-                                //foreach (var item in result)
-                                //{
-                                //    table.Cell().Element(CellStyle).Text(Model.Items.IndexOf(item) + 1);
-                                //    table.Cell().Element(CellStyle).Text(item.Name);
-                                //    table.Cell().Element(CellStyle).AlignRight().Text($"{item.Price}$");
-                                //    table.Cell().Element(CellStyle).AlignRight().Text(item.Quantity);
-                                //    table.Cell().Element(CellStyle).AlignRight().Text($"{item.Price * item.Quantity}$");
-
-                                //    static IContainer CellStyle(IContainer container)
-                                //    {
-                                //        return container.BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingVertical(5);
-                                //    }
-                                //}
-
-                            });
-
-                        });
-                        
-                        //page.Content().PaddingVertical(50).Container().Row(row =>
-                        //{
-                        //    row.ConstantItem(10, Unit.Millimetre).AlignRight().Text("Navicosoft Pty Ltd").FontSize(18).Bold();
-                        //    row.ConstantItem(170, Unit.Millimetre).AlignRight().Text("Navicosoft Pty Ltd").FontSize(18).Bold();
-                        //    //row.ConstantItem(170, Unit.Millimetre).AlignRight().Text("Navicosoft Pty Ltd").FontSize(18).Bold();
-                        //    //row.RelativeItem().AlignRight().Text("ABN: 19648285894").FontSize(12);
-                        //    //row.RelativeItem().AlignRight().Text("Tower 5/727 Collins St, Docklands VIC 3008").FontSize(12);
-                        //    //row.RelativeItem().Column(column =>
-                        //    //{
-                        //    //    column.Item().AlignRight().Text("Navicosoft Pty Ltd").FontSize(18).Bold();
-                        //    //    column.Item().AlignRight().Text("ABN: 19648285894").FontSize(12);
-                        //    //    column.Item().AlignRight().Text("Tower 5/727 Collins St, Docklands VIC 3008").FontSize(12);
-                        //    //});
-                        //    //row.RelativeItem().Table(table => 
-                        //    //{
-                        //    //    table.ColumnsDefinition(columns =>
-                        //    //    {
-                        //    //        //columns.ConstantColumn(25);
-                        //    //        //columns.RelativeColumn(3);
-                        //    //        //columns.RelativeColumn();
-                        //    //        columns.RelativeColumn();
-                        //    //        columns.RelativeColumn();
-                        //    //    });
-
-                        //    //    // step 2
-                        //    //    table.Header(header =>
-                        //    //    {
-                        //    //        //header.Cell().Element(CellStyle).Text("#");
-                        //    //        //header.Cell().Element(CellStyle).Text("Product");
-                        //    //        //header.Cell().Element(CellStyle).AlignRight().Text("Unit price");
-                        //    //        header.Cell().Element(CellStyle).AlignCenter().Text("Quantity");
-                        //    //        header.Cell().Element(CellStyle).AlignRight().Text("Total");
-
-                        //    //        static IContainer CellStyle(IContainer container)
-                        //    //        {
-                        //    //            return container.DefaultTextStyle(x => x.SemiBold()).PaddingVertical(5).BorderBottom(1).BorderColor(Colors.Black);
-                        //    //        }
-                        //    //    });
-
-                        //    //});
-                           
-
-                        //});
-                        //page.Content().PaddingVertical(50).Container().Row(row =>
-                        //{
-                        //    //row.ConstantItem(170, Unit.Millimetre).AlignRight().Text("Navicosoft Pty Ltd").FontSize(18).Bold();
-                        //    //row.ConstantItem(170, Unit.Millimetre).AlignRight().Text("Navicosoft Pty Ltd").FontSize(18).Bold();
-                        //    //row.ConstantItem(170, Unit.Millimetre).AlignRight().Text("Navicosoft Pty Ltd").FontSize(18).Bold();
-                        //    //row.RelativeItem().AlignRight().Text("ABN: 19648285894").FontSize(12);
-                        //    //row.RelativeItem().AlignRight().Text("Tower 5/727 Collins St, Docklands VIC 3008").FontSize(12);
-                        //    //row.RelativeItem().Column(column =>
-                        //    //{
-                        //    //    column.Item().AlignRight().Text("Navicosoft Pty Ltd").FontSize(18).Bold();
-                        //    //    column.Item().AlignRight().Text("ABN: 19648285894").FontSize(12);
-                        //    //    column.Item().AlignRight().Text("Tower 5/727 Collins St, Docklands VIC 3008").FontSize(12);
-                        //    //});
-                        //    row.RelativeItem().Table(table =>
-                        //    {
-                        //        table.ColumnsDefinition(columns =>
-                        //        {
-                        //            //columns.ConstantColumn(25);
-                        //            //columns.RelativeColumn(3);
-                        //            //columns.RelativeColumn();
-                        //            columns.RelativeColumn();
-                        //            columns.RelativeColumn();
-                        //        });
-
-                        //        // step 2
-                        //        table.Header(header =>
-                        //        {
-                        //            //header.Cell().Element(CellStyle).Text("#");
-                        //            //header.Cell().Element(CellStyle).Text("Product");
-                        //            //header.Cell().Element(CellStyle).AlignRight().Text("Unit price");
-                        //            header.Cell().Element(CellStyle).AlignCenter().Text("Quantity");
-                        //            header.Cell().Element(CellStyle).AlignRight().Text("Total");
-
-                        //            static IContainer CellStyle(IContainer container)
-                        //            {
-                        //                return container.DefaultTextStyle(x => x.SemiBold()).PaddingVertical(5).BorderBottom(1).BorderColor(Colors.Black);
-                        //            }
-                        //        });
-
-                        //    });
-
-
-                        //});
-
-
-                        //page.Content().Table(table =>
-                        //{
-
-                        //    table.ColumnsDefinition(columns =>
-                        //    {
-                        //        //columns.ConstantColumn(25);
-                        //        //columns.RelativeColumn(3);
-                        //        //columns.RelativeColumn();
-                        //        columns.RelativeColumn();
-                        //        columns.RelativeColumn();
-                        //    });
-
-                        //    // step 2
-                        //    table.Header(header =>
-                        //    {
-                        //        //header.Cell().Element(CellStyle).Text("#");
-                        //        //header.Cell().Element(CellStyle).Text("Product");
-                        //        //header.Cell().Element(CellStyle).AlignRight().Text("Unit price");
-                        //        header.Cell().Element(CellStyle).AlignCenter().Text("Quantity");
-                        //        header.Cell().Element(CellStyle).AlignRight().Text("Total");
-
-                        //        static IContainer CellStyle(IContainer container)
-                        //        {
-                        //            return container.DefaultTextStyle(x => x.SemiBold()).PaddingVertical(5).BorderBottom(1).BorderColor(Colors.Black);
-                        //        }
-                        //    });
-
-                        //    // step 3
-                        //    //foreach (var item in Model.Items)
-                        //    //{
-                        //    //    table.Cell().Element(CellStyle).Text(Model.Items.IndexOf(item) + 1);
-                        //    //    table.Cell().Element(CellStyle).Text(item.Name);
-                        //    //    table.Cell().Element(CellStyle).AlignRight().Text($"{item.Price}$");
-                        //    //    table.Cell().Element(CellStyle).AlignRight().Text(item.Quantity);
-                        //    //    table.Cell().Element(CellStyle).AlignRight().Text($"{item.Price * item.Quantity}$");
-
-                        //    //    static IContainer CellStyle(IContainer container)
-                        //    //    {
-                        //    //        return container.BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingVertical(5);
-                        //    //    }
-                        //    //}
-
-                        //});
-
-
-                        //string serverPath = webHost.WebRootPath.ToString();
-
-                        //page.Header()
-                        //    .Width(200)
-                        //    .Image($"{serverPath}/Images/logo.png");
-
-
-                        //page.Content()
-                        //    .PaddingVertical(1, Unit.Centimetre)
-                        //    .Column(x =>
-                        //    {
-                        //        x.Spacing(20);
-
-                        //        x.Item().Text(Placeholders.LoremIpsum());
-                        //        x.Item().Image(Placeholders.Image(200, 100));
-                        //    });
-
-                        page.Footer()
-                            .AlignCenter()
-                            .Text(x =>
+                            page.Header().PaddingVertical(20).Container().Row(row =>
                             {
-                                x.Span($"PDF Generated on {DateTime.Now.DayOfWeek}, {DateTime.Now.Day},{DateTime.Now.Year}");
+                                row.ConstantItem(200).Image($"{serverPath}/images/logo.png");
+                            
+                            });
+                    
+                            page.Content().PaddingVertical(20).Column(col =>
+                            {
+                                // For Company Name and Details
+                                col.Item().AlignRight().Text("Navicosoft Pty Ltd").FontSize(18).Bold();
+                                col.Item().AlignRight().Text("ABN: 19648285894").FontSize(12);
+                                col.Item().AlignRight().Text("Tower 5/727 Collins St, Docklands VIC 3008").FontSize(12);
+
+
+                                // For InvoiceNumber and  Due Date
+                                col.Item().PaddingTop(10).AlignLeft().Text($"Invoice # {result[0].Id}").FontSize(18).Bold();
+                                col.Item().AlignLeft().Text($"Bill For Month : {result[0].Month}").Style(Invoice);
+                                col.Item().AlignLeft().Text($"Due Date : {result[0].DueDate}").Style(Invoice);
+
+
+                                // Invoiced To
+                                col.Item().PaddingTop(10).AlignLeft().Text($"Invoiced To").FontSize(18).Bold();
+                                col.Item().AlignLeft().Text($"{result[0].ClientForm?.Name}").Style(Invoice);
+
+
+                                // Table
+                                col.Item().PaddingVertical(20).Table(table => 
+                                {                           
+                                    table.ColumnsDefinition(columns =>
+                                    {
+                                        columns.RelativeColumn();
+                                        columns.RelativeColumn();
+                                        //columns.RelativeColumn();
+                                        //columns.RelativeColumn();
+                                        //columns.RelativeColumn();
+                                    });
+
+                                    // step 2
+                                    table.Header(header =>
+                                    {
+                                        //header.Cell().Element(CellStyle).Text("#");
+                                        //header.Cell().Element(CellStyle).Text("Product");
+                                        //header.Cell().Element(CellStyle).AlignRight().Text("Unit price");
+                                        header.Cell().Element(CellStyle).AlignCenter().Text("Quantity");
+                                        header.Cell().Element(CellStyle).AlignRight().Text("Total");
+
+                                        static IContainer CellStyle(IContainer container)
+                                        {
+                                            return container.DefaultTextStyle(x => x.SemiBold()).PaddingVertical(5).BorderBottom(1).BorderColor(Colors.Black);
+                                        }
+                                    });
+
+                                    //foreach (var item in result)
+                                    //{
+                                    //    table.Cell().Element(CellStyle).Text(Model.Items.IndexOf(item) + 1);
+                                    //    table.Cell().Element(CellStyle).Text(item.Name);
+                                    //    table.Cell().Element(CellStyle).AlignRight().Text($"{item.Price}$");
+                                    //    table.Cell().Element(CellStyle).AlignRight().Text(item.Quantity);
+                                    //    table.Cell().Element(CellStyle).AlignRight().Text($"{item.Price * item.Quantity}$");
+
+                                    //    static IContainer CellStyle(IContainer container)
+                                    //    {
+                                    //        return container.BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingVertical(5);
+                                    //    }
+                                    //}
+
+                                });
 
                             });
-                    });
-                })
-                .GeneratePdfAndShow();
-                return RedirectToAction("index");
+                        
+                        
 
+                            page.Footer()
+                                .AlignCenter()
+                                .Text(x =>
+                                {
+                                    x.Span($"PDF Generated on {DateTime.Now.DayOfWeek}, {DateTime.Now.Day},{DateTime.Now.Year}");
+
+                                });
+                        });
+                    })
+                    .GeneratePdfAndShow();
+                    return RedirectToAction("index");
+
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Information($" location : {e.StackTrace} \n");
+                Log.Information($" Error : {e.Message} \n");
+                return RedirectToAction("index");
             }
             return RedirectToAction("index");
         }

@@ -10,6 +10,7 @@ using Dashboard.Utillities.Helper.Email;
 using Hangfire;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using QuestPDF.Infrastructure;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -102,7 +103,7 @@ builder.Services.ConfigureApplicationCookie(config =>
 
 builder.Services.AddHangfireServer();
 
-
+QuestPDF.Settings.License = LicenseType.Community;
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

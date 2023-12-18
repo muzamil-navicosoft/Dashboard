@@ -6,11 +6,13 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <input asp-for="Id" hidden />
+            
+            @* <div class="form-group">
                 <label asp-for="Id" class="control-label"></label>
                 <input asp-for="Id" class="form-control" />
                 <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
+            </div> *@
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" />
@@ -18,8 +20,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+                <textarea asp-for="Description" rows="8" class="form-control"> readonly </textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="m-3"></div>
+            <div>
+                <textarea  class="form-control" rows="3" id="chat-box" name="message"></textarea>
             </div>
             @*<div class="form-group">
                 <label asp-for="Resolution" class="control-label"></label>
@@ -30,11 +36,11 @@
                 <label asp-for="Department" class="control-label"></label>
                 <input asp-for="Department" class="form-control" />
                 <span asp-validation-for="Department" class="text-danger"></span>
-            </div> *@
+            </div> 
 
             <div class="form-group">
                 <label asp-for="Department" class="control-label"></label>
-                <@* input asp-for="ClientFormId" class="form-control" /> *@
+                <@* input asp-for="ClientFormId" class="form-control" /> 
                 <select name="Department" class="form-control" asp-items="@ViewBag.Departments" required>
                     <option> --All Department-- </option>
                 </select>
@@ -64,7 +70,7 @@
                 <label asp-for="DateReolved" class="control-label"></label>
                 <input asp-for="DateReolved" class="form-control" />
                 <span asp-validation-for="DateReolved" class="text-danger"></span>
-            </div>
+            </div>*@
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
@@ -76,3 +82,47 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+
+@section Scripts {
+    <script>
+        // JavaScript for chat box functionality
+        // Example: You can add event listeners to send messages, format text, etc.
+        // Here's a simple example using vanilla JavaScript for sending messages
+        const chatBox = document.getElementById('chat-box');
+        // Geting the Id value here
+        let id = @Model.Id;
+
+
+        chatBox.addEventListener('keydown', function (event) {
+            if (event.keyCode === 13 && event.shiftKey === false) { // Check if Enter key is pressed without Shift key
+                event.preventDefault(); // Prevents adding new line in textarea
+
+                // Send the message logic here
+                const message = chatBox.value.trim(); // Get the message content
+
+                // Example: Sending message to a server via AJAX or performing an action with the message content
+                // You may replace this example with your actual logic to handle the message
+                if (message !== '') {
+                    console.log('Sending message:', message); // Example: Log the message
+
+                    $.ajax({
+                        type: "POST",
+                        // url: "~/UserForm/updateIsBilledMonthly",
+                        url: '@Url.Action("Edit", "Ticket")',
+                        dataType: "json",
+                        data: {
+                            id: id,
+                            message: message
+                        },
+                        complete: function (result) {
+                            location.reload();
+                            console.log(result)
+                        }
+                    });
+                    chatBox.value = ''; // Clear the textarea after sending the message
+                }
+            }
+        });
+
+    </script>
+}
