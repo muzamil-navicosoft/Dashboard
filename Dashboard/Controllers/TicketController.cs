@@ -133,36 +133,20 @@ namespace Dashboard.Controllers
             //var test = result.Adapt<IEnumerable<BillingInfoDto>>();
             return RedirectToAction("Index");
         }
+        //[HttpPost]
+        //public IActionResult Edit(TicketDto obj)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var test = obj.Adapt<Ticket>();
 
-        [HttpGet]
-        public IActionResult ChangeDepartment(int id)
-        {
-            var result = _unitOfWork.ticket.Get(id);
-            //var result = _unitOfWork.ticket.CustomeGetAll().Where(x => x.Id == id).AsNoTracking().FirstOrDefaultAsync();
-            if (result != null)
-            {
-                var deparments = new List<string> { "Admin", "Tickitting", "Billing" };
-                ViewBag.Departments = new SelectList(deparments);
-                var result2 = result.Adapt<TicketDto>();
-                return View(result2);
-            }
-            return View();
-        }
+        //        _unitOfWork.ticket.update(test);
+        //        _unitOfWork.Save();
+        //    }
 
-        [HttpPost]
-        public IActionResult ChangeDepartment(TicketDto obj)
-        {
-            if (ModelState.IsValid)
-            {
-                var test = obj.Adapt<Ticket>();
-
-                _unitOfWork.ticket.update(test);
-                _unitOfWork.Save();
-            }
-
-            //var test = result.Adapt<IEnumerable<BillingInfoDto>>();
-            return RedirectToAction("Index");
-        }
+        //    //var test = result.Adapt<IEnumerable<BillingInfoDto>>();
+        //    return RedirectToAction("Index");
+        //}
         public IActionResult Closed()
         {
             //var result =  _unitOfWork.ticket.GetAll();

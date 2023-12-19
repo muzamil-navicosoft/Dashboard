@@ -10,7 +10,6 @@ using Dashboard.Utillities.Helper.Email;
 using Hangfire;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using QuestPDF.Infrastructure;
 using Serilog;
 
@@ -22,11 +21,11 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
-    //.AddJsonOptions(options =>
-    //{
-    //    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
-    //});
+builder.Services.AddControllersWithViews()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+    });
 
 builder.Services.AddDbContext<ProjectContext>( options =>
 {
@@ -38,9 +37,7 @@ var hangfireConnection = builder.Configuration.GetConnectionString("hangfireconn
 // for Configring Identity 
 
 
-
-
-builder.Services.AddIdentity<Dashboard.Models.Models.CustomeUser, Microsoft.AspNetCore.Identity.IdentityRole>()
+builder.Services.AddIdentity<CustomeUser, IdentityRole>()
    .AddEntityFrameworkStores<ProjectContext>().AddDefaultTokenProviders();
 
 // services
@@ -71,7 +68,7 @@ builder.Services.ConfigureApplicationCookie(config =>
     config.LoginPath = "/login";
     config.ExpireTimeSpan = TimeSpan.FromHours(1);
     config.AccessDeniedPath = "/unauth";
-
+    
 });
 
 //builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme)
