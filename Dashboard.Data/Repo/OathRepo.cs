@@ -3,9 +3,6 @@ using Dashboard.Models.DTO;
 using Dashboard.Models.Models;
 using Microsoft.AspNetCore.Identity;
 using Dashboard.Utillities.Helper.Email;
-
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
 using Microsoft.Extensions.Configuration;
 
 namespace Dashboard.DataAccess.Repo
