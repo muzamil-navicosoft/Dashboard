@@ -64,7 +64,7 @@
                         *@
 
                         <button type="button" class="btn btn-outline-info waves-effect">@Html.ActionLink("Resolve", "Resolve", new {  id=item.Id })</button>
-                        <button type="button" class="btn btn-outline-info waves-effect">@Html.ActionLink("Assign To Other Department", "Edit", new {  id=item.Id })</button>
+                        <button type="button" class="btn btn-outline-info waves-effect">@Html.ActionLink("Assign To Other Department", "ChangeDepartment", new { id = item.Id })</button>
 
                     </td>
                 </tr>
