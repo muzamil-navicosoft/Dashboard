@@ -1,0 +1,177 @@
+﻿@model Dashboard.Models.DTO.ClientFormDto
+
+<h4>ClientFormDto</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddBill">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+             <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" hidden />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div> 
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" disabled />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Logo" class="control-label"></label>
+                <input asp-for="Logo" class="form-control" disabled />
+                <span asp-validation-for="Logo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" disabled  />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BlackBaudApiId" class="control-label"></label>
+                <input asp-for="BlackBaudApiId" class="form-control" disabled />
+                <span asp-validation-for="BlackBaudApiId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" disabled />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubDomain" class="control-label"></label>
+                <input asp-for="SubDomain" class="form-control" disabled />
+                <span asp-validation-for="SubDomain" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RequestDate" class="control-label"></label>
+                <input asp-for="RequestDate" class="form-control" disabled />
+                <span asp-validation-for="RequestDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AproveDate" class="control-label"></label>
+                <input asp-for="AproveDate" class="form-control" disabled />
+                <span asp-validation-for="AproveDate" class="text-danger"></span>
+            </div>
+       @*      <div class="form-group">
+                <label asp-for="DiscontinueDate" class="control-label"></label>
+                <input asp-for="DiscontinueDate" class="form-control" disabled />
+                <span asp-validation-for="DiscontinueDate" class="text-danger"></span>
+            </div> *@
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="isAproved" /> @Html.DisplayNameFor(model => model.isAproved)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="isActive" /> @Html.DisplayNameFor(model => model.isActive)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="isDeleted" /> @Html.DisplayNameFor(model => model.isDeleted)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input onchange="showHide()" id="monthlyBill" class="form-check-input" asp-for="isBilledMonthly" /> @Html.DisplayNameFor(model => model.isBilledMonthly)
+                </label>
+            </div>
+  
+            <div class="form-group" id="bill">
+                <label asp-for="OneTimeBill" class="control-label"></label>
+                <input asp-for="OneTimeBill" id="OneTimeBill" class="form-control" />
+                <span asp-validation-for="OneTimeBill" class="text-danger"></span>
+            </div>
+            <div class="form-group" id="updateOneTimeBill">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+            <div class="form-group" id="addMonthlyBill">
+@*                 <input type="button" value="Add Billing Details" asp-action="Add" asp-controller="Billing" class="btn btn-primary" />
+ *@                <button type="button" class="btn btn-outline-info waves-effect">@Html.ActionLink("Add Billing Details", "AddBill", "Billing", new {ClientFormId = Model.Id})</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+@section Scripts
+{
+    <script>
+
+        let id = @Model.Id;
+        $(document).ready(function () 
+        {
+            if ($("#monthlyBill").prop('checked')) 
+            {
+                $("#bill").hide();
+                $("#bill").val("");
+                $("#addMonthlyBill").show();
+                $("#updateOneTimeBill").hide();
+
+            }
+            else 
+            {
+                $("#bill").show();
+                $("#bill").val("");
+                $("#addMonthlyBill").hide();
+                $("#updateOneTimeBill").show();
+                
+
+            }
+           
+        })
+
+        function showHide() {
+            if ($("#monthlyBill").prop('checked')) 
+            {
+                $("#bill").hide();
+                $("#bill").val("");
+                $("#addMonthlyBill").show();
+                $("#updateOneTimeBill").hide();
+                $.ajax({
+                    type: "POST",
+                    // url: "~/UserForm/updateIsBilledMonthly",
+                    url: '@Url.Action("updateIsBilledMonthly", "UserForm")',
+                    dataType: "json",
+                    data: { id : id,
+                        billMonthly : true
+                    },
+                    sucess: function (result) {
+                        console.log(result)
+                    },
+                    error: function (result) {
+                        console.log(result)
+                    }
+                });
+              
+
+            } else 
+            {
+                $("#bill").show();
+                $("#addMonthlyBill").hide();
+                $("#updateOneTimeBill").show();
+         
+                $.ajax({
+                    type: "POST",
+                    // url: "~/UserForm/updateIsBilledMonthly",
+                    url: '@Url.Action("updateIsBilledMonthly", "UserForm")',
+                    dataType: "json",
+                    data: {
+                        id: id,
+                        billMonthly: false
+                    },
+                    sucess: function (result) {
+                        console.log(result)
+                    },
+                    error: function (result) {
+                        console.log(result)
+                    }
+                });
+            }
+        }
+    </script>
+}

@@ -1,0 +1,154 @@
+﻿@model Dashboard.Models.DTO.Counter
+
+
+
+
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/views/shared/_ThemeLayout.cshtml";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    @*     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    *@
+</div>
+
+<div></div>
+
+<section class="app-user-list">
+    <div class="row">
+        <div class="col-lg-3 col-sm-6">
+            <div class="card">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div>
+                        <h3 class="fw-bolder mb-75">@Model.AllUserCounter</h3>
+                        <span>Total Clients</span>
+                    </div>
+                    <div class="avatar bg-light-primary p-50">
+                        <span class="avatar-content">
+                            <i data-feather="user" class="font-medium-4"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <div class="card">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div>
+                        <h3 class="fw-bolder mb-75">@Model.DeActiveUserCounter</h3>
+                        <span>De-Active Clients</span>
+                    </div>
+                    <div class="avatar bg-light-danger p-50">
+                        <span class="avatar-content">
+                            <i data-feather="user-plus" class="font-medium-4"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <div class="card">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div>
+                        <h3 class="fw-bolder mb-75">@Model.ActiveUserCounter</h3>
+                        <span>Active Clients</span>
+                    </div>
+                    <div class="avatar bg-light-success p-50">
+                        <span class="avatar-content">
+                            <i data-feather="user-check" class="font-medium-4"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <div class="card">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div>
+                        <h3 class="fw-bolder mb-75">@Model.PendingUserCounter</h3>
+                        <span>Pending Clinte Requests</span>
+                    </div>
+                    <div class="avatar bg-light-warning p-50">
+                        <span class="avatar-content">
+                            <i data-feather="user-x" class="font-medium-4"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</section>
+
+<div class="col-lg-12 col-12">
+    <div class="row match-height">
+        <!-- Bar Chart - Orders -->
+
+        <div class="col-lg-6 col-md-3 col-6">
+            <div class="card">
+                <div class="card-body pb-50 text-center m-5">
+                    <h6>Open Tickets</h6>
+                    <h2 class="fw-bolder mb-1">@Model.ActiveTicketCounter</h2>
+                    <div id="statistics-order-chart"></div>
+                </div>
+            </div>
+        </div>
+
+        <!--/ Bar Chart - Orders -->
+        <!-- Line Chart - Profit -->
+        <div class="col-lg-6 col-md-3 col-6">
+            <div class="card card-tiny-line-stats">
+                <div class="card-body pb-50 text-center m-5">
+                    <h6>Un Paid Invoices</h6>
+                    <h2 class="fw-bolder mb-1">@Model.ActiveBillingCounter</h2>
+                    <div id="statistics-profit-chart"></div>
+                </div>
+            </div>
+        </div>
+        <!--/ Line Chart - Profit -->
+        <!-- Earnings Card -->
+        <div class="col-lg-12 col-md-6 col-12">
+            <div class="card earnings-card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <h4 class="card-title mb-1">Active Clients</h4>
+                           @*  <div class="font-small-2">This Month</div>
+                            <h5 class="mb-1">$4055.56</h5>
+                            <p class="card-text text-muted font-small-2">
+                                <span class="fw-bolder">68.2%</span><span> more earnings than last month.</span>
+                            </p> *@
+                            <h2 class="fw-bolder mb-1">@Model.ActiveUserCounter</h2>
+                        </div>
+                        <div class="col-6">
+                            <div id="earnings-chart"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/ Earnings Card -->
+        <div class="col-lg-6 col-md-3 col-6">
+            <div class="card card-tiny-line-stats">
+                <div class="card-body pb-50 text-center m-5">
+                    <h6>Paid Bills</h6>
+                    <h2 class="fw-bolder mb-1">@Model.PaidBillingCounter</h2>
+                    <div id="statistics-profit-chart"></div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-3 col-6">
+            <div class="card card-tiny-line-stats">
+                <div class="card-body pb-50 text-center m-5">
+                    <h6>Suspended Clients</h6>
+                    <h2 class="fw-bolder mb-1">@Model.DeActiveUserCounter</h2>
+                    <div id="statistics-profit-chart"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

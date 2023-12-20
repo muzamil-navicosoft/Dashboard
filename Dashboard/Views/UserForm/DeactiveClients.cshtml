@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Dashboard.DTO.ClientFormDto>
+﻿@model IEnumerable<Dashboard.Models.DTO.ClientFormDto>
 
 @{
     ViewData["Title"] = "DeactiveClients";
@@ -24,34 +24,34 @@
             <th>
                 @Html.DisplayNameFor(model => model.Email)
             </th>
-            <th>
+        @*    <th>
                 @Html.DisplayNameFor(model => model.BlackBaudApiId)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Password)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.SubDomain)
             </th>
-            <th>
+       @*     <th>
                 @Html.DisplayNameFor(model => model.RequestDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.AproveDate)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.DiscontinueDate)
             </th>
-            <th>
+           @* <th>
                 @Html.DisplayNameFor(model => model.isAproved)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.isActive)
             </th>
-         @*   <th>
+            <th>
                 @Html.DisplayNameFor(model => model.isDeleted)
             </th>*@
-            <th></th>
+            <th> Actions </th>
         </tr>
     </thead>
     <tbody>
@@ -70,38 +70,57 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
-            <td>
+          @*  <td>
                 @Html.DisplayFor(modelItem => item.BlackBaudApiId)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Password)
-            </td>
+            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.SubDomain)
             </td>
-            <td>
+         @*   <td>
                 @Html.DisplayFor(modelItem => item.RequestDate)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.AproveDate)
-            </td>
+            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.DiscontinueDate)
             </td>
-            <td>
+           @* <td>
                 @Html.DisplayFor(modelItem => item.isAproved)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.isActive)
             </td>
-           @* <td>
+            <td>
                 @Html.DisplayFor(modelItem => item.isDeleted)
-            </td>*@
+            </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) 
-@*                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-*@            </td>
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>*@
+
+                <td>
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-sm dropdown-toggle hide-arrow py-0" data-bs-toggle="dropdown">
+                            <i data-feather="more-vertical"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item"  asp-controller="UserForm" asp-action="edit" asp-route-id="@item.Id">
+                                <i data-feather="edit-2" class="me-50"></i>
+                                <span>Edit</span>
+                            </a>
+                            <a class="dropdown-item" asp-controller="UserForm" asp-action="details" asp-route-id="@item.Id">
+                                <i data-feather="trash" class="me-50"></i>
+                                <span>Details</span>
+                            </a>
+                            
+                        </div>
+                    </div>
+                </td>
         </tr>
 }
     </tbody>

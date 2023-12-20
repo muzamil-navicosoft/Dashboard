@@ -1,16 +1,17 @@
-﻿@model IEnumerable<Dashboard.DTO.ClientFormDto>
+﻿@model IEnumerable<Dashboard.Models.DTO.ClientFormDto>
 
 @{
     ViewData["Title"] = "Clients";
 }
 
-<h1>Clients</h1>
+<h1> Active Clients</h1>
+<hr />
 
-<p>
+@*<p>
     <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
+</p>*@
+<table class="table table-borderless">
+    <thead >
         <tr>
             @*<th>
                 @Html.DisplayNameFor(model => model.Id)
@@ -30,13 +31,13 @@
             <th>
                 @Html.DisplayNameFor(model => model.Password)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.RequestDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.AproveDate)
             </th>
-            @*<th>
+            <th>
                 @Html.DisplayNameFor(model => model.DiscountneDate)
             </th>
             <th>
@@ -45,6 +46,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.isActive)
             </th>*@
+            <th> Actions </th>
             <th></th>
         </tr>
     </thead>
@@ -71,13 +73,13 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Password)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.RequestDate)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.AproveDate)
             </td>
-            @*<td>
+            <td>
                 @Html.DisplayFor(modelItem => item.DiscountneDate)
             </td>
             <td>
@@ -86,11 +88,33 @@
             <td>
                 @Html.DisplayFor(modelItem => item.isActive)
             </td>*@
-            <td>
-                @Html.ActionLink("Edit", "Edit", new {  id=item.Id }) |
+            @*<td>
+                <i data-feather="edit"></i> @Html.ActionLink("Edit", "Edit", new {  id=item.Id }) |
                 @Html.ActionLink("Details", "Details", new {  id=item.Id  }) |
                 @Html.ActionLink("Discontinue", "Discontinue", new {  id=item.Id  })
-                @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>*@
+                
+            <td>
+                <div class="dropdown">
+                    <button type="button" class="btn btn-sm dropdown-toggle hide-arrow py-0" data-bs-toggle="dropdown">
+                        <i data-feather="more-vertical"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" asp-controller="UserForm" asp-action="edit" asp-route-id="@item.Id">
+                            <i data-feather="edit-2" class="me-50"></i>
+                            <span>Edit</span>
+                        </a>
+                            <a class="dropdown-item" asp-controller="UserForm" asp-action="details" asp-route-id="@item.Id" >
+                            <i data-feather="trash" class="me-50"></i>
+                            <span>Details</span>
+                        </a>
+                            <a class="dropdown-item" asp-controller="UserForm" asp-action="Discontinue" asp-route-id="@item.Id">
+                            <i data-feather="trash" class="me-50"></i>
+                            <span>Discontinue</span>
+                        </a>
+                    </div>
+                </div>
             </td>
         </tr>
 }
