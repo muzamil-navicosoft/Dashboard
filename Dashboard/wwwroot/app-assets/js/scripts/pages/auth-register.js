@@ -10,7 +10,7 @@
 $(function () {
   ('use strict');
 
-  var assetsPath = '../../../app-assets/',
+  var assetsPath = '~/app-assets/',
     registerMultiStepsWizard = document.querySelector('.register-multi-steps-wizard'),
     pageResetForm = $('.auth-register-form'),
     select = $('.select2'),

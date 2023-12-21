@@ -6,7 +6,7 @@ $(function () {
   'use strict';
 
   var dataTablePermissions = $('.datatables-permissions'),
-    assetPath = '../../../app-assets/',
+    assetPath = '~/app-assets/',
     dt_permission,
     userList = 'app-user-list.html';
 
