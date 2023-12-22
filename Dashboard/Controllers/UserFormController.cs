@@ -14,7 +14,6 @@ using Microsoft.AspNetCore.Authorization;
 using System.Diagnostics;
 using Microsoft.Extensions.FileProviders.Composite;
 using Serilog;
-using Dashboard.Data;
 
 namespace Dashboard.Controllers
 {
@@ -95,54 +94,6 @@ namespace Dashboard.Controllers
                 return RedirectToAction("wentWrong", "Home");
             }
            
-        }
-
-        // For Paggingnattion
-        [HttpPost]
-        public async Task<IActionResult> GetCustomers()
-        {
-            try
-            {
-                var result = await _unitOfWork.User
-                                   .CustomeGetAll()
-                                   .Include(x => x.Tickets)
-                                   .AsNoTracking()
-                                   .Where(x => x.isActive && x.isAproved && !x.isDeleted)
-                                   .ToListAsync();
-
-                var draw = Request.Form["draw"].FirstOrDefault();
-                var start = Request.Form["start"].FirstOrDefault();
-                var length = Request.Form["length"].FirstOrDefault();
-                var sortColumn = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][name]"].FirstOrDefault();
-                var sortColumnDirection = Request.Form["order[0][dir]"].FirstOrDefault();
-                var searchValue = Request.Form["search[value]"].FirstOrDefault();
-                int pageSize = length != null ? Convert.ToInt32(length) : 0;
-                int skip = start != null ? Convert.ToInt32(start) : 0;
-                int recordsTotal = 0;
-                //var customerData = (from tempcustomer in ProjectContext.User select tempcustomer);
-                var customerData = await (from tempcustomer in _unitOfWork.User.CustomeGetAll()
-                                    where tempcustomer.isActive && tempcustomer.isAproved && !tempcustomer.isDeleted
-                                    select new { tempcustomer }).ToListAsync();
-                //if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
-                //{
-                //    customerData = customerData.OrderBy(sortColumn + " " + sortColumnDirection);
-                //}
-                if (!string.IsNullOrEmpty(searchValue))
-                {
-                    customerData = customerData.Where(m => m.tempcustomer.Name.Contains(searchValue)
-                                                || m.tempcustomer.Email.Contains(searchValue)
-                                                || m.tempcustomer.BlackBaudApiId.Contains(searchValue)).ToList();
-                                                /*|| m.Email.Contains(searchValue))*/
-                }
-                recordsTotal = customerData.Count();
-                var data = customerData.Skip(skip).Take(pageSize).ToList();
-                var jsonData = new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data };
-                return Ok(jsonData);
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
         }
 
         [HttpGet]

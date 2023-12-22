@@ -14,7 +14,7 @@ $(function () {
   var dt_project_table = $('.datatable-project'),
     dtInvoiceTable = $('.invoice-table'),
     invoicePreview = 'app-invoice-preview.html',
-    assetPath = '~/app-assets/';
+    assetPath = '../../../app-assets/';
 
   if ($('body').attr('data-framework') === 'laravel') {
     assetPath = $('body').attr('data-asset-path');

@@ -8,13 +8,9 @@
 
   <ItemGroup>
     <Compile Remove="wwwroot\bashfile\**" />
-    <Compile Remove="wwwroot\project\**" />
     <Content Remove="wwwroot\bashfile\**" />
-    <Content Remove="wwwroot\project\**" />
     <EmbeddedResource Remove="wwwroot\bashfile\**" />
-    <EmbeddedResource Remove="wwwroot\project\**" />
     <None Remove="wwwroot\bashfile\**" />
-    <None Remove="wwwroot\project\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,6 +36,7 @@
 
   <ItemGroup>
     <Folder Include="Properties\PublishProfiles\" />
+    <Folder Include="wwwroot\project\" />
   </ItemGroup>
 
 </Project>
